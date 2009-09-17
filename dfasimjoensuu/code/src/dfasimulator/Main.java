@@ -5,17 +5,21 @@
 
 package dfasimulator;
 
+import gui.DFAMainWin;
+
 /**
- *
+ * The main function where the main window is created
  * @author Fabian
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String[] args) {
        System.out.println("Welcome to the DFA Simulator");
+       DFAMainWin mainwin = new DFAMainWin();
+
+       mainwin.setVisible(true);
+
     }
 
 }
