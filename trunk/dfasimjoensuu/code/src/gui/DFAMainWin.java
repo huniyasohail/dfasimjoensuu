@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -22,9 +23,9 @@ public class DFAMainWin extends javax.swing.JFrame {
     public DFAMainWin() {
         
         initComponents();
-        this.setSize(new Dimension(600, 300));
+        this.setSize(new Dimension(700, 500));
         centreWindow(this);
-
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
 
@@ -38,81 +39,84 @@ public class DFAMainWin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DFA Simulator");
         setBounds(new java.awt.Rectangle(0, 0, 400, 400));
         getContentPane().setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel2.setText("Deterministic Finite Automaton Simulator");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(30, 70, 410, 17);
+        jMenu1.setText("File");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel3.setText("GNU License");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(30, 210, 440, 17);
+        jMenuItem2.setText("Open DFA");
+        jMenu1.add(jMenuItem2);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel5.setText("Kai Winnekens, Fabian Bürger");
-        getContentPane().add(jLabel5);
-        jLabel5.setBounds(30, 110, 440, 20);
+        jMenuItem3.setText("Save DFA");
+        jMenu1.add(jMenuItem3);
+        jMenu1.add(jSeparator1);
 
-        jButton1.setText("close");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem4.setText("Exit");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jMenuItem4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1);
-        jButton1.setBounds(460, 200, 90, 40);
+        jMenu1.add(jMenuItem4);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("This program comes with ABSOLUTELY NO WARRANTY!");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(30, 180, 440, 17);
+        jMenuBar1.add(jMenu1);
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel7.setText("University of Joensuu, Finland");
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(30, 90, 440, 17);
+        jMenu2.setText("Simulation");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/logo.png"))); // NOI18N
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(-20, 0, 621, 141);
+        jMenuItem5.setText("Start Simulation");
+        jMenu2.add(jMenuItem5);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel8.setText("Student project of the Object Orientated Programming Course.");
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(30, 160, 440, 17);
+        jMenuBar1.add(jMenu2);
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel9.setText("Student project of the Object Orientated Programming Course");
-        getContentPane().add(jLabel9);
-        jLabel9.setBounds(30, 160, 440, 17);
+        jMenu3.setText("Info");
+        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu3ActionPerformed(evt);
+            }
+        });
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel10.setText("Version 0.1 alpha, 2009");
-        getContentPane().add(jLabel10);
-        jLabel10.setBounds(30, 230, 440, 17);
+        jMenuItem1.setText("About DFA Simulator");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       this.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+
+    }//GEN-LAST:event_jMenu3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        //-- create and show new Info window --
+        DFAInfoWin infowin = new DFAInfoWin();
+        infowin.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+       setVisible(false);
+       dispose();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
 
 
@@ -141,16 +145,16 @@ public static void centreWindow(JFrame frame) {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
 }
