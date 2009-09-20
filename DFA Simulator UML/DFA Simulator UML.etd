@@ -135,7 +135,8 @@
 <UML:Multiplicity xmi.id="DCE.92FB0A4E-AFE7-49F3-A6A7-1FA86F97473D"/></UML:TypedElement.multiplicity></UML:Parameter>
 <UML:Parameter xmi.id="DCE.FCBA63CB-9B36-5747-B5FD-09E5A8033506" type="DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD" name="val" owner="DCE.8AEB9F4E-43E6-4450-7CFB-CC87B81852BF"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.BADD05BA-8B60-6A7A-6D57-41FE86844F74"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
-</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Class>
+</UML:Element.presentation></UML:Operation>
+<UML:SourceFileArtifact xmi.id="DCE.05BC7DBF-DE0B-1623-97E3-D6D804508D5B" name="Unnamed" owner="DCE.CCC2B68F-8475-9ECB-2126-E50681B0C4B0" sourcefile="../dfasimjoensuu/code/src/Dfa.java"/></UML:Element.ownedElement></UML:Class>
 <UML:Class xmi.id="DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD" name="State" owner="DCE.5D7B55B8-BD13-E8AF-F540-5F737FDD22F8" associationEnd="DCE.75ED779B-EE37-6A79-2528-7DE8C0F82B90 DCE.DC3D1A65-214D-F8F1-63AC-6B2AB40172EE DCE.ED5E2733-8B99-CDC9-ABCC-7440C6389694"><UML:Element.presentation>
 </UML:Element.presentation><UML:Element.ownedElement>
 <UML:Operation xmi.id="DCE.440B62F6-A5F4-8219-24A6-DD573FD0A0A6" name="State" isConstructor="true" owner="DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD"><UML:Element.presentation>
@@ -171,7 +172,8 @@
 <UML:Multiplicity xmi.id="DCE.6FA06064-3D0F-8EA5-3F60-A9451D65F789"/></UML:TypedElement.multiplicity></UML:Parameter>
 <UML:Parameter xmi.id="DCE.74E73EDE-930C-E7FF-9392-ACA0E379F9C9" type="DCE.CD28AB21-5E9E-186F-B959-A9BD0C7F7E12" name="val" owner="DCE.BB239EBA-CB09-0909-2D77-43099BE24A94"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.311CA67B-6558-001C-1EBF-875CDDD2E623"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
-</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Class>
+</UML:Element.presentation></UML:Operation>
+<UML:SourceFileArtifact xmi.id="DCE.210996ED-7DC0-C690-90CA-7E2103CCD7D5" name="Unnamed" owner="DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD" sourcefile="../dfasimjoensuu/code/src/State.java"/></UML:Element.ownedElement></UML:Class>
 <UML:Class xmi.id="DCE.3289D7DB-C89B-5F67-EDC9-7932FA63A9BB" name="State_Properties" owner="DCE.5D7B55B8-BD13-E8AF-F540-5F737FDD22F8" associationEnd="DCE.1B63615C-E1C2-DC29-6525-83A6E12ACEEA"><UML:Element.presentation>
 </UML:Element.presentation><UML:Element.ownedElement>
 <UML:Operation xmi.id="DCE.D426DFFE-9580-1E93-59AF-36423FBEE20E" name="State_Properties" isConstructor="true" owner="DCE.3289D7DB-C89B-5F67-EDC9-7932FA63A9BB"><UML:Element.presentation>
@@ -223,7 +225,8 @@
 <UML:Multiplicity xmi.id="DCE.7DAEF533-28BC-7C2B-D984-83ED76E0FD3E"/></UML:TypedElement.multiplicity></UML:Parameter>
 <UML:Parameter xmi.id="DCE.3CAB129F-D180-7B69-BDE1-D743A62FE275" type="DCE.02425F2A-A42D-AA8A-891C-95E5A3B6E341" name="val" owner="DCE.3E219D5B-EEDB-5FFB-2D87-9A39F53CA3BD"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.C4D6DAD1-4255-DDA8-5BC3-A728BD4038AF"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
-</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Class>
+</UML:Element.presentation></UML:Operation>
+<UML:SourceFileArtifact xmi.id="DCE.90A2B26F-787F-29ED-430F-0BA45CE275DF" name="Unnamed" owner="DCE.3289D7DB-C89B-5F67-EDC9-7932FA63A9BB" sourcefile="../dfasimjoensuu/code/src/State_Properties.java"/></UML:Element.ownedElement></UML:Class>
 <UML:Class xmi.id="DCE.87C11C34-F942-9444-FDCC-B025A77DB87B" name="Transition" owner="DCE.5D7B55B8-BD13-E8AF-F540-5F737FDD22F8" associationEnd="DCE.285218EB-29E8-823B-EF0A-E6A9E5D7E77A DCE.E7F8A166-C1FA-4A8B-3A8E-F70F06F45A23"><UML:Element.presentation>
 </UML:Element.presentation><UML:Element.ownedElement>
 <UML:Operation xmi.id="DCE.4D334F29-4CB2-6FB2-A865-67910CCFD054" name="Transition" isConstructor="true" owner="DCE.87C11C34-F942-9444-FDCC-B025A77DB87B"><UML:Element.presentation>
@@ -244,7 +247,8 @@
 <UML:Multiplicity xmi.id="DCE.AB76BDDC-0C3D-7573-C7AA-BCF059EAEF95"/></UML:TypedElement.multiplicity></UML:Parameter>
 <UML:Parameter xmi.id="DCE.BF89EAB5-329F-27D9-4F6F-9C03D19A7499" type="DCE.50B3A569-887C-259D-EB5B-20FA624410AE" name="val" owner="DCE.520A2AF8-8659-E1E6-923A-70D72E8DCF7F"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.DA4F3E48-295B-39C2-CF0D-E808E9B7490A"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
-</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Class>
+</UML:Element.presentation></UML:Operation>
+<UML:SourceFileArtifact xmi.id="DCE.776369EB-4E17-0BD0-05D4-BCB5CBA2183C" name="Unnamed" owner="DCE.87C11C34-F942-9444-FDCC-B025A77DB87B" sourcefile="../dfasimjoensuu/code/src/Transition.java"/></UML:Element.ownedElement></UML:Class>
 <UML:DataType xmi.id="DCE.DBD6C1FB-A627-586D-B74B-2CBAEB47D51B" name="int" owner="DCE.5D7B55B8-BD13-E8AF-F540-5F737FDD22F8"/>
 
 
@@ -293,7 +297,8 @@
 <UML:Operation xmi.id="DCE.C245F85F-9EBB-3228-73CF-853407C3F3DF" name="nextStep" owner="DCE.245EA3C4-3790-7E8C-5593-89B2D60EAD85"><UML:Element.ownedElement>
 <UML:Parameter xmi.id="DCE.B4DAE550-C2C0-41C7-2ECB-53517E3FD9AA" type="DCE.BC13BB41-C67C-097B-667F-E7D16AE206DF" direction="result" owner="DCE.C245F85F-9EBB-3228-73CF-853407C3F3DF"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.DBAD8030-614D-63F0-3ECC-E7ED32BE4D1C"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
-</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Class>
+</UML:Element.presentation></UML:Operation>
+<UML:SourceFileArtifact xmi.id="DCE.178A24A8-B49F-F0DF-684E-D2497116EC50" name="Unnamed" owner="DCE.245EA3C4-3790-7E8C-5593-89B2D60EAD85" sourcefile="../dfasimjoensuu/code/src/Simulator.java"/></UML:Element.ownedElement></UML:Class>
 <UML:Association xmi.id="DCE.AE970F0E-4827-79F0-C4E9-C34067600101" owner="DCE.5D7B55B8-BD13-E8AF-F540-5F737FDD22F8"><UML:Association.end>
 <UML:AssociationEnd xmi.id="DCE.188D3A5D-F4EA-2DAD-7CDF-60DE394D1D24" visibility="private" association="DCE.AE970F0E-4827-79F0-C4E9-C34067600101" type="DCE.245EA3C4-3790-7E8C-5593-89B2D60EAD85"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.EC984944-1E81-2230-9A7E-A20F481ECF6A"/></UML:TypedElement.multiplicity></UML:AssociationEnd>
@@ -304,7 +309,8 @@
 <UML:Class xmi.id="DCE.2B0808A6-6365-E921-E748-22BEC69D6EAD" name="DfaEditor" owner="DCE.5D7B55B8-BD13-E8AF-F540-5F737FDD22F8" associationEnd="DCE.D1C453AA-2211-D81E-4FF7-90A86BBF89E7"><UML:Element.presentation>
 </UML:Element.presentation><UML:Element.ownedElement>
 <UML:Operation xmi.id="DCE.07B7D0A4-8D42-06F0-1C6A-6AB91D0ED769" name="DfaEditor" isConstructor="true" owner="DCE.2B0808A6-6365-E921-E748-22BEC69D6EAD"><UML:Element.presentation>
-</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Class>
+</UML:Element.presentation></UML:Operation>
+<UML:SourceFileArtifact xmi.id="DCE.FBBDDC4D-A66C-FC63-00BC-F7D504A126FB" name="Unnamed" owner="DCE.2B0808A6-6365-E921-E748-22BEC69D6EAD" sourcefile="../dfasimjoensuu/code/src/DfaEditor.java"/></UML:Element.ownedElement></UML:Class>
 <UML:Association xmi.id="DCE.D70CCFCE-65C6-EFBA-09DD-6653E94C0824" owner="DCE.5D7B55B8-BD13-E8AF-F540-5F737FDD22F8"><UML:Association.end>
 <UML:AssociationEnd xmi.id="DCE.D1C453AA-2211-D81E-4FF7-90A86BBF89E7" visibility="private" association="DCE.D70CCFCE-65C6-EFBA-09DD-6653E94C0824" type="DCE.2B0808A6-6365-E921-E748-22BEC69D6EAD"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.A6B177EC-70B7-20F6-2629-A8943B0483F3"/></UML:TypedElement.multiplicity></UML:AssociationEnd>
