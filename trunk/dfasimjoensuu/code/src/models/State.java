@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD]
@@ -15,11 +17,19 @@ public class State {
     // #[regen=yes,id=DCE.C0EE8059-23DE-B596-6A75-675F1615D3A7]
     // </editor-fold> 
     private boolean isStartState;
+    private ArrayList<Transition> transitions;
+    private State_Properties prop;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.440B62F6-A5F4-8219-24A6-DD573FD0A0A6]
     // </editor-fold> 
-    public State () {
+    public State (String name) throws IllegalArgumentException{
+        transitions = new ArrayList<Transition>();
+        prop = new State_Properties();
+        if (name == null)
+            throw new IllegalArgumentException();
+        //name != null
+        prop.setName(name);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -48,6 +58,15 @@ public class State {
     // </editor-fold> 
     public void setIsStartState (boolean val) {
         this.isStartState = val;
+    }
+
+    public Transition addTransition(Transition t) {
+        transitions.add(t);
+        return t;
+    }
+
+    public void removeTransition(Transition t) {
+        transitions.remove(t);
     }
 
 }

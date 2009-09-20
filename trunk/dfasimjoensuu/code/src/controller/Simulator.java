@@ -1,15 +1,24 @@
 package controller;
 
+import models.Dfa;
+
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.245EA3C4-3790-7E8C-5593-89B2D60EAD85]
 // </editor-fold> 
 public class Simulator {
 
+    private Dfa dfa;
+
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.265879AE-72DD-068D-26F6-2EA61AD07845]
     // </editor-fold> 
     public Simulator () {
+        dfa = new Dfa();
+    }
+
+    public Dfa getDfa() {
+        return dfa;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 

@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.CCC2B68F-8475-9ECB-2126-E50681B0C4B0]
@@ -20,44 +22,49 @@ public class Dfa {
     // #[regen=yes,id=DCE.605BE7FE-5F6E-ADC8-1805-4DB235B9D755]
     // </editor-fold> 
     private State currentState;
+    private ArrayList<State> states;
+    private int states_added;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.EC7BEFBE-E5DE-0F26-2936-4860283E2109]
     // </editor-fold> 
     public Dfa () {
+        states = new ArrayList<State>();
+        states_added = 0;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.3DB78021-72EE-B158-BB53-455BE680A212]
     // </editor-fold> 
     public State addState () {
-        return null;
+        State s = new State("s" + states_added);
+        this.states.add(s);
+        states_added++;
+        return s;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.DE235C0F-584F-4591-F990-DBB9F923B5E7]
     // </editor-fold> 
-    public void removeState () {
+    public void removeState (State s) throws IllegalArgumentException{
+        if (s == null)
+                throw new IllegalArgumentException();
+        // s != null
+        this.states.remove(s);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.36246B2B-BC85-4EC0-7F8C-4EE51CC8FB99]
     // </editor-fold> 
     public Transition addTransition (State s1, State s2) {
-        return null;
+        return new Transition(s1, s2);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.4F6EFCDF-1AEE-5853-F440-BE54E9622042]
     // </editor-fold> 
     public void removeTransition (Transition t) {
-    }
-
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.11C95992-99D2-11F9-A67C-47EE7952DD2D]
-    // </editor-fold> 
-    public Transition changeTransition (Transition t) {
-        return null;
+        t.getFromState().removeTransition(t);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
