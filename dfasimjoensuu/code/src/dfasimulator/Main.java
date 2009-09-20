@@ -6,6 +6,7 @@
 package dfasimulator;
 
 import gui.DFAMainWin;
+import javax.swing.UIManager;
 
 /**
  * The main function where the main window is created
@@ -15,10 +16,16 @@ public class Main {
 
 
     public static void main(String[] args) {
-       System.out.println("Welcome to the DFA Simulator");
-       DFAMainWin mainwin = new DFAMainWin();
 
-       mainwin.setVisible(true);
+        //-- get system look and feel --
+        try{
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(Exception e)
+        {
+        }
+
+        DFAMainWin mainwin = new DFAMainWin();
+         mainwin.setVisible(true);
 
     }
 
