@@ -25,7 +25,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         initComponents();
         this.setSize(new Dimension(700, 500));
         centreWindow(this);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      //  this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
 
@@ -39,84 +39,324 @@ public class DFAMainWin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToolBar1 = new javax.swing.JToolBar();
+        togglePointer = new javax.swing.JToggleButton();
+        toggleAddState = new javax.swing.JToggleButton();
+        toggleAddTransition = new javax.swing.JToggleButton();
+        panelContainer = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        panelTop = new javax.swing.JPanel();
+        panelDrawArea = new javax.swing.JPanel();
+        panelConsole = new javax.swing.JPanel();
+        panelConsoleTop = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jButton3 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menuFile = new javax.swing.JMenu();
+        menuitemOpen = new javax.swing.JMenuItem();
+        menuitemSave = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuitemExit = new javax.swing.JMenuItem();
+        menuDFA = new javax.swing.JMenu();
+        menuitemProperties = new javax.swing.JMenuItem();
+        menuSimulation = new javax.swing.JMenu();
+        menuitemStartSim = new javax.swing.JMenuItem();
+        menuInfo = new javax.swing.JMenu();
+        menuitemInfo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DFA Simulator");
-        setBounds(new java.awt.Rectangle(0, 0, 400, 400));
-        getContentPane().setLayout(null);
+        setBounds(new java.awt.Rectangle(0, 0, 600, 600));
 
-        jMenu1.setText("File");
+        jToolBar1.setRollover(true);
+        jToolBar1.setName("Tools"); // NOI18N
 
-        jMenuItem2.setText("Open DFA");
-        jMenu1.add(jMenuItem2);
-
-        jMenuItem3.setText("Save DFA");
-        jMenu1.add(jMenuItem3);
-        jMenu1.add(jSeparator1);
-
-        jMenuItem4.setText("Exit");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        togglePointer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_pointer.png"))); // NOI18N
+        togglePointer.setSelected(true);
+        togglePointer.setToolTipText("Pointer");
+        togglePointer.setFocusable(false);
+        togglePointer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        togglePointer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        togglePointer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                togglePointerActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jToolBar1.add(togglePointer);
 
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Simulation");
-
-        jMenuItem5.setText("Start Simulation");
-        jMenu2.add(jMenuItem5);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Info");
-        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+        toggleAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_addstate.png"))); // NOI18N
+        toggleAddState.setToolTipText("Add state");
+        toggleAddState.setFocusable(false);
+        toggleAddState.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toggleAddState.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toggleAddState.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu3ActionPerformed(evt);
+                toggleAddStateActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toggleAddState);
+        toggleAddState.getAccessibleContext().setAccessibleDescription("Add State");
+
+        toggleAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_addtransition.png"))); // NOI18N
+        toggleAddTransition.setToolTipText("Add Transition");
+        toggleAddTransition.setFocusable(false);
+        toggleAddTransition.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toggleAddTransition.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toggleAddTransition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toggleAddTransitionActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toggleAddTransition);
+
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
+
+        panelContainer.setLayout(new java.awt.BorderLayout());
+
+        jSplitPane1.setDividerLocation(250);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        panelTop.setPreferredSize(new java.awt.Dimension(100, 600));
+        panelTop.setLayout(new java.awt.BorderLayout());
+
+        panelDrawArea.setPreferredSize(new java.awt.Dimension(100, 400));
+        panelTop.add(panelDrawArea, java.awt.BorderLayout.CENTER);
+
+        jSplitPane1.setTopComponent(panelTop);
+
+        panelConsole.setLayout(new java.awt.BorderLayout());
+
+        panelConsoleTop.setMinimumSize(new java.awt.Dimension(10, 20));
+        panelConsoleTop.setPreferredSize(new java.awt.Dimension(573, 90));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setText("Simulation");
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_play.png"))); // NOI18N
+        jButton1.setText("Next");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
-        jMenuItem1.setText("About DFA Simulator");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_fastfwd.png"))); // NOI18N
+        jButton2.setText("All");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu3);
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Input word");
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
+
+        jButton3.setText("Reset");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setText("Current letter");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("<>");
+
+        javax.swing.GroupLayout panelConsoleTopLayout = new javax.swing.GroupLayout(panelConsoleTop);
+        panelConsoleTop.setLayout(panelConsoleTopLayout);
+        panelConsoleTopLayout.setHorizontalGroup(
+            panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConsoleTopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3))
+                    .addComponent(jLabel3))
+                .addGap(31, 31, 31))
+        );
+        panelConsoleTopLayout.setVerticalGroup(
+            panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsoleTopLayout.createSequentialGroup()
+                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                            .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton1)
+                                .addComponent(jButton2)
+                                .addComponent(jButton3)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+
+        panelConsole.add(panelConsoleTop, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setEditable(false);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        panelConsole.add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        jSplitPane1.setRightComponent(panelConsole);
+
+        panelContainer.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(panelContainer, java.awt.BorderLayout.CENTER);
+
+        jMenuBar1.setName("Tools"); // NOI18N
+
+        menuFile.setText("File");
+
+        menuitemOpen.setText("Open File...");
+        menuitemOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemOpenActionPerformed(evt);
+            }
+        });
+        menuFile.add(menuitemOpen);
+
+        menuitemSave.setText("Save File...");
+        menuFile.add(menuitemSave);
+        menuFile.add(jSeparator1);
+
+        menuitemExit.setText("Exit");
+        menuitemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemExitActionPerformed(evt);
+            }
+        });
+        menuFile.add(menuitemExit);
+
+        jMenuBar1.add(menuFile);
+
+        menuDFA.setText("DFA");
+
+        menuitemProperties.setText("Properties");
+        menuitemProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemPropertiesActionPerformed(evt);
+            }
+        });
+        menuDFA.add(menuitemProperties);
+
+        jMenuBar1.add(menuDFA);
+
+        menuSimulation.setText("Simulation");
+
+        menuitemStartSim.setText("Start Simulation");
+        menuSimulation.add(menuitemStartSim);
+
+        jMenuBar1.add(menuSimulation);
+
+        menuInfo.setText("Info");
+        menuInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuInfoActionPerformed(evt);
+            }
+        });
+
+        menuitemInfo.setText("About DFA Simulator");
+        menuitemInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemInfoActionPerformed(evt);
+            }
+        });
+        menuInfo.add(menuitemInfo);
+
+        jMenuBar1.add(menuInfo);
 
         setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+    private void menuInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuInfoActionPerformed
 
-    }//GEN-LAST:event_jMenu3ActionPerformed
+    }//GEN-LAST:event_menuInfoActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void menuitemInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemInfoActionPerformed
         //-- create and show new Info window --
         DFAInfoWin infowin = new DFAInfoWin();
         infowin.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_menuitemInfoActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void menuitemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemExitActionPerformed
        setVisible(false);
        dispose();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_menuitemExitActionPerformed
+
+    private void menuitemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemOpenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuitemOpenActionPerformed
+
+    private void toggleAddTransitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddTransitionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toggleAddTransitionActionPerformed
+
+    private void togglePointerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePointerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_togglePointerActionPerformed
+
+    private void toggleAddStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddStateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toggleAddStateActionPerformed
+
+    private void menuitemPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemPropertiesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuitemPropertiesActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
 
@@ -145,16 +385,40 @@ public static void centreWindow(JFrame frame) {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenu menuDFA;
+    private javax.swing.JMenu menuFile;
+    private javax.swing.JMenu menuInfo;
+    private javax.swing.JMenu menuSimulation;
+    private javax.swing.JMenuItem menuitemExit;
+    private javax.swing.JMenuItem menuitemInfo;
+    private javax.swing.JMenuItem menuitemOpen;
+    private javax.swing.JMenuItem menuitemProperties;
+    private javax.swing.JMenuItem menuitemSave;
+    private javax.swing.JMenuItem menuitemStartSim;
+    private javax.swing.JPanel panelConsole;
+    private javax.swing.JPanel panelConsoleTop;
+    private javax.swing.JPanel panelContainer;
+    private javax.swing.JPanel panelDrawArea;
+    private javax.swing.JPanel panelTop;
+    private javax.swing.JToggleButton toggleAddState;
+    private javax.swing.JToggleButton toggleAddTransition;
+    private javax.swing.JToggleButton togglePointer;
     // End of variables declaration//GEN-END:variables
 
 }
