@@ -5,6 +5,7 @@
 
 package dfasimulator;
 
+import controller.Simulator;
 import gui.DFAMainWin;
 import javax.swing.UIManager;
 
@@ -26,6 +27,9 @@ public class Main {
 
         DFAMainWin mainwin = new DFAMainWin();
          mainwin.setVisible(true);
+
+       //Let's test the DFA
+       Simulator simulator = new Simulator();
 
     }
 
