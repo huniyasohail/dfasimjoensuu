@@ -60,9 +60,37 @@ public class State {
         this.isStartState = val;
     }
 
-    public Transition addTransition(Transition t) {
+    public Transition addTransition(Transition t) throws Exception{
+        //check if there is not yet another transition with the same label
+        for(String c:t.getInput()) {
+            for(Transition trans:transitions) {
+                if(trans.getInput().contains(c)) {
+                    String from = trans.getFromState().getState_Properties().getName();
+                    String to = trans.getToState().getState_Properties().getName();
+                    throw new Exception("Transition from "+from+" to "+to+" is already labled with '"+c+"'.");
+                }
+            }
+        }
         transitions.add(t);
         return t;
+    }
+
+    public Transition addLabelToTransition(Transition t, String label) throws Exception, NoSuchTransitionException{
+         if(transitions.contains(t)) {
+             for (Transition trans : transitions) {
+                 if(trans == t)
+                     continue;
+                 if (trans.getInput().contains(label)) {
+                     String from = trans.getFromState().getState_Properties().getName();
+                     String to = trans.getToState().getState_Properties().getName();
+                     throw new Exception("Transition from " + from + " to " + to + " is already labled with '" + label + "'.");
+                 }
+             }
+             t.addToInput(label);
+             return t;
+         } else {
+             throw new NoSuchTransitionException();
+         }
     }
 
     public void removeTransition(Transition t) {
@@ -86,6 +114,11 @@ public class State {
         else
             return trans;
     }
+
+    public ArrayList<Transition> getTransitions() {
+        return transitions;
+    }
+
 
 }
 

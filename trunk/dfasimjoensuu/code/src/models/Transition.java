@@ -2,6 +2,7 @@ package models;
 
 
 import java.util.ArrayList;
+import javax.print.DocFlavor.INPUT_STREAM;
 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -36,10 +37,11 @@ public class Transition {
     // #[regen=yes,regenBody=yes,id=DCE.520A2AF8-8659-E1E6-923A-70D72E8DCF7F]
     // </editor-fold> 
     public void setInput (ArrayList<String> val) {
-        this.input = val;
+        for(String s:val)
+            addToInput(s);
     }
 
-    public void addToInput(String input) {
+    void addToInput(String input) {
         if(!this.input.contains(input))
             this.input.add(input);
     }
