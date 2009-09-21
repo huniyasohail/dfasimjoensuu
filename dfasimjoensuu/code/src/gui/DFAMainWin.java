@@ -139,7 +139,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelConsoleTop.setMinimumSize(new java.awt.Dimension(10, 20));
         panelConsoleTop.setPreferredSize(new java.awt.Dimension(573, 90));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel1.setText("Simulation");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_play.png"))); // NOI18N
@@ -158,7 +158,7 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel2.setText("Input word");
 
         jTextArea2.setColumns(20);
@@ -172,10 +172,10 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel3.setText("Current letter");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel4.setText("<>");
 
         javax.swing.GroupLayout panelConsoleTopLayout = new javax.swing.GroupLayout(panelConsoleTop);
