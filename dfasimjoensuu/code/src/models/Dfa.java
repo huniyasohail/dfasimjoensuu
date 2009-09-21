@@ -20,6 +20,8 @@ public class Dfa {
     // </editor-fold> 
     private int currentPosition;
 
+    private String description;
+
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.605BE7FE-5F6E-ADC8-1805-4DB235B9D755]
     // </editor-fold> 
@@ -109,6 +111,14 @@ public class Dfa {
         return startState;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setStartState (State s) throws IllegalArgumentException{
         if (s == null)
             throw new IllegalArgumentException("You must define a start state!");
@@ -119,6 +129,7 @@ public class Dfa {
             this.startState.setIsStartState(false);
         this.startState = s;
         s.setIsStartState(true);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -146,6 +157,36 @@ public class Dfa {
     public ArrayList<State> getStates() {
         return states;
     }
+
+
+    /**
+     * Autoformat and arange states for display
+     * Warning: Fairly simple...
+     */
+    public void autoArrangeDFA()
+    {
+        int cx = -30;
+        int cy = -30;
+        int row = 1;
+        int col = 1;
+        int optrowsize = 5;
+        int spaceBetween = 100;
+
+        for (int i=0; i<states.size();i++)
+        {
+            State s = states.get(i);
+            s.getState_Properties().setXPos(cx+col*spaceBetween);
+            s.getState_Properties().setYPos(cy+row*spaceBetween);
+            col++;
+            if (col % optrowsize == 0 )
+            {
+                col = 1;
+                row++;
+            }
+        }
+    }
+
+
 
 }
 

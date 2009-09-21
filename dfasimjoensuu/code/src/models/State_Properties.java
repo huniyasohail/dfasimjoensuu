@@ -9,17 +9,21 @@ public class State_Properties {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.20CCD347-10B1-6597-1FCB-7359E09DBC7E]
     // </editor-fold> 
-    private int xPos;
+    private int xPos = 0;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.AC2F7C63-187B-B7F8-65CC-6904E9124D8B]
     // </editor-fold> 
-    private int yPos;
+    private int yPos = 0;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.64AB935F-9911-49BB-8A4F-F2C5F29CB21B]
     // </editor-fold> 
     private String name;
+
+    private boolean selected = false;
+
+    private int selectionIndex = 0;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.D426DFFE-9580-1E93-59AF-36423FBEE20E]

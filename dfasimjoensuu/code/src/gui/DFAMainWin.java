@@ -6,7 +6,9 @@
 
 package gui;
 
+import controller.Simulator;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,6 +21,9 @@ import javax.swing.WindowConstants;
  */
 public class DFAMainWin extends javax.swing.JFrame {
 
+    Simulator dfaSim = null;
+
+
     /** Creates new form DFAMainWIn */
     public DFAMainWin() {
         
@@ -28,6 +33,22 @@ public class DFAMainWin extends javax.swing.JFrame {
       //  this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    public Simulator getDfaSim() {
+        return dfaSim;
+    }
+
+    public void setDfaSim(Simulator dfaSim) {
+        this.dfaSim = dfaSim;
+    }
+
+/**
+ * connect GUI to DFA controller
+ */
+    public void connectGUItoDFA()
+    {
+        this.dfaSim.getDfaEditor().getdFAPainter().setGraphics((Graphics2D)panelDrawArea.getGraphics());
+        this.panelDrawArea.setdFAPainter(this.dfaSim.getDfaEditor().getdFAPainter());
+    }
 
     
     /** This method is called from within the constructor to
@@ -46,7 +67,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelContainer = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         panelTop = new javax.swing.JPanel();
-        panelDrawArea = new javax.swing.JPanel();
+        panelDrawArea = new gui.PaintPanel();
         panelConsole = new javax.swing.JPanel();
         panelConsoleTop = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -77,6 +98,11 @@ public class DFAMainWin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DFA Simulator");
         setBounds(new java.awt.Rectangle(0, 0, 600, 600));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jToolBar1.setRollover(true);
         jToolBar1.setName("Tools"); // NOI18N
@@ -129,7 +155,20 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelTop.setPreferredSize(new java.awt.Dimension(100, 600));
         panelTop.setLayout(new java.awt.BorderLayout());
 
-        panelDrawArea.setPreferredSize(new java.awt.Dimension(100, 400));
+        panelDrawArea.setBackground(new java.awt.Color(255, 255, 255));
+        panelDrawArea.setDoubleBuffered(true);
+
+        javax.swing.GroupLayout panelDrawAreaLayout = new javax.swing.GroupLayout(panelDrawArea);
+        panelDrawArea.setLayout(panelDrawAreaLayout);
+        panelDrawAreaLayout.setHorizontalGroup(
+            panelDrawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 653, Short.MAX_VALUE)
+        );
+        panelDrawAreaLayout.setVerticalGroup(
+            panelDrawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 249, Short.MAX_VALUE)
+        );
+
         panelTop.add(panelDrawArea, java.awt.BorderLayout.CENTER);
 
         jSplitPane1.setTopComponent(panelTop);
@@ -358,6 +397,11 @@ public class DFAMainWin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+       connectGUItoDFA();
+       dfaSim.updateGraphics();
+    }//GEN-LAST:event_formWindowOpened
+
 
 
     /**
@@ -414,7 +458,7 @@ public static void centreWindow(JFrame frame) {
     private javax.swing.JPanel panelConsole;
     private javax.swing.JPanel panelConsoleTop;
     private javax.swing.JPanel panelContainer;
-    private javax.swing.JPanel panelDrawArea;
+    private gui.PaintPanel panelDrawArea;
     private javax.swing.JPanel panelTop;
     private javax.swing.JToggleButton toggleAddState;
     private javax.swing.JToggleButton toggleAddTransition;
