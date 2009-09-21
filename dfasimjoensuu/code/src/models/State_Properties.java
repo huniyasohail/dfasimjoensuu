@@ -37,7 +37,10 @@ public class State_Properties {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.3E219D5B-EEDB-5FFB-2D87-9A39F53CA3BD]
     // </editor-fold> 
-    public void setName (String val) {
+    public void setName (String val) throws IllegalArgumentException{
+        if (val == null)
+            throw new IllegalArgumentException();
+        //val != null
         this.name = val;
     }
 

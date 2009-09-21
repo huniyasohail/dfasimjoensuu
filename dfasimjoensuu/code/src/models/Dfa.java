@@ -22,6 +22,7 @@ public class Dfa {
     // #[regen=yes,id=DCE.605BE7FE-5F6E-ADC8-1805-4DB235B9D755]
     // </editor-fold> 
     private State currentState;
+    private State startState;
     private ArrayList<State> states;
     private int states_added;
 
@@ -95,6 +96,22 @@ public class Dfa {
         this.currentState = val;
     }
 
+    public State getStartState () {
+        return startState;
+    }
+
+    public void setStartState (State s) throws IllegalArgumentException{
+        if (s == null)
+            throw new IllegalArgumentException("You must define a start state!");
+        if (!state_known(s))
+            throw new IllegalArgumentException("The state you are trying to declare as the start state is not a part of the DFA!");
+        //else
+        if (this.startState != null)
+            this.startState.setIsStartState(false);
+        this.startState = s;
+        s.setIsStartState(true);
+    }
+
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.4E4D456F-822D-37C2-EDC3-AB7C014DC48F]
     // </editor-fold> 
@@ -107,6 +124,14 @@ public class Dfa {
     // </editor-fold> 
     public void setInput (String val) {
         this.input = val;
+    }
+
+
+    private boolean state_known (State s) {
+        for(State i:states)
+            if (i == s)
+                return true;
+        return false;
     }
 
 }
