@@ -5,8 +5,12 @@
 
 package dfasimulator;
 
+import controller.IncompleteAutomatonException;
 import controller.Simulator;
 import gui.DFAMainWin;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 import models.State;
 import models.Transition;
@@ -32,15 +36,30 @@ public class Main {
 
        //Let's test the DFA
        Simulator simulator = new Simulator();
+       Transition t;
        State s1 = simulator.getDfa().addState();
        State s2 = simulator.getDfa().addState();
-       simulator.getDfa().addTransition(s1, s2).addToInput("1");
-       simulator.getDfa().addTransition(s1, s1).addToInput("0");
+        try {
+            t = simulator.getDfa().addTransition(s1, s2);
+            s1.addLabelToTransition(t, "1");
+            t = simulator.getDfa().addTransition(s1, s1);
+            s1.addLabelToTransition(t, "0");
+            t = simulator.getDfa().addTransition(s2, s2);
+            s2.addLabelToTransition(t, "0");
+            s2.addLabelToTransition(t, "1");
+            t = simulator.getDfa().addTransition(s2, s1);
+            s2.addLabelToTransition(t, "0");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
        simulator.getDfa().setStartState(s1);
        s2.setIsFinalState(true);
-
-       //Set Input
-       simulator.getDfa().setInput("0101");
+        try {
+            //Set Input
+            simulator.startSimulation("0101");
+        } catch (IncompleteAutomatonException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

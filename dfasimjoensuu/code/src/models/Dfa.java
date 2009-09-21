@@ -1,6 +1,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -58,7 +60,14 @@ public class Dfa {
     // #[regen=yes,id=DCE.36246B2B-BC85-4EC0-7F8C-4EE51CC8FB99]
     // </editor-fold> 
     public Transition addTransition (State s1, State s2) {
-        return new Transition(s1, s2);
+        Transition t = new Transition(s1, s2);
+        try {
+            s1.addTransition(t);
+        } catch (Exception ex) {
+            //TODO:
+            System.out.println(ex.getMessage());
+        }
+        return t;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -132,6 +141,10 @@ public class Dfa {
             if (i == s)
                 return true;
         return false;
+    }
+
+    public ArrayList<State> getStates() {
+        return states;
     }
 
 }
