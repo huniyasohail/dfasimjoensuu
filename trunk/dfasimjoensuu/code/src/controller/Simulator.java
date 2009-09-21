@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import models.Dfa;
+import models.DfaEditor;
 import models.State;
 import models.Transition;
 
@@ -11,7 +12,10 @@ import models.Transition;
 // </editor-fold> 
 public class Simulator {
 
+
+
     private Dfa dfa;
+    private DfaEditor dfaEditor;
     private boolean running;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -19,12 +23,28 @@ public class Simulator {
     // </editor-fold> 
     public Simulator () {
         dfa = new Dfa();
+        dfaEditor = new DfaEditor();
+        dfaEditor.setDfa(dfa);
         running = false;
     }
 
     public Dfa getDfa() {
         return dfa;
     }
+
+    public DfaEditor getDfaEditor() {
+        return dfaEditor;
+    }
+
+    public void setDfaEditor(DfaEditor dfaEditor) {
+        this.dfaEditor = dfaEditor;
+    }
+
+    public void updateGraphics()
+    {
+        this.dfaEditor.getdFAPainter().updaterGraphics();
+    }
+
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.8BEDC026-8469-BB20-3338-A1F54C9D9D44]

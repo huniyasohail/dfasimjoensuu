@@ -31,14 +31,15 @@ public class Main {
         {
         }
 
-        DFAMainWin mainwin = new DFAMainWin();
-         mainwin.setVisible(true);
 
        //Let's test the DFA
        Simulator simulator = new Simulator();
        Transition t;
        State s1 = simulator.getDfa().addState();
        State s2 = simulator.getDfa().addState();
+       s1.getState_Properties().setName("q0");
+       s2.getState_Properties().setName("Test");
+
         try {
             t = simulator.getDfa().addTransition(s1, s2);
             s1.addLabelToTransition(t, "1");
@@ -60,6 +61,16 @@ public class Main {
         } catch (IncompleteAutomatonException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
+       simulator.getDfa().autoArrangeDFA();
+       
+       //-- show the mainwindow --
+       DFAMainWin mainwin = new DFAMainWin();
+       mainwin.setDfaSim(simulator);
+       mainwin.setVisible(true);
+
+
     }
 
 }
