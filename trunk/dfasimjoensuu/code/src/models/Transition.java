@@ -39,6 +39,11 @@ public class Transition {
         this.input = val;
     }
 
+    public void addToInput(String input) {
+        if(!this.input.contains(input))
+            this.input.add(input);
+    }
+
     public State getFromState() {
         return s1;
     }

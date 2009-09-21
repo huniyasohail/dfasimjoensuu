@@ -49,14 +49,14 @@ public class State {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.3ABC89EF-7B6D-E88A-4230-FEC75D030A8D]
     // </editor-fold> 
-    public boolean getIsStartState () {
+    boolean getIsStartState () {
         return isStartState;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.BB239EBA-CB09-0909-2D77-43099BE24A94]
     // </editor-fold> 
-    public void setIsStartState (boolean val) {
+    void setIsStartState (boolean val) {
         this.isStartState = val;
     }
 
@@ -69,5 +69,27 @@ public class State {
         transitions.remove(t);
     }
 
+    public State_Properties getState_Properties() {
+        return prop;
+    }
+
+    public Transition getTransition (State toState) throws NoSuchTransitionException {
+        Transition trans = null;
+        for(Transition t:transitions) {
+            if (t.getToState() == toState) {
+                trans = t;
+                break;
+            }
+        }
+        if(trans == null)
+            throw new NoSuchTransitionException();
+        else
+            return trans;
+    }
+
+}
+
+class NoSuchTransitionException extends Exception {
+    
 }
 
