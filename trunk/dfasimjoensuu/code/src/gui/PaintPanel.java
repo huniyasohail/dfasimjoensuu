@@ -9,7 +9,7 @@ package gui;
 
 import controller.DFAPainter;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 /**
@@ -31,11 +31,13 @@ DFAPainter dFAPainter;
     }
 
 
-@Override public void paint(Graphics g) {
+@Override public void paintComponent(Graphics g) {
          super.paintComponent(g);    // paints background
          if (dFAPainter != null)
-             dFAPainter.updaterGraphics();
+             dFAPainter.updaterGraphics((Graphics2D)g);
 
 }
+
+
 
 }

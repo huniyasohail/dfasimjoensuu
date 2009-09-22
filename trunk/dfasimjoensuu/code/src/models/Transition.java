@@ -17,6 +17,12 @@ public class Transition {
     private State s1;
     private State s2;
 
+    private int captionOffsetX = 0;
+    private int captionOffsetY = 0;
+
+    //-- drawing issue --
+    private boolean hasBackTransition = true;
+
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.4D334F29-4CB2-6FB2-A865-67910CCFD054]
     // </editor-fold> 
@@ -31,6 +37,22 @@ public class Transition {
     // </editor-fold> 
     public ArrayList<String> getInput () {
         return input;
+    }
+
+    public int getCaptionOffsetX() {
+        return captionOffsetX;
+    }
+
+    public void setCaptionOffsetX(int captionOffsetX) {
+        this.captionOffsetX = captionOffsetX;
+    }
+
+    public int getCaptionOffsetY() {
+        return captionOffsetY;
+    }
+
+    public void setCaptionOffsetY(int captionOffsetY) {
+        this.captionOffsetY = captionOffsetY;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -55,6 +77,14 @@ public class Transition {
 
     public State getToState() {
         return s2;
+    }
+
+    public boolean isHasBackTransition() {
+        return hasBackTransition;
+    }
+
+    public void setHasBackTransition(boolean hasBackTransition) {
+        this.hasBackTransition = hasBackTransition;
     }
 
 }

@@ -165,8 +165,8 @@ public class Dfa {
      */
     public void autoArrangeDFA()
     {
-        int cx = -30;
-        int cy = -30;
+        int cx = -50;
+        int cy = -20;
         int row = 1;
         int col = 1;
         int optrowsize = 5;

@@ -21,6 +21,8 @@ public class DfaEditor {
     private int offsetX = 0;
     private int offsetY = 0;
 
+    private State currentState = null;
+
     //-- states --
     private EditorSelectionStates selectionState;
     private EditorToolStates toolState;
@@ -92,8 +94,80 @@ public class DfaEditor {
         this.transitionState = EditorTransitionStates.selectFromState;
         this.offsetX = 0;
         this.offsetY = 0;
+        this.currentState = null;
     }
 
+/**
+ * handle the mouse
+ * @param evt
+ */
+    public void handleMousePressed(java.awt.event.MouseEvent evt)
+    {
+        if (toolState == EditorToolStates.handTool)
+        {
+            handleObjectSelection(evt);
+
+
+        }
+    }
+
+    /**
+ * handle the mouse
+ * @param evt
+ */
+    public void handleMouseMoved(java.awt.event.MouseEvent evt)
+    {
+        if (toolState == EditorToolStates.handTool)
+        {
+            
+
+
+        }
+    }
+
+
+    private void handleObjectSelection(java.awt.event.MouseEvent evt)
+    {
+        State stateHit = getStateatMouse(evt.getX(), evt.getY());
+        if (stateHit != null)
+        {
+            System.out.println("Hit state: "+stateHit.getState_Properties().getName());
+        }
+    }
+
+
+
+    private State getStateatMouse(int px, int py)
+    {
+        State s = null;
+        double tx = px - offsetX;
+        double ty = py - offsetY;
+
+        for (int i=0;i<getDfa().getStates().size();i++)
+        {
+            State st = getDfa().getStates().get(i);
+            double dx = tx-st.getState_Properties().getXPos();
+            double dy = ty-st.getState_Properties().getYPos();
+
+            if ((dx*dx+dy*dy) < dFAPainter.getStateDrawSize()*dFAPainter.getStateDrawSize()/4)
+            {
+                s = st;
+            }
+        }
+
+        return s;
+    }
+
+
+
+/**
+ * handle the mouse
+ * @param evt
+ */
+    public void handleMouseReleased(java.awt.event.MouseEvent evt)
+    {
+
+    }
 
     public boolean isIsEditable() {
         return isEditable;
@@ -136,14 +210,6 @@ public class DfaEditor {
     }
 
     
-    
-
-
-}
- enum EditorToolStates {
-    handTool, addState, addTransition
- }
-
  enum EditorSelectionStates {
      selectNothing, selecetState, selectTransition, selectAll
  }
@@ -152,5 +218,9 @@ public class DfaEditor {
  enum EditorTransitionStates {
      selectFromState, selectToState
  }
+
+
+}
+
 
 
