@@ -38,7 +38,7 @@ public class Main {
        State s1 = simulator.getDfa().addState();
        State s2 = simulator.getDfa().addState();
        s1.getState_Properties().setName("q0");
-       s2.getState_Properties().setName("Test");
+       s2.getState_Properties().setName("q1");
 
         try {
             t = simulator.getDfa().addTransition(s1, s2);
@@ -48,8 +48,11 @@ public class Main {
             t = simulator.getDfa().addTransition(s2, s2);
             s2.addLabelToTransition(t, "0");
             s2.addLabelToTransition(t, "1");
-            t = simulator.getDfa().addTransition(s2, s1);
-            s2.addLabelToTransition(t, "0");
+            t = new Transition(s2, s1);
+            ArrayList<String> in = new ArrayList<String>();
+            in.add("0");
+            t.setInput(in);
+            s2.addTransition(t);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
