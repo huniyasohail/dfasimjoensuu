@@ -14,6 +14,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
+import models.DfaEditor;
+import models.EditorToolStates;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -48,6 +51,7 @@ public class DFAMainWin extends javax.swing.JFrame {
     {
         this.dfaSim.getDfaEditor().getdFAPainter().setGraphics((Graphics2D)panelDrawArea.getGraphics());
         this.panelDrawArea.setdFAPainter(this.dfaSim.getDfaEditor().getdFAPainter());
+        updateButtons();
     }
 
     
@@ -99,6 +103,9 @@ public class DFAMainWin extends javax.swing.JFrame {
         setTitle("DFA Simulator");
         setBounds(new java.awt.Rectangle(0, 0, 600, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -156,7 +163,31 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelTop.setLayout(new java.awt.BorderLayout());
 
         panelDrawArea.setBackground(new java.awt.Color(255, 255, 255));
-        panelDrawArea.setDoubleBuffered(true);
+        panelDrawArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelDrawAreaMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                panelDrawAreaMouseReleased(evt);
+            }
+        });
+        panelDrawArea.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                panelDrawAreaComponentShown(evt);
+            }
+        });
+        panelDrawArea.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                panelDrawAreaMouseMoved(evt);
+            }
+        });
+        panelDrawArea.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
+            public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
+            }
+            public void ancestorResized(java.awt.event.HierarchyEvent evt) {
+                panelDrawAreaAncestorResized(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelDrawAreaLayout = new javax.swing.GroupLayout(panelDrawArea);
         panelDrawArea.setLayout(panelDrawAreaLayout);
@@ -370,15 +401,18 @@ public class DFAMainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
     private void toggleAddTransitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddTransitionActionPerformed
-        // TODO add your handling code here:
+        getDfaSim().getDfaEditor().setToolState(EditorToolStates.addTransition);
+        updateButtons();
     }//GEN-LAST:event_toggleAddTransitionActionPerformed
 
     private void togglePointerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePointerActionPerformed
-        // TODO add your handling code here:
+        getDfaSim().getDfaEditor().setToolState(EditorToolStates.handTool);
+        updateButtons();
     }//GEN-LAST:event_togglePointerActionPerformed
 
     private void toggleAddStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddStateActionPerformed
-        // TODO add your handling code here:
+        getDfaSim().getDfaEditor().setToolState(EditorToolStates.addState);
+        updateButtons();
     }//GEN-LAST:event_toggleAddStateActionPerformed
 
     private void menuitemPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemPropertiesActionPerformed
@@ -399,8 +433,34 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        connectGUItoDFA();
+       repaint();
        dfaSim.updateGraphics();
     }//GEN-LAST:event_formWindowOpened
+
+    private void panelDrawAreaAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panelDrawAreaAncestorResized
+
+    }//GEN-LAST:event_panelDrawAreaAncestorResized
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       
+    }//GEN-LAST:event_formWindowActivated
+
+    private void panelDrawAreaComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_panelDrawAreaComponentShown
+
+    }//GEN-LAST:event_panelDrawAreaComponentShown
+
+    private void panelDrawAreaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMousePressed
+        getDfaSim().getDfaEditor().handleMousePressed(evt);
+
+    }//GEN-LAST:event_panelDrawAreaMousePressed
+
+    private void panelDrawAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseReleased
+        getDfaSim().getDfaEditor().handleMouseReleased(evt);
+    }//GEN-LAST:event_panelDrawAreaMouseReleased
+
+    private void panelDrawAreaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseMoved
+        getDfaSim().getDfaEditor().handleMouseMoved(evt);
+    }//GEN-LAST:event_panelDrawAreaMouseMoved
 
 
 
@@ -424,6 +484,26 @@ public static void centreWindow(JFrame frame) {
 }
 
 
+public void updateButtons()
+{
+    updateToolButtons();
+}
+
+/**
+ * update the UIButtons for the tools
+ */
+public void updateToolButtons()
+{
+    DfaEditor e = this.dfaSim.getDfaEditor();
+    
+    togglePointer.setSelected(e.getToolState() == EditorToolStates.handTool);
+    toggleAddState.setSelected(e.getToolState() == EditorToolStates.addState);
+    toggleAddTransition.setSelected(e.getToolState() == EditorToolStates.addTransition);
+    
+    togglePointer.setEnabled(e.isIsEditable());
+    toggleAddState.setEnabled(e.isIsEditable());
+    toggleAddTransition.setEnabled(e.isIsEditable());
+}
 
 
 

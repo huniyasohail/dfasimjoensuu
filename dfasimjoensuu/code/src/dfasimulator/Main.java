@@ -37,17 +37,28 @@ public class Main {
        Transition t;
        State s1 = simulator.getDfa().addState();
        State s2 = simulator.getDfa().addState();
+       State s3 = simulator.getDfa().addState();
        s1.getState_Properties().setName("q0");
        s2.getState_Properties().setName("q1");
-
+       s3.getState_Properties().setName("q2");
         try {
             t = simulator.getDfa().addTransition(s1, s2);
             s1.addLabelToTransition(t, "1");
             t = simulator.getDfa().addTransition(s1, s1);
             s1.addLabelToTransition(t, "0");
-            t = simulator.getDfa().addTransition(s2, s2);
-            s2.addLabelToTransition(t, "0");
+            t = simulator.getDfa().addTransition(s2, s1);
             s2.addLabelToTransition(t, "1");
+            t = simulator.getDfa().addTransition(s2, s3);
+            s2.addLabelToTransition(t, "0");
+            //-- should be done automatically --
+            t.setHasBackTransition(false);
+            t = simulator.getDfa().addTransition(s3, s3);
+            s3.addLabelToTransition(t, "0");
+            s3.addLabelToTransition(t, "1");
+
+
+
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

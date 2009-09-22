@@ -5,12 +5,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.geom.Arc2D;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Vector;
 import models.Dfa;
 import models.DfaEditor;
 import models.State;
 import models.Transition;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -21,10 +27,13 @@ public class DFAPainter {
 
     private final int stateDrawSize = 50;
     private final int textSize = 16;
+    private final double arcDistance = 40;
+
+    private boolean antialiasing = true;
 
     private DfaEditor dfaEditor = null;
     private Graphics2D graphics = null;
-
+    private Font transitionFont = null;
 
     public DfaEditor getDfaEditor() {
         return dfaEditor;
@@ -46,16 +55,20 @@ public class DFAPainter {
     /**
      * paints the States and Transitions
      */
-    public void updaterGraphics()
+    public void updaterGraphics(Graphics2D g)
     {
-        if (this.graphics != null)
+        if (g != null)
         {
-            //-- nice rendering --
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            this.graphics = g;
+            if (antialiasing)
+            {
+                //-- nice rendering --
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            }
+            paintStates();
             paintTransitions();
-            paintStates();           
-        }
-        
+                   
+        }     
     }
 
     /**
@@ -79,20 +92,16 @@ public class DFAPainter {
 
             int centerX = (int)(dfaEditor.getOffsetX() + dfaEditor.getZoomfactor()*x);
             int centerY = (int)(dfaEditor.getOffsetY() + dfaEditor.getZoomfactor()*y);
-
             int radius = (int)(dfaEditor.getZoomfactor()*stateDrawSize/2);
 
-	
-
-
-           if (s.getIsFinalState())
+	   if (s.getIsFinalState())
            {
-                int additionalradius = (int) (dfaEditor.getZoomfactor()*5);
+                int additionalradius = (int) (dfaEditor.getZoomfactor()*4);
                 g.setColor(Color.white);
-                g.fillOval(centerX-(radius+additionalradius), centerY-(radius+additionalradius ),stateDrawSize+2*additionalradius, stateDrawSize+2*additionalradius);
+                g.fillOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
                 g.setColor(Color.black);
-                g.drawOval(centerX-(radius+additionalradius), centerY-(radius+additionalradius ),stateDrawSize+2*additionalradius, stateDrawSize+2*additionalradius);
                 g.drawOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
+                g.drawOval(centerX-(radius-additionalradius), centerY-(radius-additionalradius),stateDrawSize-2*additionalradius, stateDrawSize-2*additionalradius);
 
            } else
            {
@@ -104,15 +113,7 @@ public class DFAPainter {
 
 
           //-- center the string --
-         FontMetrics fm   = g.getFontMetrics(nameFont);
-         Rectangle2D rect = fm.getStringBounds(s.getState_Properties().getName(), g);
-         int textHeight = (int)(rect.getHeight());
-         int textWidth  = (int)(rect.getWidth());
-         int textx = centerX  - textWidth/ 2;
-         int texty = centerY - textHeight/ 2  + fm.getAscent();
-
-         //-- render text --
-         g.drawString(s.getState_Properties().getName(),textx,texty);
+         drawCenteredText(s.getState_Properties().getName(),centerX,centerY,nameFont,g);
         }
     }
 
@@ -125,8 +126,8 @@ public class DFAPainter {
         Dfa dfa = dfaEditor.getDfa();
 
         //-- set fonts --
-         Font nameFont = new Font("Arial", Font.ITALIC|Font.PLAIN, (int)(textSize*dfaEditor.getZoomfactor()));
-         g.setFont(nameFont);
+         transitionFont = new Font("Arial", Font.ITALIC|Font.PLAIN, (int)(0.8*textSize*dfaEditor.getZoomfactor()));
+         g.setFont(transitionFont);
 
         for (int i=0; i < dfa.getStates().size(); i++)
         {
@@ -139,14 +140,7 @@ public class DFAPainter {
 
                 if (s1 != null && s2 != null)
                 {
-                    int s1x = s1.getState_Properties().getXPos();
-                    int s1y = s1.getState_Properties().getYPos();
-
-                    int s2x = s2.getState_Properties().getXPos();
-                    int s2y = s2.getState_Properties().getYPos();
-
-                    g.setColor(Color.black);
-                    g.drawLine(s1x, s1y, s2x, s2y);
+                  paintTransition(s1,s2,t,getStringFromInputArray(t),Color.black, false);
                 }
 
                 
@@ -154,5 +148,226 @@ public class DFAPainter {
         }
     }
 
+    private String getStringFromInputArray(Transition t)
+    {
+        if (t != null)
+        {
+            String c = "";
+            for (int i=0;i<t.getInput().size();i++)
+            {
+                if (i == t.getInput().size()-1)
+                {
+                    c = c + t.getInput().get(i);
+                } else
+                {
+                    c = c + t.getInput().get(i) + ", ";
+                }
+            }
+            return c;
+        } else
+        return "-";
+    }
+
+    public void paintTransition(State s1, State s2, Transition t, String caption, Color color, boolean fakeTrans)
+    {
+        Graphics2D g = this.graphics;
+        int s1x = s1.getState_Properties().getXPos();
+        int s1y = s1.getState_Properties().getYPos();
+
+        int s2x = s2.getState_Properties().getXPos();
+        int s2y = s2.getState_Properties().getYPos();
+
+        g.setColor(color);
+
+        //-- arc case or linear --
+        if (t.isHasBackTransition() && s1 != s2)
+        {
+            //-- get control point --
+            int dx = s2x - s1x;
+            int dy = s2y - s1y;
+            double vlength = calcVectorLength(dx,dy);
+
+            if (vlength > 0)
+            {
+                QuadCurve2D c = new QuadCurve2D.Double();
+
+                double centerx = (s2x + s1x)/2;
+                double centery = (s2y + s1y)/2;
+
+                double normx = dx/vlength;
+                double normy = dy/vlength;
+
+                //-- turn vector 90 degrees --
+                double turnedx = arcDistance*normy;
+                double turnedy = -arcDistance*normx;
+
+                int cpointx = (int) (centerx + turnedx);
+                int cpointy = (int) (centery + turnedy);
+
+               
+
+                //-- tangential crossing with the circles (start and end of curve) --
+                Vector<Double> p1 = getIntersectionPoint(s1x,s1y,cpointx,cpointy,1.2*stateDrawSize/2);
+                Vector<Double> p2 = getIntersectionPoint(s2x,s2y,cpointx,cpointy,1.4*stateDrawSize/2);
+
+                int h1x = (int)Math.round(p1.get(0)) + dfaEditor.getOffsetX();
+                int h1y = (int)Math.round(p1.get(1)) + dfaEditor.getOffsetY();
+
+                int h2x = (int)Math.round(p2.get(0)) + dfaEditor.getOffsetX();
+                int h2y = (int)Math.round(p2.get(1)) + dfaEditor.getOffsetY();
+
+
+                //-- quadratic arc --
+                c.setCurve(h1x,h1y,
+                        cpointx+dfaEditor.getOffsetX(), cpointy+dfaEditor.getOffsetY(),
+                        h2x, h2y);
+                g.draw(c);
+                //-- draw text --
+                drawCenteredText(caption,cpointx+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),cpointy+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
+
+                //-- arrow --
+
+                double ax = h2x - cpointx;
+                double ay = h2y - cpointy;
+                double arrowAngle = Math.atan2(ax, ay);
+                drawArrow(h2x,h2y,4,0.95*arrowAngle,g);
+            }
+
+        } else if (s1 != s2)
+        {
+            //-- linear-case --
+            Vector<Double> p1 = getIntersectionPoint(s1x,s1y,s2x,s2y,1.2*stateDrawSize/2);
+            Vector<Double> p2 = getIntersectionPoint(s2x,s2y,s1x,s2y,1.4*stateDrawSize/2);
+            int h1x = (int)Math.round(p1.get(0)) + dfaEditor.getOffsetX();
+            int h1y = (int)Math.round(p1.get(1)) + dfaEditor.getOffsetY();
+
+            int h2x = (int)Math.round(p2.get(0)) + dfaEditor.getOffsetX();
+            int h2y = (int)Math.round(p2.get(1)) + dfaEditor.getOffsetY();
+            
+            g.drawLine(h1x, h1y, h2x, h2y);
+
+            drawArrow(h2x,h2y, 4,0,g);
+            // -- text --
+            int textX = (int) (s2x+s1x)/2;
+            int textY = (int) ((s2y+s1y)/2 - 12*dfaEditor.getZoomfactor());
+            drawCenteredText(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
+
+
+            
+        } else
+        {
+          
+            //-- cirlce to state itself --
+            double boxX = s1x-stateDrawSize*0.3;
+            double boxY = s1y-stateDrawSize*0.95;
+            double w = stateDrawSize*0.6;
+            double h = stateDrawSize*0.6;
+            
+            Arc2D arc = new Arc2D.Double(boxX+dfaEditor.getOffsetX(), boxY+dfaEditor.getOffsetY(), w, h, -20, 220, Arc2D.OPEN);
+            g.draw(arc);
+
+            // -- text --
+            int textX = (int) s1x;
+            int textY = (int) (s1y-stateDrawSize*1.2);
+            drawCenteredText(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
+
+            //-- arrow --
+            double ax = s1x+0.3*stateDrawSize;
+            double ay = s1y - 0.6*stateDrawSize;
+            double arrowAngle = 1.9D;
+            drawArrow((int)ax+dfaEditor.getOffsetX(),(int)ay+dfaEditor.getOffsetY(),4,arrowAngle,g);
+        }
+
+    }
+
+    private void drawArrow(int px, int py, double size, double angle, Graphics2D g)
+    {
+        double p1x = -0.5*size*dfaEditor.getZoomfactor();
+        double p1y = -1.1*size*dfaEditor.getZoomfactor();
+        double p2x = -0.5*size*dfaEditor.getZoomfactor();
+        double p2y = 1.1*size*dfaEditor.getZoomfactor();
+        double p3x = 2*size*dfaEditor.getZoomfactor();
+        double p3y = 0;
+
+        double t1x = px + turnXbyAngle(p1x,p1y, angle);
+        double t1y = py + turnYbyAngle(p1x,p1y, angle);
+        double t2x = px + turnXbyAngle(p2x,p2y, angle);
+        double t2y = py + turnYbyAngle(p2x,p2y, angle);
+        double t3x = px + turnXbyAngle(p3x,p3y, angle);
+        double t3y = py + turnYbyAngle(p3x,p3y, angle);
+
+
+
+        Polygon s = new Polygon();
+        s.addPoint((int)t1x,(int)t1y);
+        s.addPoint((int)t2x,(int)t2y);
+        s.addPoint((int)t3x,(int)t3y);
+
+        g.fillPolygon(s);
+    }
+
+    private double turnXbyAngle(double x, double y, double a)
+    {
+        return Math.cos(a)*x - Math.sin(a)*y;
+    }
+
+    private double turnYbyAngle(double x, double y, double a)
+    {
+        return Math.sin(a)*x + Math.cos(a)*y;
+    }
+    private void drawCenteredText(String s, int centerX, int centerY , Font f, Graphics2D g)
+    {
+         //-- center the string --
+         FontMetrics fm   = g.getFontMetrics(f);
+         Rectangle2D rect = fm.getStringBounds(s, g);
+         int textHeight = (int)(rect.getHeight());
+         int textWidth  = (int)(rect.getWidth());
+         int textx = centerX  - textWidth/ 2;
+         int texty = centerY - textHeight/ 2  + fm.getAscent();
+
+         //-- render text --
+         g.drawString(s,textx,texty);
+    }
+
+    private Vector<Double> getIntersectionPoint(double fromX, double fromY, double toX, double toY, double distance)
+    {
+        Vector<Double> v = new Vector<Double>();
+        double dx = toX - fromX;
+        double dy = toY - fromY;
+        double l = calcVectorLength(dx,dy);
+
+        if (l > 0)
+        {
+            double dnx = dx/l;
+            double dny = dy/l;
+
+            v.add(fromX+dnx*distance);
+            v.add(fromY+dny*distance);
+        }
+        return v;
+    }
+
+    /**
+     * get vector length
+     * @param dx
+     * @param dy
+     * @return length of vector
+     */
+    private double calcVectorLength(double dx, double dy)
+    {
+        if (dx == 0 && dy == 0)
+        {
+            return 0;
+        } else
+        {
+            return Math.sqrt(dx*dx+dy*dy);
+        }
+    }
+
+    public int getStateDrawSize() {
+        return stateDrawSize;
+    }
+
 
 }
+

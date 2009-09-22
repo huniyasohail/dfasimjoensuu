@@ -42,7 +42,7 @@ public class Simulator {
 
     public void updateGraphics()
     {
-        this.dfaEditor.getdFAPainter().updaterGraphics();
+        this.dfaEditor.getdFAPainter().updaterGraphics(null);
     }
 
 
