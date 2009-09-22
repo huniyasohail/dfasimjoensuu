@@ -37,8 +37,11 @@ public class Transition {
     // #[regen=yes,regenBody=yes,id=DCE.520A2AF8-8659-E1E6-923A-70D72E8DCF7F]
     // </editor-fold> 
     public void setInput (ArrayList<String> val) {
-        for(String s:val)
-            addToInput(s);
+        if(val.size() == 0)
+            this.input = val;
+        else
+            for(String s:val)
+                addToInput(s);
     }
 
     void addToInput(String input) {
