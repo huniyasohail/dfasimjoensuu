@@ -93,6 +93,7 @@ public class Simulator {
     }
 
     private void print_automaton() {
+        System.out.println("Starting a simulation with the following automaton:");
         for(State s:dfa.getStates()) {
             System.out.println("State "+s.getState_Properties().getName()+":");
             ArrayList<Transition> transitions = s.getTransitions();
