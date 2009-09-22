@@ -62,17 +62,28 @@ public class State {
 
     public Transition addTransition(Transition t) throws Exception{
         //check if there is not yet another transition with the same label
-        for(String c:t.getInput()) {
-            for(Transition trans:transitions) {
-                if(trans.getInput().contains(c)) {
-                    String from = trans.getFromState().getState_Properties().getName();
-                    String to = trans.getToState().getState_Properties().getName();
-                    throw new Exception("Transition from "+from+" to "+to+" is already labled with '"+c+"'.");
+        if(!transitions.contains(t)) {
+            if(t.getInput().size() == 0) {
+                transitions.add(t);
+            } else {
+                ArrayList<String> input = t.getInput();
+                t.setInput(new ArrayList<String>());
+                transitions.add(t);
+                for(String s:input) {
+                    try{
+                        addLabelToTransition(t, s);
+                    } catch(Exception ex) {
+                        transitions.remove(t);
+                        throw ex;
+                    }
                 }
             }
+            return t;
+        } else {
+            String from = t.getFromState().getState_Properties().getName();
+            String to = t.getToState().getState_Properties().getName();
+            throw new Exception("Trying to add transition from "+from+" to "+to+" but there is already a transition!");
         }
-        transitions.add(t);
-        return t;
     }
 
     public Transition addLabelToTransition(Transition t, String label) throws Exception, NoSuchTransitionException{
@@ -81,9 +92,11 @@ public class State {
                  if(trans == t)
                      continue;
                  if (trans.getInput().contains(label)) {
+                     String t_from = t.getFromState().getState_Properties().getName();
+                     String t_to = t.getToState().getState_Properties().getName();
                      String from = trans.getFromState().getState_Properties().getName();
                      String to = trans.getToState().getState_Properties().getName();
-                     throw new Exception("Transition from " + from + " to " + to + " is already labled with '" + label + "'.");
+                     throw new Exception("Trying to label transition from "+t_from+" to "+t_to+" with '"+label+"' but transition from " + from + " to " + to + " is already labled with '" + label + "'.");
                  }
              }
              t.addToInput(label);
@@ -121,8 +134,3 @@ public class State {
 
 
 }
-
-class NoSuchTransitionException extends Exception {
-    
-}
-
