@@ -25,7 +25,7 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 public class DFAMainWin extends javax.swing.JFrame {
 
     Simulator dfaSim = null;
-
+    boolean simBarVisible = false;
 
     /** Creates new form DFAMainWIn */
     public DFAMainWin() {
@@ -49,6 +49,7 @@ public class DFAMainWin extends javax.swing.JFrame {
  */
     public void connectGUItoDFA()
     {
+        this.dfaSim.getDfaEditor().getdFAPainter().setPaintPanel(this.panelDrawArea);
         this.dfaSim.getDfaEditor().getdFAPainter().setGraphics((Graphics2D)panelDrawArea.getGraphics());
         this.panelDrawArea.setdFAPainter(this.dfaSim.getDfaEditor().getdFAPainter());
         updateButtons();
@@ -177,6 +178,9 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         panelDrawArea.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                panelDrawAreaMouseDragged(evt);
+            }
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 panelDrawAreaMouseMoved(evt);
             }
@@ -355,6 +359,11 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuSimulation.setText("Simulation");
 
         menuitemStartSim.setText("Start Simulation");
+        menuitemStartSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemStartSimActionPerformed(evt);
+            }
+        });
         menuSimulation.add(menuitemStartSim);
 
         jMenuBar1.add(menuSimulation);
@@ -456,11 +465,24 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     private void panelDrawAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseReleased
         getDfaSim().getDfaEditor().handleMouseReleased(evt);
+        getDfaSim().updateGraphics();
     }//GEN-LAST:event_panelDrawAreaMouseReleased
 
     private void panelDrawAreaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseMoved
         getDfaSim().getDfaEditor().handleMouseMoved(evt);
+
     }//GEN-LAST:event_panelDrawAreaMouseMoved
+
+    private void panelDrawAreaMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseDragged
+        getDfaSim().getDfaEditor().handleMouseDragged(evt);
+    }//GEN-LAST:event_panelDrawAreaMouseDragged
+
+    private void menuitemStartSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemStartSimActionPerformed
+        this.simBarVisible = !simBarVisible;
+        panelConsole.setVisible(simBarVisible);
+        jSplitPane1.setDividerLocation(0.65);
+        updateButtons();
+    }//GEN-LAST:event_menuitemStartSimActionPerformed
 
 
 
@@ -486,6 +508,7 @@ public static void centreWindow(JFrame frame) {
 
 public void updateButtons()
 {
+    panelConsole.setVisible(simBarVisible);
     updateToolButtons();
 }
 

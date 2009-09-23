@@ -49,7 +49,7 @@ public class State {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.3ABC89EF-7B6D-E88A-4230-FEC75D030A8D]
     // </editor-fold> 
-    boolean getIsStartState () {
+    public boolean getIsStartState () {
         return isStartState;
     }
 
