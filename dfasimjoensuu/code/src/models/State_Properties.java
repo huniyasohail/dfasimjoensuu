@@ -23,7 +23,7 @@ public class State_Properties {
 
     private boolean selected = false;
 
-    private int selectionIndex = 0;
+    private int HighlightIndex = 0;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.D426DFFE-9580-1E93-59AF-36423FBEE20E]
@@ -37,6 +37,24 @@ public class State_Properties {
     public String getName () {
         return name;
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public int getHightlightIndex() {
+        return HighlightIndex;
+    }
+
+    public void setHighlightIndex(int selectionIndex) {
+        this.HighlightIndex = selectionIndex;
+    }
+
+    
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.3E219D5B-EEDB-5FFB-2D87-9A39F53CA3BD]

@@ -25,6 +25,13 @@ import models.Transition;
  */
 public class DFAPainter {
 
+    private final Color colorStateHighlight = new Color(197,222,255);
+    private final Color colorStateSelected = new Color(197,222,255);
+    private final Color colorStateNormal = Color.white;
+
+    private final Color colorStateLinesNotSelected = Color.black;
+    private final Color colorStateLinesSelected = Color.blue;
+
 
     private final int stateDrawSize = 50;
     private final int textSize = 16;
@@ -104,6 +111,20 @@ public class DFAPainter {
             int x = s.getState_Properties().getXPos();
             int y = s.getState_Properties().getYPos();
 
+            Color backgroundColor = colorStateNormal;
+            Color lineColor = colorStateLinesNotSelected;
+            
+            if (s.getState_Properties().getHightlightIndex() == 1)
+            {
+                 backgroundColor = colorStateHighlight;
+            }
+
+            if (s.getState_Properties().isSelected())
+            {
+                 backgroundColor = colorStateSelected;
+                 lineColor = colorStateLinesSelected;
+            }
+
 
             int centerX = (int)(dfaEditor.getOffsetX() + dfaEditor.getZoomfactor()*x);
             int centerY = (int)(dfaEditor.getOffsetY() + dfaEditor.getZoomfactor()*y);
@@ -112,29 +133,30 @@ public class DFAPainter {
 	   if (s.getIsFinalState())
            {
                 int additionalradius = (int) (dfaEditor.getZoomfactor()*4);
-                g.setColor(Color.white);
+                g.setColor(backgroundColor);
                 g.fillOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
-                g.setColor(Color.black);
+                g.setColor(lineColor);
                 g.drawOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
                 g.drawOval(centerX-(radius-additionalradius), centerY-(radius-additionalradius),stateDrawSize-2*additionalradius, stateDrawSize-2*additionalradius);
 
            } else
            {
-                g.setColor(Color.white);
+                g.setColor(backgroundColor);
                 g.fillOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
-                g.setColor(Color.black);
+                g.setColor(lineColor);
                 g.drawOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
            }
 
             if (s.getIsStartState())
             {
-                drawStartArrow(centerX-radius-10,centerY,Color.BLACK,g);
+                drawStartArrow(centerX-radius-10,centerY,lineColor,g);
             }
 
 
           //-- center the string --
          drawCenteredText(s.getState_Properties().getName(),centerX,centerY,nameFont,g);
         }
+         g.setColor(Color.black);
     }
 
     /**
