@@ -2,8 +2,6 @@ package models;
 
 
 import java.util.ArrayList;
-import javax.print.DocFlavor.INPUT_STREAM;
-
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.87C11C34-F942-9444-FDCC-B025A77DB87B]
@@ -79,13 +77,12 @@ public class Transition {
         return s2;
     }
 
-    public boolean isHasBackTransition() {
+    boolean isHasBackTransition() {
         return hasBackTransition;
     }
 
-    public void setHasBackTransition(boolean hasBackTransition) {
+    void setHasBackTransition(boolean hasBackTransition) {
         this.hasBackTransition = hasBackTransition;
     }
 
 }
-

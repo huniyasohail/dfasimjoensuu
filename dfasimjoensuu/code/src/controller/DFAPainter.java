@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.geom.Arc2D;
-import java.awt.geom.CubicCurve2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Vector;
@@ -16,7 +15,6 @@ import models.Dfa;
 import models.DfaEditor;
 import models.State;
 import models.Transition;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
