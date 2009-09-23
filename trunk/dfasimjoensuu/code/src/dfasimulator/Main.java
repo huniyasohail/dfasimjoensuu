@@ -62,26 +62,19 @@ public class Main {
        dfa.setStartState(s1);
        dfa.setFinalState(s3);
         try {
-            //Set Input
-            simulator.startSimulation("0101");
-        } catch (IncompleteAutomatonException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-
-       simulator.getDfa().autoArrangeDFA();
-       
-       //-- show the mainwindow --
-       DFAMainWin mainwin = new DFAMainWin();
-       mainwin.setDfaSim(simulator);
-       mainwin.setVisible(true);
-        try {
             simulator.startSimulation("01101");
         } catch (IncompleteAutomatonException ex) {
             System.out.println(ex.getMessage());
         }
        simulator.simulateAll();
        System.out.println(simulator.isAccepting());
+       
+       simulator.getDfa().autoArrangeDFA();
+       
+       //-- show the mainwindow --
+       DFAMainWin mainwin = new DFAMainWin();
+       mainwin.setDfaSim(simulator);
+       mainwin.setVisible(true);
     }
 
 }
