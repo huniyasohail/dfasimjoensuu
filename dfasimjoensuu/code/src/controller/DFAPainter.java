@@ -77,7 +77,7 @@ public class DFAPainter {
     /**
      * paints the States and Transitions
      */
-    public void updaterGraphics(Graphics2D g)
+    public void updateGraphics(Graphics2D g)
     {
         if (g != null)
         {

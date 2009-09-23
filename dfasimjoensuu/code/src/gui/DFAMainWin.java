@@ -10,13 +10,22 @@ import controller.Simulator;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.WindowConstants;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import models.Dfa;
 import models.DfaEditor;
 import models.EditorToolStates;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -260,7 +269,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
@@ -331,6 +340,11 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuFile.add(menuitemOpen);
 
         menuitemSave.setText("Save File...");
+        menuitemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemSaveActionPerformed(evt);
+            }
+        });
         menuFile.add(menuitemSave);
         menuFile.add(jSeparator1);
 
@@ -406,7 +420,25 @@ public class DFAMainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_menuitemExitActionPerformed
 
     private void menuitemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemOpenActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", "dfa"));
+        int retVal = fc.showOpenDialog(this);
+        Dfa loaded_dfa = null;
+        if(retVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
+                loaded_dfa = (Dfa) in.readObject();
+                in.close();
+            } catch (IOException ex) {
+                String msg = "File not found!";
+                JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
+            } catch (ClassNotFoundException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        dfaSim.setDfa(loaded_dfa);
+        
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
     private void toggleAddTransitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddTransitionActionPerformed
@@ -483,6 +515,27 @@ public class DFAMainWin extends javax.swing.JFrame {
         jSplitPane1.setDividerLocation(0.65);
         updateButtons();
     }//GEN-LAST:event_menuitemStartSimActionPerformed
+
+    private void menuitemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemSaveActionPerformed
+        JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", ".dfa"));
+        int retVal = fc.showSaveDialog(this);
+        if(retVal == JFileChooser.APPROVE_OPTION) {
+            ObjectOutputStream out = null;
+            try {
+                File file = fc.getSelectedFile();
+                out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+                out.writeObject(this.dfaSim.getDfa());
+                out.close();
+            } catch (FileNotFoundException ex) {
+                //TODO
+                String msg = "File not found!";
+                JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_menuitemSaveActionPerformed
 
 
 

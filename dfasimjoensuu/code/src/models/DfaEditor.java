@@ -1,7 +1,6 @@
 package models;
 
 import controller.DFAPainter;
-import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
 
@@ -16,7 +15,7 @@ import javax.swing.SwingUtilities;
 
 //--------------------  STATES ---------------------------
 
-public class DfaEditor {
+public class DfaEditor{
 
     private boolean isEditable;
     private double zoomfactor = 1;

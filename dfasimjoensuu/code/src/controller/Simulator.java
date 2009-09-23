@@ -32,6 +32,12 @@ public class Simulator {
         return dfa;
     }
 
+    public void setDfa(Dfa dfa) {
+        if(dfa != null) {
+            this.dfa = dfa;
+        }
+    }
+
     public DfaEditor getDfaEditor() {
         return dfaEditor;
     }
@@ -42,7 +48,7 @@ public class Simulator {
 
     public void updateGraphics()
     {
-        this.dfaEditor.getdFAPainter().updaterGraphics(null);
+        this.dfaEditor.getdFAPainter().updateGraphics(null);
     }
 
 
