@@ -16,8 +16,20 @@ public class Transition implements Serializable{
     private State s1;
     private State s2;
 
+
+    private boolean selected = false;
+    private boolean visible = true;
+    private int highlightStatus = 0;
+
     private int captionOffsetX = 0;
     private int captionOffsetY = 0;
+
+    private int clickPositionX = 0;
+    private int clickPositionY = 0;
+
+    private double curveFactor = 1;
+    private double selfCurveAngle = 0;
+
 
     //-- drawing issue --
     private boolean hasBackTransition = true;
@@ -47,10 +59,66 @@ public class Transition implements Serializable{
         return input;
     }
 
-    /**
-     * Returns the x-coordinate of the label relative to its original position.
-     * @return x-coordinate
-     */
+    public double getClickPositionX() {
+        return clickPositionX;
+    }
+
+    public void setClickPositionX(int clickPositionX) {
+        this.clickPositionX = clickPositionX;
+    }
+
+    public double getClickPositionY() {
+        return clickPositionY;
+    }
+
+    public void setClickPositionY(int clickPositionY) {
+        this.clickPositionY = clickPositionY;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    
+
+    public double getCurveFactor() {
+        return curveFactor;
+    }
+
+    public void setCurveFactor(double curveFactor) {
+        this.curveFactor = curveFactor;
+    }
+
+    public double getSelfCurveAngle() {
+        return selfCurveAngle;
+    }
+
+    public void setSelfCurveAngle(double selfCurveAngle) {
+        this.selfCurveAngle = selfCurveAngle;
+    }
+
+    public int getHighlightStatus() {
+        return highlightStatus;
+    }
+
+    public void setHighlightStatus(int highlightStatus) {
+        this.highlightStatus = highlightStatus;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    
+
     public int getCaptionOffsetX() {
         return captionOffsetX;
     }
@@ -104,10 +172,16 @@ public class Transition implements Serializable{
             this.input.add(input);
     }
 
-    /**
-     * Returns the transition's start state.
-     * @return Start state.
-     */
+    public void setS1(State s1) {
+        this.s1 = s1;
+    }
+
+    public void setS2(State s2) {
+        this.s2 = s2;
+    }
+
+    
+
     public State getFromState() {
         return s1;
     }

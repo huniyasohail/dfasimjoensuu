@@ -11,15 +11,70 @@
 
 package gui;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import javax.swing.JFrame;
+import models.State;
+
 /**
  *
  * @author Fabian
  */
-public class DFAStatePropertiesWin extends javax.swing.JFrame {
+public class DFAStatePropertiesWin extends JFrame {
+
+    private State state = null;
+    private DFAMainWin dFAMainWin = null;
 
     /** Creates new form DFAStatePropertiesWin */
     public DFAStatePropertiesWin() {
         initComponents();
+        centreWindow(this);
+    }
+
+    public State getEditState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public DFAMainWin getdFAMainWin() {
+        return dFAMainWin;
+    }
+
+    public void setdFAMainWin(DFAMainWin dFAMainWin) {
+        this.dFAMainWin = dFAMainWin;
+    }
+
+    void initStatetoForm()
+    {
+        if (this.state != null)
+        {
+            textName.setText(state.getState_Properties().getName());
+            checkAccept.setSelected(state.getIsFinalState());
+            checkStart.setSelected(state.getIsStartState());
+        }
+
+    }
+
+    void saveFormtoState()
+    {
+        state.getState_Properties().setName(textName.getText());
+        state.setIsFinalState(checkAccept.isSelected());
+        state.setIsStartState(checkStart.isSelected());
+        setVisible(false);
+        dFAMainWin.repaint();
+        dispose();
+    }
+
+
+
+    void checkCheckboxes()
+    {
+
+
     }
 
     /** This method is called from within the constructor to
@@ -36,13 +91,17 @@ public class DFAStatePropertiesWin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         checkStart = new javax.swing.JCheckBox();
         checkAccept = new javax.swing.JCheckBox();
-        checkNormal = new javax.swing.JCheckBox();
         buttonOK = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("State properties");
         setAlwaysOnTop(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("Name");
 
@@ -50,6 +109,11 @@ public class DFAStatePropertiesWin extends javax.swing.JFrame {
         textName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textNameActionPerformed(evt);
+            }
+        });
+        textName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textNameKeyPressed(evt);
             }
         });
 
@@ -69,16 +133,19 @@ public class DFAStatePropertiesWin extends javax.swing.JFrame {
             }
         });
 
-        checkNormal.setText("Normal State");
-        checkNormal.addActionListener(new java.awt.event.ActionListener() {
+        buttonOK.setText("Ok");
+        buttonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkNormalActionPerformed(evt);
+                buttonOKActionPerformed(evt);
             }
         });
 
-        buttonOK.setText("Ok");
-
         buttonCancel.setText("Cancel");
+        buttonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,18 +165,17 @@ public class DFAStatePropertiesWin extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(checkAccept)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(buttonCancel)
-                                        .addComponent(checkNormal)))
+                                .addComponent(checkAccept)
                                 .addContainerGap(194, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(checkStart)
                                 .addContainerGap(242, Short.MAX_VALUE))))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(155, Short.MAX_VALUE)
+                .addComponent(buttonCancel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,23 +184,17 @@ public class DFAStatePropertiesWin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(textName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(checkStart)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(checkAccept))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(checkNormal)
-                        .addContainerGap(70, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(checkStart)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkAccept)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -145,16 +205,34 @@ public class DFAStatePropertiesWin extends javax.swing.JFrame {
     }//GEN-LAST:event_textNameActionPerformed
 
     private void checkStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkStartActionPerformed
-        // TODO add your handling code here:
+        checkCheckboxes();
     }//GEN-LAST:event_checkStartActionPerformed
 
     private void checkAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAcceptActionPerformed
-        // TODO add your handling code here:
+        checkCheckboxes();
     }//GEN-LAST:event_checkAcceptActionPerformed
 
-    private void checkNormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkNormalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_checkNormalActionPerformed
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        initStatetoForm();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_buttonCancelActionPerformed
+
+    private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
+        saveFormtoState();
+    }//GEN-LAST:event_buttonOKActionPerformed
+
+    private void textNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNameKeyPressed
+         int key = evt.getKeyCode();
+         if (key == KeyEvent.VK_ENTER) {
+            saveFormtoState();
+
+         }
+
+    }//GEN-LAST:event_textNameKeyPressed
 
     /**
     * @param args the command line arguments
@@ -167,15 +245,24 @@ public class DFAStatePropertiesWin extends javax.swing.JFrame {
         });
     }
 
+
+    public static void centreWindow(JFrame frame) {
+    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+    frame.setLocation(x, y);
+}
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancel;
     private javax.swing.JButton buttonOK;
     private javax.swing.JCheckBox checkAccept;
-    private javax.swing.JCheckBox checkNormal;
     private javax.swing.JCheckBox checkStart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField textName;
     // End of variables declaration//GEN-END:variables
+
 
 }

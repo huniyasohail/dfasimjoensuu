@@ -25,6 +25,8 @@ public class State_Properties implements Serializable{
 
     private boolean selected = false;
 
+    private boolean visible = true;
+
     private int HighlightIndex = 0;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -45,6 +47,14 @@ public class State_Properties implements Serializable{
      */
     public String getName () {
         return name;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     /**

@@ -12,8 +12,6 @@ import models.Transition;
 // </editor-fold> 
 public class Simulator {
 
-
-
     private Dfa dfa;
     private DfaEditor dfaEditor;
     private boolean isRunning;
@@ -35,6 +33,8 @@ public class Simulator {
     public void setDfa(Dfa dfa) {
         if(dfa != null) {
             this.dfa = dfa;
+            this.dfaEditor.setDfa(dfa);
+       
         }
     }
 

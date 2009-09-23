@@ -287,7 +287,7 @@ public class Dfa implements Serializable{
 
 
     /**
-     * Autoformat and arange states for display
+     * Autoformat and arrange states for display
      * Warning: Fairly simple...
      */
     public void autoArrangeDFA()
@@ -313,6 +313,43 @@ public class Dfa implements Serializable{
         }
     }
 
+
+
+    public String getCommaSeperatedTranstionInputs(Transition t)
+    {
+        if (t == null)
+            return "";
+        else
+        {
+            String c = "";
+            for (int i=0;i<t.getInput().size();i++)
+            {
+                if (i == t.getInput().size()-1)
+                {
+                    c = c + t.getInput().get(i);
+                } else
+                {
+                    c = c + t.getInput().get(i) + ",";
+                }
+            }
+            return c;
+        }
+
+    }
+
+    public boolean writeTransitionsInputArray(String s, Transition t)
+    {
+        boolean valid = true;
+        String[] newlist = s.split(",");
+        ArrayList<String> newArray = new ArrayList<String>();
+        for (int i=0; i < newlist.length;i++)
+        {
+            newArray.add(newlist[i]);
+            System.out.println(newlist[i]);
+        }
+        t.setInput(newArray);
+        return valid;
+    }
 
 
 }

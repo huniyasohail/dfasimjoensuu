@@ -11,15 +11,28 @@
 
 package gui;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import models.Transition;
+
 /**
  *
  * @author Fabian
  */
-public class DFATransitionWin extends javax.swing.JFrame {
+public class DFATransitionWin extends JFrame {
+
+    private Transition transition = null;
+    private DFAMainWin dFAMainWin = null;
+    
+
 
     /** Creates new form DFATransitionWin */
     public DFATransitionWin() {
         initComponents();
+        centreWindow(this);
     }
 
     /** This method is called from within the constructor to
@@ -39,8 +52,13 @@ public class DFATransitionWin extends javax.swing.JFrame {
         labelStates = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transition Properties");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("Input reading");
 
@@ -50,14 +68,29 @@ public class DFATransitionWin extends javax.swing.JFrame {
                 textInputActionPerformed(evt);
             }
         });
+        textInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textInputKeyPressed(evt);
+            }
+        });
 
         buttonCancel.setText("Cancel");
+        buttonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCancelActionPerformed(evt);
+            }
+        });
 
         buttonOK.setText("Ok");
+        buttonOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOKActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Transition:");
 
-        labelStates.setText("q1 -> q2");
+        labelStates.setText("   ");
 
         jLabel4.setText("Seperate by kommas like 'a,b,c'. If you need the ','-character use \\,");
 
@@ -77,16 +110,14 @@ public class DFATransitionWin extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(labelStates)
-                        .addContainerGap(287, Short.MAX_VALUE))
+                        .addContainerGap(320, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addContainerGap(66, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonOK, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(buttonCancel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(buttonCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(19, 19, 19))))
         );
         layout.setVerticalGroup(
@@ -112,9 +143,75 @@ public class DFATransitionWin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public Transition getTransition() {
+        return transition;
+    }
+
+    public void setTransition(Transition transition) {
+        this.transition = transition;
+    }
+
+    public DFAMainWin getdFAMainWin() {
+        return dFAMainWin;
+    }
+
+    public void setdFAMainWin(DFAMainWin dFAMainWin) {
+        this.dFAMainWin = dFAMainWin;
+    }
+
+    void initTranstoForm()
+    {
+        if (this.transition!= null)
+        {
+            String statesText = transition.getFromState().getState_Properties().getName()+" -> "+
+                                transition.getToState().getState_Properties().getName();
+            labelStates.setText(statesText);
+            textInput.setText(dFAMainWin.getDfaSim().getDfa().getCommaSeperatedTranstionInputs(transition));
+            
+        }
+
+    }
+
+    void saveFormtoTransition()
+    {
+        if (textInput.getText().length() == 0)
+        {
+            JOptionPane.showMessageDialog(this, "You must enter at least one transition letter!", "Error", JOptionPane.OK_OPTION);
+        } else
+        {
+            dFAMainWin.getDfaSim().getDfa().writeTransitionsInputArray(textInput.getText(),transition);
+            setVisible(false);
+            dFAMainWin.repaint();
+            dispose();
+        }
+
+    }
+
+
     private void textInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textInputActionPerformed
         // TODO add your handling code here:
 }//GEN-LAST:event_textInputActionPerformed
+
+    private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
+        saveFormtoTransition();
+    }//GEN-LAST:event_buttonOKActionPerformed
+
+    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+       setVisible(false);
+       dispose();
+    }//GEN-LAST:event_buttonCancelActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+       initTranstoForm();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void textInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textInputKeyPressed
+         int key = evt.getKeyCode();
+         if (key == KeyEvent.VK_ENTER) {
+            saveFormtoTransition();
+
+         }
+    }//GEN-LAST:event_textInputKeyPressed
 
     /**
     * @param args the command line arguments
@@ -126,6 +223,14 @@ public class DFATransitionWin extends javax.swing.JFrame {
             }
         });
     }
+
+
+    public static void centreWindow(JFrame frame) {
+    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+    frame.setLocation(x, y);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancel;

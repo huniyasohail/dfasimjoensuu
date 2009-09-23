@@ -26,6 +26,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import models.Dfa;
 import models.DfaEditor;
 import models.EditorToolStates;
+import models.State;
+import models.Transition;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -53,11 +56,17 @@ public class DFAMainWin extends javax.swing.JFrame {
         this.dfaSim = dfaSim;
     }
 
+  private void panelDrawAreaMouseClicked(java.awt.event.MouseEvent evt) {                                           
+        if (evt.getClickCount() == 2)
+        handleDoubleClick(evt);
+    }
+
 /**
  * connect GUI to DFA controller
  */
     public void connectGUItoDFA()
     {
+        this.dfaSim.getDfaEditor().setdFAMainWin(this);
         this.dfaSim.getDfaEditor().getdFAPainter().setPaintPanel(this.panelDrawArea);
         this.dfaSim.getDfaEditor().getdFAPainter().setGraphics((Graphics2D)panelDrawArea.getGraphics());
         this.panelDrawArea.setdFAPainter(this.dfaSim.getDfaEditor().getdFAPainter());
@@ -174,6 +183,9 @@ public class DFAMainWin extends javax.swing.JFrame {
 
         panelDrawArea.setBackground(new java.awt.Color(255, 255, 255));
         panelDrawArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelDrawAreaMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 panelDrawAreaMousePressed(evt);
             }
@@ -426,6 +438,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         Dfa loaded_dfa = null;
         if(retVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
+
             try {
                 ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
                 loaded_dfa = (Dfa) in.readObject();
@@ -437,23 +450,33 @@ public class DFAMainWin extends javax.swing.JFrame {
                 System.out.println(ex.getMessage());
             }
         }
+        this.dfaSim.getDfaEditor().resetEditor();
         dfaSim.setDfa(loaded_dfa);
+
+        connectGUItoDFA();
+        repaint();
         
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
     private void toggleAddTransitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddTransitionActionPerformed
         getDfaSim().getDfaEditor().setToolState(EditorToolStates.addTransition);
+        dfaSim.getDfaEditor().removeAllSelections();
         updateButtons();
+        repaint();
     }//GEN-LAST:event_toggleAddTransitionActionPerformed
 
     private void togglePointerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePointerActionPerformed
         getDfaSim().getDfaEditor().setToolState(EditorToolStates.handTool);
+        dfaSim.getDfaEditor().removeAllSelections();
         updateButtons();
+        repaint();
     }//GEN-LAST:event_togglePointerActionPerformed
 
     private void toggleAddStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddStateActionPerformed
         getDfaSim().getDfaEditor().setToolState(EditorToolStates.addState);
+        dfaSim.getDfaEditor().removeAllSelections();
         updateButtons();
+        repaint();
     }//GEN-LAST:event_toggleAddStateActionPerformed
 
     private void menuitemPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemPropertiesActionPerformed
@@ -518,12 +541,19 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     private void menuitemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemSaveActionPerformed
         JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", ".dfa"));
+        fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", "dfa"));
         int retVal = fc.showSaveDialog(this);
         if(retVal == JFileChooser.APPROVE_OPTION) {
             ObjectOutputStream out = null;
             try {
                 File file = fc.getSelectedFile();
+                String fpath = file.getPath();
+
+               if (!fpath.toLowerCase().endsWith(".dfa"))
+                {
+                   String newName = fpath+".dfa";
+                   file = new File(newName);
+                }
                 out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
                 out.writeObject(this.dfaSim.getDfa());
                 out.close();
@@ -538,6 +568,10 @@ public class DFAMainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_menuitemSaveActionPerformed
 
 
+    private void handleDoubleClick(java.awt.event.MouseEvent evt)
+    {
+        getDfaSim().getDfaEditor().handleDoubleClick(evt);
+    }
 
     /**
     * @param args the command line arguments
@@ -581,7 +615,23 @@ public void updateToolButtons()
     toggleAddTransition.setEnabled(e.isIsEditable());
 }
 
+public void showStateEditWin(State s)
+{
+        DFAStatePropertiesWin stprowin = new DFAStatePropertiesWin();
+        stprowin.setAlwaysOnTop(true);
+        stprowin.setState(s);
+        stprowin.setdFAMainWin(this);
+        stprowin.setVisible(true);
+}
 
+public void showTransEditWin(Transition t)
+{
+        DFATransitionWin trwin = new DFATransitionWin();
+        trwin.setAlwaysOnTop(true);
+        trwin.setTransition(t);
+        trwin.setdFAMainWin(this);
+        trwin.setVisible(true);
+}
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
