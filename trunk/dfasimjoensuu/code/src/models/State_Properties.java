@@ -27,7 +27,7 @@ public class State_Properties implements Serializable{
 
     private boolean visible = true;
 
-    private int HighlightIndex = 0;
+    private HighlightTypes HighlightIndex = HighlightTypes.NoHighlight;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.D426DFFE-9580-1E93-59AF-36423FBEE20E]
@@ -73,23 +73,16 @@ public class State_Properties implements Serializable{
         this.selected = selected;
     }
 
-    /**
-     * Returns the state's highlighting index.
-     * @return 0 iff the state is not highlighted.
-     * 1 iff the state is currently highlighted (e.g. mouseover).
-     * Colors 2-n are for other reasons.
-     */
-    public int getHightlightIndex() {
+    public HighlightTypes getHighlightIndex() {
         return HighlightIndex;
     }
 
-    /**
-     *Sets the highlighting Index.
-     * @param selectionIndex TODO
-     */
-    public void setHighlightIndex(int selectionIndex) {
-        this.HighlightIndex = selectionIndex;
+    public void setHighlightIndex(HighlightTypes HighlightIndex) {
+        this.HighlightIndex = HighlightIndex;
     }
+
+  
+
 
     
 
