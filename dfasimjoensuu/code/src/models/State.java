@@ -22,7 +22,12 @@ public class State {
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.440B62F6-A5F4-8219-24A6-DD573FD0A0A6]
-    // </editor-fold> 
+    // </editor-fold>
+    /**
+     * Creates a new state with an empty set of transitions.
+     * @param name Name of the state.
+     * @throws IllegalArgumentException Name of the state must not be null.
+     */
     public State (String name) throws IllegalArgumentException{
         transitions = new ArrayList<Transition>();
         prop = new State_Properties();
@@ -34,32 +39,55 @@ public class State {
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.7EE5376A-1D36-7D72-468D-57F087DA0423]
-    // </editor-fold> 
+    // </editor-fold>
+    /**
+     * Checks whether the state is accepting/final.
+     * @return true, iff the state is accepting/final.
+     */
     public boolean getIsFinalState () {
         return isFinalState;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.4ECCB74E-5CE0-A317-B258-9B00928E446B]
-    // </editor-fold> 
+    // </editor-fold>
+    /**
+     * Sets whether the state is accepting/final.
+     * @param val true/false.
+     */
     public void setIsFinalState (boolean val) {
         this.isFinalState = val;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.3ABC89EF-7B6D-E88A-4230-FEC75D030A8D]
-    // </editor-fold> 
+    // </editor-fold>
+    /**
+     * Checks whether the state is the start state.
+     * @return true, iff the state is the start state.
+     */
     public boolean getIsStartState () {
         return isStartState;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.BB239EBA-CB09-0909-2D77-43099BE24A94]
-    // </editor-fold> 
+    // </editor-fold>
+    /**
+     * Sets whether the state is the start state.
+     * @param val true/false.
+     */
     void setIsStartState (boolean val) {
         this.isStartState = val;
     }
 
+    /**
+     * Adds transition t to the state.
+     * @param t The transition to be added.
+     * @return The added transition.
+     * @throws Exception Throws an Exception if there is already a transition between
+     * the same states or if there is already a transition with the same label.
+     */
     public Transition addTransition(Transition t) throws Exception{
         //check if there is not yet another transition with the same label
         if(!transitions.contains(t)) {
@@ -86,6 +114,14 @@ public class State {
         }
     }
 
+    /**
+     *  Adds a label to a transition.
+     * @param t The transition to be labled.
+     * @param label The label to be added.
+     * @return The modified transition.
+     * @throws Exception There must not be a second transition with the same label.
+     * @throws NoSuchTransitionException The given transition must be part of the DFA.
+     */
     public Transition addLabelToTransition(Transition t, String label) throws Exception, NoSuchTransitionException{
          if(transitions.contains(t)) {
              for (Transition trans : transitions) {
@@ -106,14 +142,29 @@ public class State {
          }
     }
 
+    /**
+     * Removes a transition from the DFA.
+     * @param t Transition to be removed.
+     */
     public void removeTransition(Transition t) {
         transitions.remove(t);
     }
 
+    /**
+     * Returns the state's properties.
+     * @return The State_Properties object.
+     */
     public State_Properties getState_Properties() {
         return prop;
     }
 
+    /**
+     * Returns the transition to a given state.
+     * @param toState Target state of the transition.
+     * @return Transition to toState.
+     * @throws NoSuchTransitionException Throws an exception if there is no transition
+     * to toState.
+     */
     public Transition getTransition (State toState) throws NoSuchTransitionException {
         Transition trans = null;
         for(Transition t:transitions) {
@@ -128,6 +179,10 @@ public class State {
             return trans;
     }
 
+    /**
+     * Returns the set of Transitions
+     * @return Set of transitions as ArrayList
+     */
     public ArrayList<Transition> getTransitions() {
         return transitions;
     }
