@@ -2,6 +2,7 @@ package models;
 
 import controller.DFAPainter;
 import gui.DFAMainWin;
+import javax.sound.midi.SysexMessage;
 import javax.swing.SwingUtilities;
 
 
@@ -38,8 +39,12 @@ public class DfaEditor{
     private State transitionAddFrom = null;
     private State transitionAddTo = null;
 
+    //-- dummies for userinteraction --
     private State dummyState = new State("new");
     private Transition dummyTransition = new Transition(null,null);
+
+    //-- LineToucher --
+    private TouchButton touchButton = new TouchButton();
 
     //-- states --
     private EditorSelectionStates selectionState;
@@ -59,6 +64,14 @@ public class DfaEditor{
 
     public DFAPainter getdFAPainter() {
         return dFAPainter;
+    }
+
+    public TouchButton getTouchButton() {
+        return touchButton;
+    }
+
+    public void setTouchButton(TouchButton touchButton) {
+        this.touchButton = touchButton;
     }
 
     public State getDummyState() {
@@ -141,6 +154,7 @@ public class DfaEditor{
         this.currentTransSelected = null;
         this.panStartX = 0;
         this.panStartY = 0;
+        touchButton.hideAndReset();
         setToolEnvirionmentOptions();
     }
 
@@ -171,7 +185,8 @@ public class DfaEditor{
     {
         this.currentStateSelected = null;
         this.currentTransSelected = null;
-
+        touchButton.hideAndReset();
+        
         for (int i=0;i<getDfa().getStates().size();i++)
         {
             State st = getDfa().getStates().get(i);
@@ -179,10 +194,10 @@ public class DfaEditor{
             {
                 Transition tt = st.getTransitions().get(j);
                 tt.setSelected(false);
-                tt.setHighlightStatus(0);
+                tt.setHighlightStatus(HighlightTypes.NoHighlight);
             }
             st.getState_Properties().setSelected(false);
-            st.getState_Properties().setHighlightIndex(0);
+            st.getState_Properties().setHighlightIndex(HighlightTypes.NoHighlight);
             
         }
     }
@@ -242,7 +257,7 @@ public class DfaEditor{
         {
             if (transitionAddFrom != null)
             {
-                 State stateMouseOver = getStateatMouse(evt.getX(), evt.getY(), false, 0, false);
+                 State stateMouseOver = getStateatMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, false);
                  if (stateMouseOver != null)
                  {
                      //-- draw highlight transitions --
@@ -283,7 +298,7 @@ public class DfaEditor{
     {
         if (this.transitionState == EditorTransitionStates.selectFromState)
         {
-            State stateHit = getStateatMouse(evt.getX(), evt.getY(), true, 0, true);
+            State stateHit = getStateatMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
             if (stateHit != null)
             {
                 transitionAddFrom = stateHit;
@@ -291,7 +306,7 @@ public class DfaEditor{
             }
         } else
         {
-            State stateHit = getStateatMouse(evt.getX(), evt.getY(), true, 0, true);
+            State stateHit = getStateatMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
             if (stateHit != null)
             {
                 transitionAddTo = stateHit;
@@ -355,21 +370,95 @@ public class DfaEditor{
 
         if (SwingUtilities.isLeftMouseButton(evt))
         {
+            handleTouchStartDrag(evt);
              if (currentStateSelected == null)
              {
-                 setOffsetX(oldoffsetX+evt.getX()-panStartX);
-                 setOffsetY(oldoffsetY+evt.getY()-panStartY);
+                if (touchButton.isSelected())
+                {
+                    handleTouchButtonMoveValue(evt);
+                } else
+                {
+                    setOffsetX(oldoffsetX+evt.getX()-panStartX);
+                    setOffsetY(oldoffsetY+evt.getY()-panStartY);                  
+                    
+                }
+
+
                  updateGraphicsAll();
                  //System.out.println("offsetX:"+offsetX+"   offsetx:"+offsetY+" panstartX"+panStartX+"  panstarty "+panStartY+"   MX"+evt.getX()+"   MY"+evt.getY()+"    dx"+(evt.getX()-panStartX));
              } else
              {
+                if (currentStateSelected != null)
+                {
                  handleStateMovement(evt);
+                }
+
                  updateGraphicsAll();
              }
         }
        
     }
 
+    private void handleTouchButtonMoveValue(java.awt.event.MouseEvent evt)
+    {
+       
+        if (currentTransSelected != null)
+        {
+            
+            //-- calc arc factor --
+            int s1x = currentTransSelected.getFromState().getState_Properties().getXPos();
+            int s1y = currentTransSelected.getFromState().getState_Properties().getYPos();
+
+            int s2x = currentTransSelected.getToState().getState_Properties().getXPos();
+            int s2y = currentTransSelected.getToState().getState_Properties().getYPos();
+
+            double mx = (s1x+s2x)/2;
+            double my = (s1y+s2y)/2;
+            
+            double dx = s2x - s1x;
+            double dy = s2y - s1y;
+
+            double l = 0;
+            
+            double vlength = calcVectorLength(dx,dy);
+
+            if (vlength > 0)
+            {
+                double centerx = (s2x + s1x)/2;
+                double centery = (s2y + s1y)/2;
+
+                double normx = dx/vlength;
+                double normy = dy/vlength;
+
+                double turnedx = normy;
+                double turnedy = -normx;
+
+                double ddx = evt.getX()-offsetX-centerx;
+                double ddy = evt.getY()-offsetY-centery;
+
+
+                l = 6*(ddx*turnedx + ddy*turnedy)/vlength;
+            }
+
+
+            currentTransSelected.setCurveFactor(l);
+            touchButton.setCurrentValue(l);
+            touchButton.setVisible(true);
+
+        }
+        
+    }
+
+    private double calcVectorLength(double dx, double dy)
+    {
+        if (dx == 0 && dy == 0)
+        {
+            return 0;
+        } else
+        {
+            return Math.sqrt(dx*dx+dy*dy);
+        }
+    }
 
     private void handleAddStatesMove(java.awt.event.MouseEvent evt)
     {
@@ -395,9 +484,20 @@ public class DfaEditor{
 
     private void handleObjectSelection(java.awt.event.MouseEvent evt)
     {
-        State stateHit = getStateatMouse(evt.getX(), evt.getY(), false, 0, true);
-        
-        Transition transHit = getTransitionatMouse(evt.getX(), evt.getY(), false, 0, true);
+        State stateHit = currentStateSelected;
+        Transition transHit = currentTransSelected;
+
+        if (touchButton.isSelected())
+        {
+           touchButton.setMoving(handleTouchUpHighlight(evt));
+        }
+
+
+        if (!touchButton.isMoving())
+        {
+             stateHit = getStateatMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, true);
+             transHit = getTransitionatMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, true);
+        }
 
         if (transHit != null)
         {
@@ -417,7 +517,7 @@ public class DfaEditor{
 
 
 
-    private State getStateatMouse(int px, int py, boolean changeHighlight, int highlightIndex, boolean selectOnHit)
+    private State getStateatMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
     {
         State s = null;
         double tx = px - offsetX;
@@ -439,7 +539,7 @@ public class DfaEditor{
             } else
             {
                 if (changeHighlight)
-                st.getState_Properties().setHighlightIndex(0);
+                st.getState_Properties().setHighlightIndex(HighlightTypes.NoHighlight);
                 if (selectOnHit)
                 st.getState_Properties().setSelected(false);
             }
@@ -447,7 +547,7 @@ public class DfaEditor{
         return s;
     }
 
-      private Transition getTransitionatMouse(int px, int py, boolean changeHighlight, int highlightIndex, boolean selectOnHit)
+      private Transition getTransitionatMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
     {
         Transition t = null;
         double tx = px - offsetX;
@@ -474,7 +574,7 @@ public class DfaEditor{
                 {
                 
                  if (changeHighlight)
-                    tt.setHighlightStatus(0);
+                    tt.setHighlightStatus(HighlightTypes.NoHighlight);
                  if (selectOnHit)
                      tt.setSelected(false);
                 }
@@ -494,15 +594,15 @@ public class DfaEditor{
     {
         if (toolState == EditorToolStates.handTool)
         {
-            State s = getStateatMouse(evt.getX(), evt.getY(),true,1,false);
-            Transition transHit = getTransitionatMouse(evt.getX(), evt.getY(), true, 1, false);
+            State s = getStateatMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
+            Transition transHit = getTransitionatMouse(evt.getX(), evt.getY(), true, HighlightTypes.MouseOver, false);
 
-
+            handleTouchUpHighlight(evt);
             updateGraphicsAll();
         }
         if (toolState == EditorToolStates.addTransition)
         {
-            State s = getStateatMouse(evt.getX(), evt.getY(),true,1,false);
+            State s = getStateatMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
         }
     }
 
@@ -518,6 +618,60 @@ public class DfaEditor{
         }
     }
 
+    private boolean handleTouchUpHighlight(java.awt.event.MouseEvent evt)
+    {
+        if (touchButton.isVisible())
+        {
+            int dx = touchButton.getPx() - evt.getX();
+            int dy = touchButton.getPy() - evt.getY();
+            boolean hit = dx*dx+dy*dy <= touchButton.getSize()*touchButton.getSize();
+            touchButton.setSelected(hit);
+            if (hit)
+            {
+                if (currentTransSelected != null)
+                {
+                    touchButton.setCurrentValue(currentTransSelected.getCurveFactor());
+                } else
+                    touchButton.hideAndReset();
+            }
+         
+            return hit;
+        } else
+            return false;
+
+    }
+
+
+    private boolean handleTouchStartDrag(java.awt.event.MouseEvent evt)
+    {
+        if (touchButton.isVisible())
+        {
+            touchButton.setMoving(true);
+            return true;
+        } else
+        {
+             touchButton.setMoving(false);
+             return false;
+        }
+        
+    }
+
+
+     private void handleTouchEndDrag(java.awt.event.MouseEvent evt)
+    {
+        if (touchButton.isMoving() && touchButton.isVisible())
+        {
+            touchButton.setMoving(false);
+            
+        } else
+        {
+             touchButton.setMoving(false);
+            
+        }
+
+    }
+
+
 
 
     private void handleHandToolMouseRelease(java.awt.event.MouseEvent evt)
@@ -526,7 +680,8 @@ public class DfaEditor{
 
         if (toolState == EditorToolStates.handTool)
         {
-            State s = getStateatMouse(evt.getX(), evt.getY(),true,1,true);
+            State s = getStateatMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,true);
+             handleTouchEndDrag(evt);
             updateGraphicsAll();
         }
     }

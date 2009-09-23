@@ -14,8 +14,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.Vector;
 import models.Dfa;
 import models.DfaEditor;
+import models.EditorToolStates;
+import models.HighlightTypes;
 import models.NoSuchTransitionException;
 import models.State;
+import models.TouchButton;
 import models.Transition;
 
 
@@ -135,7 +138,7 @@ public class DFAPainter {
             Color fontColor = colorStateFontNormal;
             
             
-            if (s.getState_Properties().getHightlightIndex() == 1)
+            if (s.getState_Properties().getHighlightIndex() == HighlightTypes.MouseOver)
             {
                  backgroundColor = colorStateHighlight;
             }
@@ -208,12 +211,16 @@ public class DFAPainter {
                 if (s1 != null && s2 != null)
                 {
                   paintTransition(s1,s2,t,getStringFromInputArray(t),Color.black, false);
+                
                 }
 
                 
             }
         }
     }
+
+
+
 
 
     private String getStringFromInputArray(Transition t)
@@ -246,7 +253,7 @@ public class DFAPainter {
         Color colorLineColor = colorTransitionLineNormal;
         Color colorFont = colorTransitionFontNormal;
 
-        if (t.getHighlightStatus() == 1)
+        if (t.getHighlightStatus() == HighlightTypes.MouseOver)
         {
             colorCaptionColor = colorTransitionLabelHighlighted;
             colorLineColor = colorTransitionLineHighlighted;
@@ -266,8 +273,9 @@ public class DFAPainter {
             colorFont = Color.white;
         }
 
+        boolean showTouchButton = (getDfaEditor().getToolState() == EditorToolStates.handTool) && t.isSelected();
 
-         boolean paintLabelBackground = t.isSelected() || (t.getHighlightStatus() != 0 || fakeTrans);
+         boolean paintLabelBackground = t.isSelected() || (t.getHighlightStatus() != HighlightTypes.NoHighlight || fakeTrans);
 
         Graphics2D g = this.graphics;
         int s1x = s1.getState_Properties().getXPos();
@@ -310,8 +318,8 @@ public class DFAPainter {
 
                 double additionalArcDistance = vlength/100;
                 //-- turn vector 90 degrees --
-                double turnedx = arcDistance*normy*additionalArcDistance;
-                double turnedy = -arcDistance*normx*additionalArcDistance;
+                double turnedx = arcDistance*normy*additionalArcDistance*t.getCurveFactor();
+                double turnedy = -arcDistance*normx*additionalArcDistance*t.getCurveFactor();
 
                 int cpointx = (int) (centerx + turnedx);
                 int cpointy = (int) (centery + turnedy);
@@ -352,6 +360,11 @@ public class DFAPainter {
                 double arrowAngle = Math.atan2(ay, ax);
                  g.setColor(colorLineColor);
                 drawArrow(h2x,h2y,4,arrowAngle,g);
+
+                //-- touchup button --
+
+                if (showTouchButton)
+                    drawTouchTransitionButton(t,normx,normy,additionalArcDistance,h1x,h1y,h2x,h2y);
             }
 
         } else if (s1 != s2)
@@ -389,6 +402,7 @@ public class DFAPainter {
                 int textX = (int) (centerx + 12*normy *dfaEditor.getZoomfactor());
                 int textY = (int) (centery - 12*normx*dfaEditor.getZoomfactor());
 
+                
                 if (paintLabelBackground)
                 {
                     Rectangle2D fbounds = getFontBounds(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont, g);
@@ -440,6 +454,52 @@ public class DFAPainter {
         }
         
     }
+
+    private void drawTouchTransitionButton(Transition t,double normx, double normy, double additionalArcDistance, double h1x, double h1y,double h2x, double h2y)
+    {
+        TouchButton tb = getDfaEditor().getTouchButton();
+        tb.setVisible(true);
+
+        Graphics2D g = this.graphics;
+
+        double centerx = (h2x + h1x)/2;
+        double centery = (h2y + h1y)/2;
+
+         //-- turn vector 90 degrees --
+        double turnedx = arcDistance*normy*additionalArcDistance*t.getCurveFactor();
+        double turnedy = -arcDistance*normx*additionalArcDistance*t.getCurveFactor();
+
+        int cpointx = (int) (centerx + turnedx);
+        int cpointy = (int) (centery + turnedy);
+
+        int textpointx = (int) (centerx + turnedx/(2) -7*normy);
+        int textpointy = (int) (centery + turnedy/(2) +7*normx);
+
+        Color fcolor = tb.getColorNormal();
+
+        if (tb.isSelected())
+        {
+            fcolor = tb.getColorHightlight();
+        }
+        if (tb.isMoving())
+            fcolor = tb.getColorMove();
+
+        tb.setPx(textpointx);
+        tb.setPy(textpointy);
+
+        g.setColor(fcolor);
+        g.fillOval(textpointx-tb.getSize(),
+                textpointy-tb.getSize(), 2*tb.getSize(), 2*tb.getSize());
+         g.setColor(colorTransitionLineSelected);
+        g.drawOval(textpointx-tb.getSize(),
+                textpointy-tb.getSize(), 2*tb.getSize(), 2*tb.getSize());
+
+        
+
+    }
+
+
+
 
     private void paintTransitionHighlightRectangle(Rectangle2D r, Color c, int additionalBorder, Graphics2D g)
     {

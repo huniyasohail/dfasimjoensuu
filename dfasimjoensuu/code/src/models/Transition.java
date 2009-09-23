@@ -19,7 +19,7 @@ public class Transition implements Serializable{
 
     private boolean selected = false;
     private boolean visible = true;
-    private int highlightStatus = 0;
+    private HighlightTypes highlightStatus = HighlightTypes.NoHighlight;
 
     private int captionOffsetX = 0;
     private int captionOffsetY = 0;
@@ -101,13 +101,15 @@ public class Transition implements Serializable{
         this.selfCurveAngle = selfCurveAngle;
     }
 
-    public int getHighlightStatus() {
+    public HighlightTypes getHighlightStatus() {
         return highlightStatus;
     }
 
-    public void setHighlightStatus(int highlightStatus) {
+    public void setHighlightStatus(HighlightTypes highlightStatus) {
         this.highlightStatus = highlightStatus;
     }
+
+
 
     public boolean isSelected() {
         return selected;
