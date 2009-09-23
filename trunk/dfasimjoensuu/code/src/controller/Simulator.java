@@ -150,8 +150,9 @@ public class Simulator {
                         dfa.setCurrentState(t.getToState());
                         String state1 = currentState.getState_Properties().getName();
                         String state2 = t.getToState().getState_Properties().getName();
-                        dfa.setCurrentPosition(nextposition);
-                        if(nextposition == input.length()) {
+                        if(nextposition < input.length()) {
+                            dfa.setCurrentPosition(nextposition);
+                        } else {
                             //all input has been read
                             isRunning = false;
                         }
