@@ -56,7 +56,9 @@ public class Simulator {
     }
 
     public void simulateAll () {
-        while(isRunning)
+        int currentPosition = dfa.getCurrentPosition();
+        String input = dfa.getInput();
+        for(int i=0; i<input.length()-currentPosition && isRunning; i++)
             nextStep();
     }
 
@@ -135,16 +137,20 @@ public class Simulator {
             isRunning = false;
         if(isRunning) {
             int currentPosition = dfa.getCurrentPosition();
-            if(currentPosition < input.length()-1) {
+            int nextposition = currentPosition;
+            if(currentPosition < input.length()) {
                 State currentState = dfa.getCurrentState();
                 String read = input.substring(currentPosition, currentPosition+1);
                 ArrayList<Transition> transitions = currentState.getTransitions();
-                for(int i=0; i<transitions.size() && currentState == dfa.getCurrentState(); i++) {
+                for(int i=0; i<transitions.size() && nextposition == currentPosition; i++) {
                     Transition t = transitions.get(i);
                     if(t.getInput().contains(read)) {
                         //take transition and set new current state
-                        int nextposition = currentPosition+1;
+                        nextposition = currentPosition+1;
                         dfa.setCurrentState(t.getToState());
+                        String state1 = currentState.getState_Properties().getName();
+                        String state2 = t.getToState().getState_Properties().getName();
+                        System.out.println("Jumping from state "+state1+" to state "+state2+"!");
                         dfa.setCurrentPosition(nextposition);
                         if(nextposition == input.length()) {
                             //all input has been read
