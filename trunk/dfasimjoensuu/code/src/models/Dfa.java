@@ -131,7 +131,7 @@ public class Dfa {
         this.description = description;
     }
 
-    public void setStartState (State s) throws IllegalArgumentException{
+    public void setStartState (State s) throws IllegalArgumentException {
         if (s == null)
             throw new IllegalArgumentException("You must define a start state!");
         if (!state_known(s))
@@ -142,6 +142,18 @@ public class Dfa {
         this.startState = s;
         s.setIsStartState(true);
         currentState = startState;
+    }
+
+    public void setFinalState (State s) throws IllegalArgumentException {
+        if (!state_known(s))
+            throw new IllegalArgumentException("The state you are trying to declare as the final state is not a part of the DFA!");
+        //else
+        s.setIsFinalState(true);
+    }
+
+    public void removeFinalState (State s) {
+        if (state_known(s))
+            s.setIsFinalState(false);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
