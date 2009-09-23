@@ -1,6 +1,7 @@
 
 package controller;
 
+import gui.PaintPanel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -17,6 +18,7 @@ import models.NoSuchTransitionException;
 import models.State;
 import models.Transition;
 
+
 /**
  *
  * @author Fabian
@@ -32,6 +34,7 @@ public class DFAPainter {
 
     private DfaEditor dfaEditor = null;
     private Graphics2D graphics = null;
+    private PaintPanel paintPanel = null;
     private Font transitionFont = null;
 
     public DfaEditor getDfaEditor() {
@@ -50,6 +53,19 @@ public class DFAPainter {
         this.graphics = graphics;
     }
 
+    public PaintPanel getPaintPanel() {
+        return paintPanel;
+    }
+
+    public void setPaintPanel(PaintPanel paintPanel) {
+        this.paintPanel = paintPanel;
+    }
+
+    public void requestRepaintAll()
+    {
+        if (this.paintPanel != null)
+            this.paintPanel.repaint();
+    }
 
     /**
      * paints the States and Transitions
@@ -109,6 +125,11 @@ public class DFAPainter {
                 g.setColor(Color.black);
                 g.drawOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
            }
+
+            if (s.getIsStartState())
+            {
+                drawStartArrow(centerX-radius-10,centerY,Color.BLACK,g);
+            }
 
 
           //-- center the string --
@@ -203,14 +224,16 @@ public class DFAPainter {
                 double normx = dx/vlength;
                 double normy = dy/vlength;
 
+                double additionalArcDistance = vlength/100;
                 //-- turn vector 90 degrees --
-                double turnedx = arcDistance*normy;
-                double turnedy = -arcDistance*normx;
+                double turnedx = arcDistance*normy*additionalArcDistance;
+                double turnedy = -arcDistance*normx*additionalArcDistance;
 
                 int cpointx = (int) (centerx + turnedx);
                 int cpointy = (int) (centery + turnedy);
 
-               
+                int textpointx = (int) (centerx + turnedx/(2)+normy*20);
+                int textpointy = (int) (centery + turnedy/(2)-normx*20);
 
                 //-- tangential crossing with the circles (start and end of curve) --
                 Vector<Double> p1 = getIntersectionPoint(s1x,s1y,cpointx,cpointy,1.2*stateDrawSize/2);
@@ -229,21 +252,20 @@ public class DFAPainter {
                         h2x, h2y);
                 g.draw(c);
                 //-- draw text --
-                drawCenteredText(caption,cpointx+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),cpointy+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
+                drawCenteredText(caption,textpointx+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textpointy +t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
 
                 //-- arrow --
-
-                double ax = h2x - cpointx;
-                double ay = h2y - cpointy;
-                double arrowAngle = Math.atan2(ax, ay);
-                drawArrow(h2x,h2y,4,0.95*arrowAngle,g);
+                double ax = h2x - cpointx -dfaEditor.getOffsetX();
+                double ay = h2y - cpointy -dfaEditor.getOffsetY();
+                double arrowAngle = Math.atan2(ay, ax);
+                drawArrow(h2x,h2y,4,arrowAngle,g);
             }
 
         } else if (s1 != s2)
         {
             //-- linear-case --
             Vector<Double> p1 = getIntersectionPoint(s1x,s1y,s2x,s2y,1.2*stateDrawSize/2);
-            Vector<Double> p2 = getIntersectionPoint(s2x,s2y,s1x,s2y,1.4*stateDrawSize/2);
+            Vector<Double> p2 = getIntersectionPoint(s2x,s2y,s1x,s1y,1.4*stateDrawSize/2);
             int h1x = (int)Math.round(p1.get(0)) + dfaEditor.getOffsetX();
             int h1y = (int)Math.round(p1.get(1)) + dfaEditor.getOffsetY();
 
@@ -252,14 +274,30 @@ public class DFAPainter {
             
             g.drawLine(h1x, h1y, h2x, h2y);
 
-            drawArrow(h2x,h2y, 4,0,g);
-            // -- text --
-            int textX = (int) (s2x+s1x)/2;
-            int textY = (int) ((s2y+s1y)/2 - 12*dfaEditor.getZoomfactor());
-            drawCenteredText(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
+            double ax = s2x - s1x;
+            double ay = s2y - s1y;
 
 
-            
+            double vlength = calcVectorLength(ax,ay);
+
+            if (vlength > 0)
+            {
+
+                double centerx = (s2x + s1x)/2;
+                double centery = (s2y + s1y)/2;
+
+                double normx = ax/vlength;
+                double normy = ay/vlength;
+
+                double arrowAngle = Math.atan2(ay, ax);
+                drawArrow(h2x,h2y, 4,arrowAngle,g);
+                  // -- text --
+                int textX = (int) (centerx + 12*normy *dfaEditor.getZoomfactor());
+                int textY = (int) (centery - 12*normx*dfaEditor.getZoomfactor());
+                drawCenteredText(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
+            }
+
+
         } else
         {
           
@@ -284,6 +322,18 @@ public class DFAPainter {
             drawArrow((int)ax+dfaEditor.getOffsetX(),(int)ay+dfaEditor.getOffsetY(),4,arrowAngle,g);
         }
 
+    }
+
+
+    private void drawStartArrow(int px, int py, Color c,Graphics2D g)
+    {
+        double s1x = px-20*getDfaEditor().getZoomfactor();
+        double s1y = py;
+        
+        g.setColor(c);
+
+        g.drawLine(px, py, (int)s1x, (int)s1y);
+        drawArrow(px,py, 4,0,g);
     }
 
     private void drawArrow(int px, int py, double size, double angle, Graphics2D g)

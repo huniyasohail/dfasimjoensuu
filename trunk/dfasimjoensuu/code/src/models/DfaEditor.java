@@ -1,6 +1,8 @@
 package models;
 
 import controller.DFAPainter;
+import java.awt.event.MouseEvent;
+import javax.swing.SwingUtilities;
 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -20,8 +22,12 @@ public class DfaEditor {
     private double zoomfactor = 1;
     private int offsetX = 0;
     private int offsetY = 0;
+    private int oldoffsetX = 0;
+    private int oldoffsetY = 0;
+    private int panStartX = 0;
+    private int panStartY = 0;
 
-    private State currentState = null;
+    private State currentStateSelected = null;
 
     //-- states --
     private EditorSelectionStates selectionState;
@@ -94,7 +100,9 @@ public class DfaEditor {
         this.transitionState = EditorTransitionStates.selectFromState;
         this.offsetX = 0;
         this.offsetY = 0;
-        this.currentState = null;
+        this.currentStateSelected = null;
+        this.panStartX = 0;
+        this.panStartY = 0;
     }
 
 /**
@@ -105,11 +113,20 @@ public class DfaEditor {
     {
         if (toolState == EditorToolStates.handTool)
         {
-            handleObjectSelection(evt);
-
-
+            handleObjectSelection(evt);            
         }
+        //-- mouse pan --
+        panStartX = evt.getX();
+        panStartY = evt.getY();
+        oldoffsetX = offsetX;
+        oldoffsetY = offsetY;
     }
+
+    public void handleMouseDragged(java.awt.event.MouseEvent evt)
+    {
+         handleToolHandMouseDragged(evt);
+    }
+
 
     /**
  * handle the mouse
@@ -120,9 +137,39 @@ public class DfaEditor {
         if (toolState == EditorToolStates.handTool)
         {
             
-
-
         }
+    }
+
+
+/**
+ * handle the mouse
+ * @param evt
+ */
+    public void handleMouseReleased(java.awt.event.MouseEvent evt)
+    {
+        if (toolState == EditorToolStates.handTool)
+        {
+            handleHandToolMouseRelease(evt);
+        }
+    }
+
+
+
+
+    private void handleToolHandMouseDragged(java.awt.event.MouseEvent evt)
+    {
+
+        if (SwingUtilities.isLeftMouseButton(evt))
+        {
+             if (currentStateSelected == null)
+             {
+                 setOffsetX(oldoffsetX+evt.getX()-panStartX);
+                 setOffsetY(oldoffsetY+evt.getY()-panStartY);
+                 updateGraphicsAll();
+                 System.out.println("offsetX:"+offsetX+"   offsetx:"+offsetY+" panstartX"+panStartX+"  panstarty "+panStartY+"   MX"+evt.getX()+"   MY"+evt.getY()+"    dx"+(evt.getX()-panStartX));
+             }
+        }
+       
     }
 
 
@@ -133,6 +180,7 @@ public class DfaEditor {
         {
             System.out.println("Hit state: "+stateHit.getState_Properties().getName());
         }
+        this.currentStateSelected = stateHit;
     }
 
 
@@ -160,13 +208,25 @@ public class DfaEditor {
 
 
 
-/**
- * handle the mouse
- * @param evt
- */
-    public void handleMouseReleased(java.awt.event.MouseEvent evt)
-    {
 
+    private void handleHandToolMouseRelease(java.awt.event.MouseEvent evt)
+    {
+            if (currentStateSelected != null)
+            {
+                int px = evt.getX()-offsetX;
+                int py = evt.getY()-offsetY;
+                currentStateSelected.getState_Properties().setXPos(px);
+                currentStateSelected.getState_Properties().setYPos(py);
+                currentStateSelected = null;
+                updateGraphicsAll();
+            }
+    }
+
+
+
+    private void updateGraphicsAll()
+    {
+        dFAPainter.requestRepaintAll();
     }
 
     public boolean isIsEditable() {
