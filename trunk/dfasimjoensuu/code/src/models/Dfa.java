@@ -1,8 +1,6 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -68,6 +66,19 @@ public class Dfa {
         } catch (Exception ex) {
             //TODO:
             System.out.println(ex.getMessage());
+        }
+        //check for transition in opposite direction
+        boolean found = false;
+        int i = 0;
+        ArrayList<Transition> transitions = s2.getTransitions();
+        while(i<transitions.size() && !found) {
+            Transition s2_transition = transitions.get(i);
+            if(s2_transition.getToState().equals(s1)) {
+                found = true;
+                s2_transition.setHasBackTransition(true);
+                t.setHasBackTransition(true);
+            }
+            i++;
         }
         return t;
     }
@@ -156,6 +167,11 @@ public class Dfa {
 
     public ArrayList<State> getStates() {
         return states;
+    }
+
+    public boolean isBidirectionalTransition(State s1, State s2) throws NoSuchTransitionException {
+        Transition t = s1.getTransition(s2);
+        return t.isHasBackTransition();
     }
 
 

@@ -50,8 +50,6 @@ public class Main {
             s2.addLabelToTransition(t, "1");
             t = simulator.getDfa().addTransition(s2, s3);
             s2.addLabelToTransition(t, "0");
-            //-- should be done automatically --
-            t.setHasBackTransition(false);
             t = simulator.getDfa().addTransition(s3, s3);
             s3.addLabelToTransition(t, "0");
             s3.addLabelToTransition(t, "1");
