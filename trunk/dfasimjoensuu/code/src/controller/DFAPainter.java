@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Vector;
 import models.Dfa;
 import models.DfaEditor;
+import models.NoSuchTransitionException;
 import models.State;
 import models.Transition;
 
@@ -178,7 +179,14 @@ public class DFAPainter {
         g.setColor(color);
 
         //-- arc case or linear --
-        if (t.isHasBackTransition() && s1 != s2)
+        boolean isBidirectional = false;
+        try {
+            isBidirectional = dfaEditor.getDfa().isBidirectionalTransition(s1, s2);
+        } catch(NoSuchTransitionException ex) {
+            //TODO
+            System.out.println(ex.getMessage());
+        }
+        if (s1 != s2 && isBidirectional)
         {
             //-- get control point --
             int dx = s2x - s1x;
