@@ -51,6 +51,7 @@ public class Simulator {
     // </editor-fold> 
     public void startSimulation (String input) throws IncompleteAutomatonException {
         //first check preconditions
+        print_automaton();
         checkPreconditions(input);
         isRunning = true;
     }
@@ -73,7 +74,6 @@ public class Simulator {
     private void checkPreconditions(String input) throws IncompleteAutomatonException{
         //check all pre-conditions
         //check for start state
-        print_automaton();
         dfa.setInput(input);
         if(dfa.getStartState() == null)
             throw new IncompleteAutomatonException("No start state defined!");
@@ -150,7 +150,6 @@ public class Simulator {
                         dfa.setCurrentState(t.getToState());
                         String state1 = currentState.getState_Properties().getName();
                         String state2 = t.getToState().getState_Properties().getName();
-                        System.out.println("Jumping from state "+state1+" to state "+state2+"!");
                         dfa.setCurrentPosition(nextposition);
                         if(nextposition == input.length()) {
                             //all input has been read
