@@ -34,6 +34,7 @@ public class Dfa {
     public Dfa () {
         states = new ArrayList<State>();
         states_added = 0;
+        currentPosition = 0;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -140,7 +141,7 @@ public class Dfa {
             this.startState.setIsStartState(false);
         this.startState = s;
         s.setIsStartState(true);
-
+        currentState = startState;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 

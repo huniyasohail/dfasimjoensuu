@@ -16,7 +16,7 @@ public class Simulator {
 
     private Dfa dfa;
     private DfaEditor dfaEditor;
-    private boolean running;
+    private boolean isRunning;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.265879AE-72DD-068D-26F6-2EA61AD07845]
@@ -25,7 +25,7 @@ public class Simulator {
         dfa = new Dfa();
         dfaEditor = new DfaEditor();
         dfaEditor.setDfa(dfa);
-        running = false;
+        isRunning = false;
     }
 
     public Dfa getDfa() {
@@ -50,6 +50,25 @@ public class Simulator {
     // #[regen=yes,id=DCE.8BEDC026-8469-BB20-3338-A1F54C9D9D44]
     // </editor-fold> 
     public void startSimulation (String input) throws IncompleteAutomatonException {
+        //first check preconditions
+        checkPreconditions(input);
+        isRunning = true;
+    }
+
+    public void simulateAll () {
+        while(isRunning)
+            nextStep();
+    }
+
+    public boolean isAccepting() {
+        int currentPosition = dfa.getCurrentPosition();
+        State currentSate = dfa.getCurrentState();
+        String input = dfa.getInput();
+
+        return (currentPosition == input.length() && currentSate.getIsFinalState());
+    }
+
+    private void checkPreconditions(String input) throws IncompleteAutomatonException{
         //check all pre-conditions
         //check for start state
         print_automaton();
@@ -58,7 +77,7 @@ public class Simulator {
             throw new IncompleteAutomatonException("No start state defined!");
         //check for completeness of the transition function
         ArrayList<String> alphabet = getAlphabet(input);
-        
+
         for(State s:dfa.getStates()) {
             ArrayList<Transition> transitions = s.getTransitions();
             for(String c:alphabet) {
@@ -111,7 +130,30 @@ public class Simulator {
     // #[regen=yes,id=DCE.C245F85F-9EBB-3228-73CF-853407C3F3DF]
     // </editor-fold> 
     public void nextStep () {
-        
+        String input = dfa.getInput();
+        if(input.length() == 0)
+            isRunning = false;
+        if(isRunning) {
+            int currentPosition = dfa.getCurrentPosition();
+            if(currentPosition < input.length()-1) {
+                State currentState = dfa.getCurrentState();
+                String read = input.substring(currentPosition, currentPosition+1);
+                ArrayList<Transition> transitions = currentState.getTransitions();
+                for(int i=0; i<transitions.size() && currentState == dfa.getCurrentState(); i++) {
+                    Transition t = transitions.get(i);
+                    if(t.getInput().contains(read)) {
+                        //take transition and set new current state
+                        int nextposition = currentPosition+1;
+                        dfa.setCurrentState(t.getToState());
+                        dfa.setCurrentPosition(nextposition);
+                        if(nextposition == input.length()) {
+                            //all input has been read
+                            isRunning = false;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
