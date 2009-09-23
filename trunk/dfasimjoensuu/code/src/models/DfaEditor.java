@@ -27,6 +27,11 @@ public class DfaEditor {
     private int panStartX = 0;
     private int panStartY = 0;
 
+    private int dragOffsetX = 0;
+    private int dragOffsetY = 0;
+
+
+
     private State currentStateSelected = null;
 
     //-- states --
@@ -136,7 +141,7 @@ public class DfaEditor {
     {
         if (toolState == EditorToolStates.handTool)
         {
-            
+            handleObjectHighlighting(evt);
         }
     }
 
@@ -166,7 +171,11 @@ public class DfaEditor {
                  setOffsetX(oldoffsetX+evt.getX()-panStartX);
                  setOffsetY(oldoffsetY+evt.getY()-panStartY);
                  updateGraphicsAll();
-                 System.out.println("offsetX:"+offsetX+"   offsetx:"+offsetY+" panstartX"+panStartX+"  panstarty "+panStartY+"   MX"+evt.getX()+"   MY"+evt.getY()+"    dx"+(evt.getX()-panStartX));
+                 //System.out.println("offsetX:"+offsetX+"   offsetx:"+offsetY+" panstartX"+panStartX+"  panstarty "+panStartY+"   MX"+evt.getX()+"   MY"+evt.getY()+"    dx"+(evt.getX()-panStartX));
+             } else
+             {
+                 handleStateMovement(evt);
+                 updateGraphicsAll();
              }
         }
        
@@ -175,17 +184,20 @@ public class DfaEditor {
 
     private void handleObjectSelection(java.awt.event.MouseEvent evt)
     {
-        State stateHit = getStateatMouse(evt.getX(), evt.getY());
+        State stateHit = getStateatMouse(evt.getX(), evt.getY(), false, 0, true);
         if (stateHit != null)
         {
+            updateGraphicsAll();
             System.out.println("Hit state: "+stateHit.getState_Properties().getName());
+            dragOffsetX = evt.getX()-offsetX-stateHit.getState_Properties().getXPos();
+            dragOffsetY = evt.getY()-offsetY-stateHit.getState_Properties().getYPos();
         }
         this.currentStateSelected = stateHit;
     }
 
 
 
-    private State getStateatMouse(int px, int py)
+    private State getStateatMouse(int px, int py, boolean changeHighlight, int highlightIndex, boolean selectOnHit)
     {
         State s = null;
         double tx = px - offsetX;
@@ -200,26 +212,58 @@ public class DfaEditor {
             if ((dx*dx+dy*dy) < dFAPainter.getStateDrawSize()*dFAPainter.getStateDrawSize()/4)
             {
                 s = st;
+                if (changeHighlight)
+                st.getState_Properties().setHighlightIndex(highlightIndex);
+                if (selectOnHit)
+                st.getState_Properties().setSelected(true);
+            } else
+            {
+                if (changeHighlight)
+                st.getState_Properties().setHighlightIndex(0);
+                if (selectOnHit)
+                st.getState_Properties().setSelected(false);
             }
         }
-
         return s;
     }
 
+
+    /**
+     * highlight objects
+     */
+    private void handleObjectHighlighting(java.awt.event.MouseEvent evt)
+    {
+        if (toolState == EditorToolStates.handTool)
+        {
+            State s = getStateatMouse(evt.getX(), evt.getY(),true,1,false);
+            updateGraphicsAll();
+        }
+
+    }
+
+
+    private void handleStateMovement(java.awt.event.MouseEvent evt)
+    {
+        if (currentStateSelected != null)
+        {
+            int px = evt.getX()-offsetX-dragOffsetX;
+            int py = evt.getY()-offsetY-dragOffsetY ;
+            currentStateSelected.getState_Properties().setXPos(px);
+            currentStateSelected.getState_Properties().setYPos(py);
+        }
+    }
 
 
 
     private void handleHandToolMouseRelease(java.awt.event.MouseEvent evt)
     {
-            if (currentStateSelected != null)
-            {
-                int px = evt.getX()-offsetX;
-                int py = evt.getY()-offsetY;
-                currentStateSelected.getState_Properties().setXPos(px);
-                currentStateSelected.getState_Properties().setYPos(py);
-                currentStateSelected = null;
-                updateGraphicsAll();
-            }
+        handleStateMovement(evt);
+
+        if (toolState == EditorToolStates.handTool)
+        {
+            State s = getStateatMouse(evt.getX(), evt.getY(),true,1,true);
+            updateGraphicsAll();
+        }
     }
 
 
