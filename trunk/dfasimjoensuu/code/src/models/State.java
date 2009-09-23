@@ -1,12 +1,13 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD]
 // </editor-fold> 
-public class State {
+public class State implements Serializable{
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.4B631DDD-D7DD-EBBD-0264-5BC4D4D8A198]

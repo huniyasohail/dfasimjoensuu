@@ -34,7 +34,7 @@ DFAPainter dFAPainter;
 @Override public void paintComponent(Graphics g) {
          super.paintComponent(g);    // paints background
          if (dFAPainter != null)
-             dFAPainter.updaterGraphics((Graphics2D)g);
+             dFAPainter.updateGraphics((Graphics2D)g);
 
 }
 

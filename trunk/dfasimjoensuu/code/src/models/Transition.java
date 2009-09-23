@@ -1,12 +1,13 @@
 package models;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.87C11C34-F942-9444-FDCC-B025A77DB87B]
 // </editor-fold> 
-public class Transition {
+public class Transition implements Serializable{
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.FFDC584F-92A7-C21D-8870-4B084854C2DA]
