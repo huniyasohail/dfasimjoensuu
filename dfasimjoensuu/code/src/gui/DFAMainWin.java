@@ -6,7 +6,9 @@
 
 package gui;
 
+import controller.IncompleteAutomatonException;
 import controller.Simulator;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -19,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -28,7 +32,6 @@ import models.DfaEditor;
 import models.EditorToolStates;
 import models.State;
 import models.Transition;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -94,17 +97,17 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelConsole = new javax.swing.JPanel();
         panelConsoleTop = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        buttonNextStep = new javax.swing.JButton();
+        buttonSimulateAll = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jButton3 = new javax.swing.JButton();
+        textareaInputWord = new javax.swing.JTextArea();
+        buttonReset = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textareaOutput = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuitemOpen = new javax.swing.JMenuItem();
@@ -115,6 +118,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuitemProperties = new javax.swing.JMenuItem();
         menuSimulation = new javax.swing.JMenu();
         menuitemStartSim = new javax.swing.JMenuItem();
+        menuItemStopSim = new javax.swing.JMenuItem();
         menuInfo = new javax.swing.JMenu();
         menuitemInfo = new javax.swing.JMenuItem();
 
@@ -237,33 +241,33 @@ public class DFAMainWin extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel1.setText("Simulation");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_play.png"))); // NOI18N
-        jButton1.setText("Next");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_play.png"))); // NOI18N
+        buttonNextStep.setText("Next");
+        buttonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buttonNextStepActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_fastfwd.png"))); // NOI18N
-        jButton2.setText("All");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        buttonSimulateAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_fastfwd.png"))); // NOI18N
+        buttonSimulateAll.setText("All");
+        buttonSimulateAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                buttonSimulateAllActionPerformed(evt);
             }
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel2.setText("Input word");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        textareaInputWord.setColumns(20);
+        textareaInputWord.setRows(5);
+        jScrollPane2.setViewportView(textareaInputWord);
 
-        jButton3.setText("Reset");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        buttonReset.setText("Reset");
+        buttonReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                buttonResetActionPerformed(evt);
             }
         });
 
@@ -284,16 +288,16 @@ public class DFAMainWin extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(buttonNextStep)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(buttonSimulateAll)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelConsoleTopLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
+                        .addComponent(buttonReset))
                     .addComponent(jLabel3))
                 .addGap(31, 31, 31))
         );
@@ -313,9 +317,9 @@ public class DFAMainWin extends javax.swing.JFrame {
                         .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
                             .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButton1)
-                                .addComponent(jButton2)
-                                .addComponent(jButton3)
+                                .addComponent(buttonNextStep)
+                                .addComponent(buttonSimulateAll)
+                                .addComponent(buttonReset)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
@@ -324,10 +328,10 @@ public class DFAMainWin extends javax.swing.JFrame {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setEditable(false);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        textareaOutput.setColumns(20);
+        textareaOutput.setEditable(false);
+        textareaOutput.setRows(5);
+        jScrollPane1.setViewportView(textareaOutput);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -391,6 +395,15 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         menuSimulation.add(menuitemStartSim);
+
+        menuItemStopSim.setText("Stop Simulation");
+        menuItemStopSim.setEnabled(false);
+        menuItemStopSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemStopSimActionPerformed(evt);
+            }
+        });
+        menuSimulation.add(menuItemStopSim);
 
         jMenuBar1.add(menuSimulation);
 
@@ -483,17 +496,64 @@ public class DFAMainWin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuitemPropertiesActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void buttonSimulateAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimulateAllActionPerformed
+        while(dfaSim.getIsRunning()) {
+            buttonNextStepActionPerformed(evt);
+        }
+    }//GEN-LAST:event_buttonSimulateAllActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void buttonNextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextStepActionPerformed
+        String inputWord = textareaInputWord.getText();
+        Dfa dfa = dfaSim.getDfa();
+        State activeState = dfa.getCurrentState();
+        State nextState;
+        if (!dfaSim.getIsRunning()) {
+            try {
+               dfaSim.startSimulation(inputWord);
+               textareaInputWord.setEditable(false);
+            } catch (IncompleteAutomatonException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Cannot start simulation" , JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        int pos = dfa.getCurrentPosition();
+        dfaSim.nextStep();
+        nextState = dfa.getCurrentState();
+        highlightCurrentPosition(pos);
+        outputInfo(activeState, nextState, pos);
+        if(!dfaSim.getIsRunning()) {
+            //All input has been read
+            buttonNextStep.setEnabled(false);
+            buttonSimulateAll.setEnabled(false);
+            String acceptMsg = "The DFA ";
+            if(dfaSim.isAccepting()) {
+                acceptMsg += "ACCEPTS the input word!";
+            } else {
+                acceptMsg += "does NOT accept the input word!";
+            }
+            textareaOutput.setText(textareaOutput.getText()+acceptMsg);
+        }
+    }//GEN-LAST:event_buttonNextStepActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void outputInfo(State fromState, State toState, int pos) {
+        String input = textareaInputWord.getText().substring(pos, pos+1);
+        String msg = "Reading input '"+input+"' and taking Transition from State ";
+        msg += fromState.getState_Properties().getName()+" to State ";
+        msg += toState.getState_Properties().getName()+".\n";
+        textareaOutput.setText(textareaOutput.getText()+msg);
+    }
+    private void highlightCurrentPosition(int pos) {
+        textareaInputWord.requestFocus();
+        textareaInputWord.setSelectionColor(Color.red);
+        textareaInputWord.setSelectionStart(pos);
+        textareaInputWord.setSelectionEnd(pos+1);
+    }
+    private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
+        textareaInputWord.setEditable(true);
+        textareaOutput.setText("");
+        buttonNextStep.setEnabled(true);
+        buttonSimulateAll.setEnabled(true);
+        dfaSim.resetDfa();
+    }//GEN-LAST:event_buttonResetActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        connectGUItoDFA();
@@ -533,9 +593,11 @@ public class DFAMainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_panelDrawAreaMouseDragged
 
     private void menuitemStartSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemStartSimActionPerformed
-        this.simBarVisible = !simBarVisible;
-        panelConsole.setVisible(simBarVisible);
+        this.simBarVisible = true;
+        panelConsole.setVisible(true);
         jSplitPane1.setDividerLocation(0.65);
+        menuItemStopSim.setEnabled(true);
+        menuitemStartSim.setEnabled(false);
         updateButtons();
     }//GEN-LAST:event_menuitemStartSimActionPerformed
 
@@ -543,29 +605,51 @@ public class DFAMainWin extends javax.swing.JFrame {
         JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", "dfa"));
         int retVal = fc.showSaveDialog(this);
-        if(retVal == JFileChooser.APPROVE_OPTION) {
-            ObjectOutputStream out = null;
-            try {
-                File file = fc.getSelectedFile();
-                String fpath = file.getPath();
+        if (retVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String fpath = file.getPath();
 
-               if (!fpath.toLowerCase().endsWith(".dfa"))
-                {
-                   String newName = fpath+".dfa";
-                   file = new File(newName);
-                }
-                out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-                out.writeObject(this.dfaSim.getDfa());
-                out.close();
-            } catch (FileNotFoundException ex) {
-                //TODO
-                String msg = "File not found!";
-                JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+            if (!fpath.toLowerCase().endsWith(".dfa")) {
+                String newName = fpath + ".dfa";
+                file = new File(newName);
+            }
+            if (file.exists()) {
+                String msg = "The file you have chosen already exists! Do you want to overwrite this file?";
+                retVal = JOptionPane.showConfirmDialog(this, msg, "Overwrite?", JOptionPane.YES_NO_CANCEL_OPTION);
+            } else {
+                retVal = JOptionPane.YES_OPTION;
+            }
+            switch (retVal) {
+                case JOptionPane.YES_OPTION:
+                    try {
+                        ObjectOutputStream out = null;
+                        out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+                        out.writeObject(this.dfaSim.getDfa());
+                        out.close();
+                    } catch (FileNotFoundException ex) {
+                        //TODO
+                        String msg = "File not found!";
+                        JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+                    }
+                    break;
+                case JOptionPane.NO_OPTION:
+                    menuitemSaveActionPerformed(evt);
+                    break;
+                default:
+                    //do nothing
             }
         }
     }//GEN-LAST:event_menuitemSaveActionPerformed
+
+    private void menuItemStopSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemStopSimActionPerformed
+        this.simBarVisible = false;
+        panelConsole.setVisible(false);
+        menuItemStopSim.setEnabled(false);
+        menuitemStartSim.setEnabled(true);
+        updateButtons();
+    }//GEN-LAST:event_menuItemStopSimActionPerformed
 
 
     private void handleDoubleClick(java.awt.event.MouseEvent evt)
@@ -635,9 +719,9 @@ public void showTransEditWin(Transition t)
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton buttonNextStep;
+    private javax.swing.JButton buttonReset;
+    private javax.swing.JButton buttonSimulateAll;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -648,12 +732,11 @@ public void showTransEditWin(Transition t)
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenu menuDFA;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuInfo;
+    private javax.swing.JMenuItem menuItemStopSim;
     private javax.swing.JMenu menuSimulation;
     private javax.swing.JMenuItem menuitemExit;
     private javax.swing.JMenuItem menuitemInfo;
@@ -666,6 +749,8 @@ public void showTransEditWin(Transition t)
     private javax.swing.JPanel panelContainer;
     private gui.PaintPanel panelDrawArea;
     private javax.swing.JPanel panelTop;
+    private javax.swing.JTextArea textareaInputWord;
+    private javax.swing.JTextArea textareaOutput;
     private javax.swing.JToggleButton toggleAddState;
     private javax.swing.JToggleButton toggleAddTransition;
     private javax.swing.JToggleButton togglePointer;

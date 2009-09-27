@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import models.Dfa;
 import models.DfaEditor;
 import models.State;
@@ -62,6 +63,18 @@ public class Simulator {
         isRunning = true;
     }
 
+    private boolean alphabetsAreEqual(ArrayList<String> inputAlphabet, ArrayList<String> transitionsAlphabet) {
+        if(inputAlphabet.size() > transitionsAlphabet.size())
+            return false;
+        Collections.sort(inputAlphabet);
+        Collections.sort(transitionsAlphabet);
+        for(int i=0; i<inputAlphabet.size(); i++) {
+            if(!inputAlphabet.get(i).equals(transitionsAlphabet.get(i)))
+                return false;
+        }
+        return true;
+    }
+
     public void simulateAll () {
         int currentPosition = dfa.getCurrentPosition();
         String input = dfa.getInput();
@@ -73,8 +86,7 @@ public class Simulator {
         int currentPosition = dfa.getCurrentPosition();
         State currentSate = dfa.getCurrentState();
         String input = dfa.getInput();
-
-        return (currentPosition == input.length() && currentSate.getIsFinalState());
+        return (currentPosition == input.length()-1 && currentSate.getIsFinalState());
     }
 
     private void checkPreconditions(String input) throws IncompleteAutomatonException{
@@ -83,8 +95,17 @@ public class Simulator {
         dfa.setInput(input);
         if(dfa.getStartState() == null)
             throw new IncompleteAutomatonException("No start state defined!");
+
+        //Make sure the input alphabet equals the dfa's alphabet
+        ArrayList<String> alphabetFromInput = getAlphabetFromInput(input);
+        ArrayList<String> alphabetFromTransitions = getAlphabetFromTransitions();
+        if(!alphabetsAreEqual(alphabetFromInput, alphabetFromTransitions)) {
+            String msg = "Error: The input alphabet does not match the alphabet derived from the transitions!";
+            throw new IncompleteAutomatonException(msg);
+        }
+        
         //check for completeness of the transition function
-        ArrayList<String> alphabet = getAlphabet(input);
+        ArrayList<String> alphabet = getAlphabetFromInput(input);
 
         for(State s:dfa.getStates()) {
             ArrayList<Transition> transitions = s.getTransitions();
@@ -103,17 +124,26 @@ public class Simulator {
         }
     }
 
-    private ArrayList<String> getAlphabet(String input) {
+    private ArrayList<String> getAlphabetFromTransitions() {
+        ArrayList<String> alphabet = new ArrayList<String>();
+        ArrayList<State> states = dfa.getStates();
+
+        for(State s:states) {
+            for(Transition t:s.getTransitions()) {
+                for(String c:t.getInput()) {
+                    if(!alphabet.contains(c))
+                        alphabet.add(c);
+                }
+            }
+        }
+        return alphabet;
+    }
+
+    private ArrayList<String> getAlphabetFromInput(String input) {
         ArrayList<String> alphabet = new ArrayList<String>();
         for(int i=0; i<input.length(); i++) {
             String c = input.substring(i, i+1);
-            boolean found = false;
-            int j = 0;
-            while(j<alphabet.size() && !found) {
-                found = alphabet.get(j).equals(c);
-                j++;
-            }
-            if(!found)
+            if(!alphabet.contains(c))
                 alphabet.add(c);
         }
         return alphabet;
@@ -122,7 +152,18 @@ public class Simulator {
     private void print_automaton() {
         System.out.println("Starting a simulation with the following automaton:");
         for(State s:dfa.getStates()) {
-            System.out.println("State "+s.getState_Properties().getName()+":");
+            String stateMsg = "State "+s.getState_Properties().getName();
+            if(s.getIsStartState() && s.getIsFinalState())
+                stateMsg += " (start, final):";
+            else
+                if(s.getIsStartState())
+                    stateMsg += " (start):";
+                else
+                    if(s.getIsFinalState())
+                        stateMsg += " (final):";
+                    else
+                        stateMsg += ":";
+            System.out.println(stateMsg);
             ArrayList<Transition> transitions = s.getTransitions();
             for(Transition t:transitions) {
                 System.out.print("\tTransition from "+t.getFromState().getState_Properties().getName()+" to "+t.getToState().getState_Properties().getName()+" labled with: ");
@@ -154,8 +195,6 @@ public class Simulator {
                         //take transition and set new current state
                         nextposition = currentPosition+1;
                         dfa.setCurrentState(t.getToState());
-                        String state1 = currentState.getState_Properties().getName();
-                        String state2 = t.getToState().getState_Properties().getName();
                         if(nextposition < input.length()) {
                             dfa.setCurrentPosition(nextposition);
                         } else {
@@ -166,6 +205,16 @@ public class Simulator {
                 }
             }
         }
+    }
+
+    public boolean getIsRunning() {
+        return isRunning;
+    }
+
+    public void resetDfa() {
+        dfa.setCurrentPosition(0);
+        dfa.setCurrentState(dfa.getStartState());
+        dfa.setInput(null);
     }
 
 }

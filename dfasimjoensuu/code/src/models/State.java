@@ -78,7 +78,7 @@ public class State implements Serializable{
      * Sets whether the state is the start state.
      * @param val true/false.
      */
-    public void setIsStartState (boolean val) {
+    void setIsStartState (boolean val) {
         this.isStartState = val;
     }
 
