@@ -14,6 +14,7 @@ package gui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import models.Transition;
@@ -179,12 +180,30 @@ public class DFATransitionWin extends JFrame {
             JOptionPane.showMessageDialog(this, "You must enter at least one transition letter!", "Error", JOptionPane.OK_OPTION);
         } else
         {
-            dFAMainWin.getDfaSim().getDfa().writeTransitionsInputArray(textInput.getText(),transition);
+            //dFAMainWin.getDfaSim().getDfa().writeTransitionsInputArray(textInput.getText(),transition);
+            ArrayList<String> inputArray = getTransitionsInputArray(textInput.getText());
+            try {
+                transition.getFromState().setTransitionInput(transition, inputArray);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error while editing transition", JOptionPane.WARNING_MESSAGE);
+            }
             setVisible(false);
             dFAMainWin.repaint();
             dispose();
         }
 
+    }
+
+    private ArrayList<String> getTransitionsInputArray(String commaSeparatedInput) {
+        ArrayList<String> newArray = new ArrayList<String>(commaSeparatedInput.length());
+        for(int i=0; i<commaSeparatedInput.length(); i++) {
+            String c = commaSeparatedInput.substring(i, i+1);
+            if(c.equals(","))
+                continue;
+            newArray.add(c);
+        }
+        return newArray;
     }
 
 

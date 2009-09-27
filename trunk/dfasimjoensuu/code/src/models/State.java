@@ -144,6 +144,26 @@ public class State implements Serializable{
     }
 
     /**
+     * Sets the labels for transition t. If there are already labels set, these labels will be replaced by the new labels.
+     * @param t The transition.
+     * @param input ArrayList of the new labels.
+     * @return Transition t.
+     * @throws NoSuchTransitionException Transition t is not part of the DFA.
+     * @throws Exception There is already another transition with the same label.
+     */
+    public Transition setTransitionInput(Transition t, ArrayList<String> input) throws NoSuchTransitionException, Exception{
+        if(transitions.contains(t)) {
+            t.setInput(null);
+            for(String label:input) {
+                addLabelToTransition(t, label);
+            }
+            return t;
+        } else {
+            throw new NoSuchTransitionException();
+        }
+    }
+
+    /**
      * Removes a transition from the DFA.
      * @param t Transition to be removed.
      */
