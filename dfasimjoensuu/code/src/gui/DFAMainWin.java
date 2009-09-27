@@ -86,6 +86,7 @@ public class DFAMainWin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jToolBar1 = new javax.swing.JToolBar();
         togglePointer = new javax.swing.JToggleButton();
         toggleAddState = new javax.swing.JToggleButton();
@@ -500,6 +501,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         while(dfaSim.getIsRunning()) {
             doNextStep();
         }
+        panelDrawArea.repaint();
     }//GEN-LAST:event_buttonSimulateAllActionPerformed
 
     private void buttonNextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextStepActionPerformed
@@ -557,6 +559,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         buttonNextStep.setEnabled(true);
         buttonSimulateAll.setEnabled(true);
         dfaSim.resetDfa();
+        panelDrawArea.repaint();
     }//GEN-LAST:event_buttonResetActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -600,6 +603,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         jSplitPane1.setDividerLocation(0.65);
         menuItemStopSim.setEnabled(true);
         menuitemStartSim.setEnabled(false);
+        dfaSim.getDfaEditor().setIsEditable(false);
         updateButtons();
     }//GEN-LAST:event_menuitemStartSimActionPerformed
 
@@ -650,6 +654,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelConsole.setVisible(false);
         menuItemStopSim.setEnabled(false);
         menuitemStartSim.setEnabled(true);
+        dfaSim.getDfaEditor().setIsEditable(true);
         updateButtons();
     }//GEN-LAST:event_menuItemStopSimActionPerformed
 
@@ -696,9 +701,9 @@ public void updateToolButtons()
     toggleAddState.setSelected(e.getToolState() == EditorToolStates.addState);
     toggleAddTransition.setSelected(e.getToolState() == EditorToolStates.addTransition);
     
-    togglePointer.setEnabled(e.isIsEditable());
-    toggleAddState.setEnabled(e.isIsEditable());
-    toggleAddTransition.setEnabled(e.isIsEditable());
+    togglePointer.setEnabled(e.isEditable());
+    toggleAddState.setEnabled(e.isEditable());
+    toggleAddTransition.setEnabled(e.isEditable());
 }
 
 public void showStateEditWin(State s)
@@ -721,6 +726,7 @@ public void showTransEditWin(Transition t)
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton buttonNextStep;
     private javax.swing.JButton buttonReset;
     private javax.swing.JButton buttonSimulateAll;
