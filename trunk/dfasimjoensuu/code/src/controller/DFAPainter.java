@@ -327,8 +327,23 @@ public class DFAPainter {
                     int cpointx = (int) (centerx + turnedx);
                     int cpointy = (int) (centery + turnedy);
 
-                    int textpointx = (int) (centerx + turnedx / (2) + normy * 20);
-                    int textpointy = (int) (centery + turnedy / (2) - normx * 20);
+                    double textAdaption = 35;
+                    double absCurveFactor = Math.abs(t.getCurveFactor());
+                    double direction = 1;
+                     if (t.getCurveFactor() < 0)
+                    {
+                        direction = -1;
+                        textAdaption = 35;
+                    }
+                    if (absCurveFactor < 2)
+                    {
+                        textAdaption =  Math.max(20, textAdaption*curveAdoptionFactor(absCurveFactor));
+                    }
+                    textAdaption = textAdaption*direction;
+                    //System.out.println(t.getCurveFactor());
+
+                    int textpointx = (int) (centerx + turnedx / (2) + normy * textAdaption);
+                    int textpointy = (int) (centery + turnedy / (2) - normx * textAdaption);
 
                     //-- tangential crossing with the circles (start and end of curve) --
                     Vector<Double> p1 = getIntersectionPoint(s1x, s1y, cpointx, cpointy, 1.2 * stateDrawSize / 2);
@@ -453,6 +468,15 @@ public class DFAPainter {
 
     }
 
+    private double curveAdoptionFactor(double input)
+    {
+
+        double f = (input-1);
+        f = 1/(f*f*f*f+1);
+        return 0.7*(input/2)*(input/2)+0.3*f;
+
+    }
+
     private void drawTouchTransitionButton(Transition t,double normx, double normy, double additionalArcDistance, double h1x, double h1y,double h2x, double h2y)
     {
         TouchButton tb = getDfaEditor().getTouchButton();
@@ -470,8 +494,8 @@ public class DFAPainter {
         int cpointx = (int) (centerx + turnedx);
         int cpointy = (int) (centery + turnedy);
 
-        int textpointx = (int) (centerx + turnedx/(2) -7*normy);
-        int textpointy = (int) (centery + turnedy/(2) +7*normx);
+        int textpointx = (int) (centerx + turnedx/(2)*0.93*curvePointAdaptionFactor(t.getCurveFactor(),1));
+        int textpointy = (int) (centery + turnedy/(2)*0.93*curvePointAdaptionFactor(t.getCurveFactor(),1));
 
         Color fcolor = tb.getColorNormal();
 
@@ -491,11 +515,13 @@ public class DFAPainter {
          g.setColor(colorTransitionLineSelected);
         g.drawOval(textpointx-tb.getSize(),
                 textpointy-tb.getSize(), 2*tb.getSize(), 2*tb.getSize());
-
-        
-
     }
 
+private double curvePointAdaptionFactor(double input,double min)
+{
+    double x = input - min;
+    return 1-0.25/(x*x+1);
+}
 
 
 
@@ -581,7 +607,7 @@ public class DFAPainter {
          return rect;
     }
 
-    private Vector<Double> getIntersectionPoint(double fromX, double fromY, double toX, double toY, double distance)
+    public Vector<Double> getIntersectionPoint(double fromX, double fromY, double toX, double toY, double distance)
     {
         Vector<Double> v = new Vector<Double>();
         double dx = toX - fromX;
