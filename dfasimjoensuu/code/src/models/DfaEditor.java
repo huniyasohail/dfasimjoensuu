@@ -3,6 +3,7 @@ package models;
 import controller.DFAPainter;
 import controller.Simulator;
 import gui.DFAMainWin;
+import java.awt.event.KeyEvent;
 import javax.swing.SwingUtilities;
 
 
@@ -39,6 +40,8 @@ public class DfaEditor{
     private State transitionAddFrom = null;
     private State transitionAddTo = null;
 
+    boolean waitForEditWindow = false;
+
     //-- dummies for userinteraction --
     private State dummyState = new State("new");
     private Transition dummyTransition = new Transition(null,null);
@@ -51,6 +54,7 @@ public class DfaEditor{
     private EditorToolStates toolState;
     private EditorTransitionStates transitionState;
 
+    // -- connections to other objects -.
     private Dfa dfa = null;
     private DFAPainter dFAPainter;
     private Simulator dfaSim = null;
@@ -102,6 +106,14 @@ public class DfaEditor{
 
     public void setOffsetY(int offsetY) {
         this.offsetY = offsetY;
+    }
+
+    public boolean isWaitForEditWindow() {
+        return waitForEditWindow;
+    }
+
+    public void setWaitForEditWindow(boolean waitForEditWindow) {
+        this.waitForEditWindow = waitForEditWindow;
     }
 
     public DFAMainWin getdFAMainWin() {
@@ -239,12 +251,14 @@ public class DfaEditor{
         }
         if (toolState == EditorToolStates.addState)
         {
-            handleAddStatesMove(evt);
+            if (!waitForEditWindow)
+                handleAddStatesMove(evt);
             updateGraphicsAll();
         }
         if (toolState == EditorToolStates.addTransition)
         {
             handleObjectHighlighting(evt);
+            if (!waitForEditWindow)
             showPossibleTransitons(evt);
             updateGraphicsAll();
         }
@@ -286,11 +300,13 @@ public class DfaEditor{
         }
         if (toolState == EditorToolStates.addState)
         {
+            if (!waitForEditWindow)
              handleAddState(evt);
              updateGraphicsAll();
         }
         if (toolState == EditorToolStates.addTransition)
         {
+            if (!waitForEditWindow)
             handleAddTransitionStep(evt);
         }
     }
@@ -298,7 +314,7 @@ public class DfaEditor{
 
     public void handleAddTransitionStep(java.awt.event.MouseEvent evt)
     {
-        if (this.transitionState == EditorTransitionStates.selectFromState)
+        if (this.transitionState == EditorTransitionStates.selectFromState && !waitForEditWindow)
         {
             State stateHit = getStateAtMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
             if (stateHit != null)
@@ -309,12 +325,12 @@ public class DfaEditor{
         } else
         {
             State stateHit = getStateAtMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
-            if (stateHit != null)
+            if (stateHit != null && !waitForEditWindow)
             {
                 transitionAddTo = stateHit;
                 stateHit.getState_Properties().setSelected(false);
                 this.transitionState = EditorTransitionStates.selectFromState;
-                if (transitionAddFrom != null)
+                if (transitionAddFrom != null )
                 {
                     addNewTransition(transitionAddFrom,transitionAddTo);
                     dummyTransition.setVisible(false);
@@ -332,13 +348,114 @@ public class DfaEditor{
         }
     }
 
+    /**
+     * handle Keyboard commands from the user
+     * @param evt
+     */
+    public void handleEditorKeyPressed(java.awt.event.KeyEvent evt)
+    {
+        if (isEditable)
+        {
+            //-- only allow with certain tools --
+            if (toolState == EditorToolStates.handTool || toolState == EditorToolStates.addState)
+            {
+                int key = evt.getKeyCode();
+                if (key == KeyEvent.VK_ENTER) {
+                }
+                if (key == KeyEvent.VK_DELETE) {
+                    handleDeleteObject(evt);
+
+                }
+
+
+
+            }
+        }
+    }
+
+/**
+ * delete selected objects
+ * @param evt
+ */
+    private void handleDeleteObject(java.awt.event.KeyEvent evt)
+    {
+        if (currentStateSelected != null && currentTransSelected != null)
+        {
+           //-- too much selected --
+        } else
+        {
+            if (currentStateSelected != null)
+            {
+                deleteState(currentStateSelected, true);
+            }
+            if (currentTransSelected != null)
+            {
+                deleteTransition(currentTransSelected, true);
+            }
+        }
+    }
+
+/**
+ * ask user and delete state
+ * @param s State to be deleted
+ * @param askUser boolean var ask user yes or no
+ * @return state deleted
+ */
+    public boolean deleteState(State s, boolean askUser)
+    {
+        boolean deleted = false;
+        if (askUser)
+        {
+            if (dFAMainWin.askUserMessageBoxYesNo("Delete State","Should the state '"+
+                    s.getState_Properties().getName()+"' be deleted?"))
+            {
+                deleted = true;
+            }
+        } else
+            deleted = true;
+
+        if (deleted)
+        {
+            //-- now really delete --
+            dfa.removeState(s);
+            currentStateSelected = null;
+            updateGraphicsAll();
+        }
+        return deleted;
+    }
+
+        public boolean deleteTransition(Transition t, boolean askUser)
+    {
+        boolean deleted = false;
+        if (askUser)
+        {
+            if (dFAMainWin.askUserMessageBoxYesNo("Delete transition","Should the selected transition be deleted?"))
+            {
+                deleted = true;
+            }
+        } else
+            deleted = true;
+
+        if (deleted)
+        {
+            //-- now really delete --
+            dfa.removeTransition(t);
+            currentTransSelected = null;
+            updateGraphicsAll();
+        }
+        return deleted;
+    }
+
+
+
+
     private Transition addNewTransition(State from, State to)
     {
        Transition t =  dfa.addTransition(from, to);
        currentTransSelected = t;
        removeAllSelections();
        t.setSelected(true);
-       dFAMainWin.showTransEditWin(t);
+       dFAMainWin.showTransEditWin(t,true);
        updateGraphicsAll();
        return t;
     }
@@ -358,11 +475,11 @@ public class DfaEditor{
     {
         if (currentStateSelected != null)
         {
-            dFAMainWin.showStateEditWin(currentStateSelected);
+            dFAMainWin.showStateEditWin(currentStateSelected,false);
         } else
         if (currentTransSelected != null)
         {
-            dFAMainWin.showTransEditWin(currentTransSelected);
+            dFAMainWin.showTransEditWin(currentTransSelected,false);
         }
 
     }
@@ -475,12 +592,12 @@ public class DfaEditor{
 
         removeAllSelections();
         State s = dfa.addState();
-        s.getState_Properties().setName("q"+dfa.getStates().size());
+        s.getState_Properties().setName("q"+(dfa.getStates().size()-1));
         s.getState_Properties().setSelected(true);
         s.getState_Properties().setXPos(this.dummyState.getState_Properties().getXPos());
         s.getState_Properties().setYPos(this.dummyState.getState_Properties().getYPos());
         updateGraphicsAll();
-        dFAMainWin.showStateEditWin(s);
+        dFAMainWin.showStateEditWin(s,true);
     }
 
 

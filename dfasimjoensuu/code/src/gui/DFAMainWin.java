@@ -42,6 +42,7 @@ public class DFAMainWin extends javax.swing.JFrame {
     Simulator dfaSim = null;
     boolean simBarVisible = false;
 
+
     /** Creates new form DFAMainWIn */
     public DFAMainWin() {
         
@@ -134,6 +135,11 @@ public class DFAMainWin extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         jToolBar1.setRollover(true);
         jToolBar1.setName("Tools"); // NOI18N
@@ -218,6 +224,11 @@ public class DFAMainWin extends javax.swing.JFrame {
                 panelDrawAreaAncestorResized(evt);
             }
         });
+        panelDrawArea.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                panelDrawAreaKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelDrawAreaLayout = new javax.swing.GroupLayout(panelDrawArea);
         panelDrawArea.setLayout(panelDrawAreaLayout);
@@ -286,7 +297,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonNextStep)
@@ -585,7 +596,9 @@ public class DFAMainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_panelDrawAreaMousePressed
 
     private void panelDrawAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseReleased
+        panelDrawArea.requestFocus();
         getDfaSim().getDfaEditor().handleMouseReleased(evt);
+        
     }//GEN-LAST:event_panelDrawAreaMouseReleased
 
     private void panelDrawAreaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseMoved
@@ -658,6 +671,16 @@ public class DFAMainWin extends javax.swing.JFrame {
         updateButtons();
     }//GEN-LAST:event_menuItemStopSimActionPerformed
 
+    private void panelDrawAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelDrawAreaKeyPressed
+     getDfaSim().getDfaEditor().handleEditorKeyPressed(evt);
+        
+    }//GEN-LAST:event_panelDrawAreaKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+        
+    }//GEN-LAST:event_formKeyPressed
+
 
     private void handleDoubleClick(java.awt.event.MouseEvent evt)
     {
@@ -706,24 +729,45 @@ public void updateToolButtons()
     toggleAddTransition.setEnabled(e.isEditable());
 }
 
-public void showStateEditWin(State s)
+public void showStateEditWin(State s, boolean newState)
 {
         DFAStatePropertiesWin stprowin = new DFAStatePropertiesWin();
         stprowin.setAlwaysOnTop(true);
         stprowin.setState(s);
         stprowin.setdFAMainWin(this);
+        stprowin.setNewElement(newState);
         stprowin.setVisible(true);
+        stprowin.requestFocus();
+        this.dfaSim.getDfaEditor().setWaitForEditWindow(true);
 }
 
-public void showTransEditWin(Transition t)
+public void showTransEditWin(Transition t, boolean newTrans)
 {
         DFATransitionWin trwin = new DFATransitionWin();
         trwin.setAlwaysOnTop(true);
         trwin.setTransition(t);
         trwin.setdFAMainWin(this);
+        trwin.setnewElement(newTrans);
         trwin.setVisible(true);
+        trwin.requestFocus();
+        this.dfaSim.getDfaEditor().setWaitForEditWindow(true);
 }
 
+public void handleCloseEditWindow()
+{
+    this.dfaSim.getDfaEditor().setWaitForEditWindow(false);
+}
+
+public boolean askUserMessageBoxYesNo(String title, String message)
+{
+    int n = JOptionPane.showConfirmDialog(
+        this,
+        message,
+        title,
+        JOptionPane.YES_NO_OPTION);
+    return n == 0;
+
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

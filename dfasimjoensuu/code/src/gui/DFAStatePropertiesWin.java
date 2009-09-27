@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
 import models.State;
 
 /**
@@ -25,11 +26,21 @@ public class DFAStatePropertiesWin extends JFrame {
 
     private State state = null;
     private DFAMainWin dFAMainWin = null;
+    private boolean newElement = false;
+    private boolean editedOK = false;
 
     /** Creates new form DFAStatePropertiesWin */
     public DFAStatePropertiesWin() {
         initComponents();
         centreWindow(this);
+    }
+
+    public boolean isNewElement() {
+        return newElement;
+    }
+
+    public void setNewElement(boolean newElement) {
+        this.newElement = newElement;
     }
 
     public State getEditState() {
@@ -65,6 +76,7 @@ public class DFAStatePropertiesWin extends JFrame {
         state.setIsFinalState(checkAccept.isSelected());
         if(checkStart.isSelected())
             dFAMainWin.getDfaSim().getDfa().setStartState(state);
+        editedOK = true;
         setVisible(false);
         dFAMainWin.repaint();
         dispose();
@@ -91,6 +103,9 @@ public class DFAStatePropertiesWin extends JFrame {
         setTitle("State properties");
         setAlwaysOnTop(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -150,21 +165,17 @@ public class DFAStatePropertiesWin extends JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textName, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
+                        .addComponent(textName, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(checkAccept)
-                                .addContainerGap(194, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkStart)
-                                .addContainerGap(242, Short.MAX_VALUE))))))
+                            .addComponent(checkAccept)
+                            .addComponent(checkStart))))
+                .addContainerGap(62, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(155, Short.MAX_VALUE)
+                .addContainerGap(157, Short.MAX_VALUE)
                 .addComponent(buttonCancel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -207,12 +218,24 @@ public class DFAStatePropertiesWin extends JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         initStatetoForm();
+        textName.requestFocus();
     }//GEN-LAST:event_formWindowOpened
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+        closeWin();
         setVisible(false);
         dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
+
+
+    private void closeWin()
+    {
+       if (!editedOK && newElement)
+       {
+            dFAMainWin.getDfaSim().getDfaEditor().deleteState(state, false);
+       }
+       dFAMainWin.handleCloseEditWindow();
+    }
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
         saveFormtoState();
@@ -222,10 +245,13 @@ public class DFAStatePropertiesWin extends JFrame {
          int key = evt.getKeyCode();
          if (key == KeyEvent.VK_ENTER) {
             saveFormtoState();
-
          }
 
     }//GEN-LAST:event_textNameKeyPressed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        closeWin();
+    }//GEN-LAST:event_formWindowClosed
 
     /**
     * @param args the command line arguments

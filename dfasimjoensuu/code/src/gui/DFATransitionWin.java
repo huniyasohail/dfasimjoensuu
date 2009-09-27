@@ -27,13 +27,23 @@ public class DFATransitionWin extends JFrame {
 
     private Transition transition = null;
     private DFAMainWin dFAMainWin = null;
-    
+    private boolean newElement = false;
+    private boolean editedOK = false;
 
 
     /** Creates new form DFATransitionWin */
     public DFATransitionWin() {
         initComponents();
         centreWindow(this);
+    }
+
+   private void closeWin()
+    {
+       if (!editedOK && newElement)
+       {
+            dFAMainWin.getDfaSim().getDfaEditor().deleteTransition(transition,false);
+       }
+        dFAMainWin.handleCloseEditWindow();
     }
 
     /** This method is called from within the constructor to
@@ -56,6 +66,9 @@ public class DFATransitionWin extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transition Properties");
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -152,6 +165,14 @@ public class DFATransitionWin extends JFrame {
         this.transition = transition;
     }
 
+    public boolean isnewElement() {
+        return newElement;
+    }
+
+    public void setnewElement(boolean isnewElement) {
+        this.newElement = isnewElement;
+    }
+
     public DFAMainWin getdFAMainWin() {
         return dFAMainWin;
     }
@@ -184,13 +205,15 @@ public class DFATransitionWin extends JFrame {
             ArrayList<String> inputArray = getTransitionsInputArray(textInput.getText());
             try {
                 transition.getFromState().setTransitionInput(transition, inputArray);
+                editedOK = true;
+                setVisible(false);
+                dFAMainWin.repaint();
+                dispose();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error while editing transition", JOptionPane.WARNING_MESSAGE);
             }
-            setVisible(false);
-            dFAMainWin.repaint();
-            dispose();
+
         }
 
     }
@@ -216,12 +239,14 @@ public class DFATransitionWin extends JFrame {
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+       closeWin();
        setVisible(false);
        dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        initTranstoForm();
+       textInput.requestFocus();
     }//GEN-LAST:event_formWindowOpened
 
     private void textInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textInputKeyPressed
@@ -231,6 +256,10 @@ public class DFATransitionWin extends JFrame {
 
          }
     }//GEN-LAST:event_textInputKeyPressed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        closeWin();
+    }//GEN-LAST:event_formWindowClosed
 
     /**
     * @param args the command line arguments

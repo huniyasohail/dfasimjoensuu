@@ -69,8 +69,21 @@ public class Dfa implements Serializable {
     public void removeState (State s) throws IllegalArgumentException{
         if (s == null)
                 throw new IllegalArgumentException();
+        //-- remove connected transitions --
+        for (int i=states.size()-1;i>=0;i--)
+        {
+            State ss = states.get(i);
+            for (int j=ss.getTransitions().size()-1;j>=0;j--)
+            {
+                Transition t = ss.getTransitions().get(j);
+                if (t.getToState() == s)
+                    removeTransition(t);
+            }
+        }
         // s != null
         this.states.remove(s);
+
+
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
