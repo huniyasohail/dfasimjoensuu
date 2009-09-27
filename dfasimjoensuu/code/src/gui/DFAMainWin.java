@@ -458,7 +458,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                 in.close();
             } catch (IOException ex) {
                 String msg = "File not found!";
-                JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error: File not found", JOptionPane.WARNING_MESSAGE);
             } catch (ClassNotFoundException ex) {
                 System.out.println(ex.getMessage());
             }

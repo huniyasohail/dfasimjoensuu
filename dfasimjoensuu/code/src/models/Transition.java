@@ -158,7 +158,11 @@ public class Transition implements Serializable {
      * transition's label list gets emptied.
      */
     public void setInput (ArrayList<String> val) {
-        if(val.size() == 0 || val == null)
+        if(val == null){
+            this.input = new ArrayList<String>();
+            return;
+        }
+        if(val.size() == 0)
             this.input = val;
         else
             for(String s:val)
