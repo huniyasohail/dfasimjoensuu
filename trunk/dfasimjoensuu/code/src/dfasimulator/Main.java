@@ -30,8 +30,8 @@ public class Main {
         }
 
 
-//       //Let's test the DFA
        Simulator simulator = new Simulator();
+//       //Let's test the DFA
 //       Dfa dfa = simulator.getDfa();
 //       Transition t;
 //       State s1 = simulator.getDfa().addState();
@@ -66,9 +66,8 @@ public class Main {
 //       simulator.simulateAll();
 //       System.out.println(simulator.isAccepting());
        
-       simulator.getDfa().autoArrangeDFA();
-       
        //-- show the mainwindow --
+
        DFAMainWin mainwin = new DFAMainWin();
        mainwin.setDfaSim(simulator);
        mainwin.setVisible(true);

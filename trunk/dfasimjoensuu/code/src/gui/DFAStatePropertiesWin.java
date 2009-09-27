@@ -63,18 +63,11 @@ public class DFAStatePropertiesWin extends JFrame {
     {
         state.getState_Properties().setName(textName.getText());
         state.setIsFinalState(checkAccept.isSelected());
-        state.setIsStartState(checkStart.isSelected());
+        if(checkStart.isSelected())
+            dFAMainWin.getDfaSim().getDfa().setStartState(state);
         setVisible(false);
         dFAMainWin.repaint();
         dispose();
-    }
-
-
-
-    void checkCheckboxes()
-    {
-
-
     }
 
     /** This method is called from within the constructor to
@@ -205,11 +198,11 @@ public class DFAStatePropertiesWin extends JFrame {
     }//GEN-LAST:event_textNameActionPerformed
 
     private void checkStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkStartActionPerformed
-        checkCheckboxes();
+        
     }//GEN-LAST:event_checkStartActionPerformed
 
     private void checkAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAcceptActionPerformed
-        checkCheckboxes();
+
     }//GEN-LAST:event_checkAcceptActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

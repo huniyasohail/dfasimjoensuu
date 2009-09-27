@@ -243,216 +243,204 @@ public class DFAPainter {
         return "-";
     }
 
-    public void paintTransition(State s1, State s2, Transition t, String caption, Color color, boolean fakeTrans)
-    {
-        if (s1 != null && s2 != null)
-        {
-        int captionPositionX = 0;
-        int captionPositionY = 0;
-        Color colorCaptionColor = Color.white;
-        Color colorLineColor = colorTransitionLineNormal;
-        Color colorFont = colorTransitionFontNormal;
+    public void paintTransition(State s1, State s2, Transition t, String caption, Color color, boolean fakeTrans) {
+        if (s1 != null && s2 != null) {
+            int captionPositionX = 0;
+            int captionPositionY = 0;
+            Color colorCaptionColor = Color.white;
+            Color colorLineColor = colorTransitionLineNormal;
+            Color colorFont = colorTransitionFontNormal;
 
-        if (t.getHighlightStatus() == HighlightTypes.MouseOver)
-        {
-            colorCaptionColor = colorTransitionLabelHighlighted;
-            colorLineColor = colorTransitionLineHighlighted;
-        }
-
-        if (t.isSelected())
-        {
-            colorCaptionColor = colorTransitionLabelSelected;
-            colorLineColor = colorTransitionLineSelected;
-            colorFont = colorTransitionFontSelected;
-        }
-
-        if (fakeTrans)
-        {
-            colorCaptionColor = Color.white;
-            colorLineColor = color;
-            colorFont = Color.white;
-        }
-
-        boolean showTouchButton = (getDfaEditor().getToolState() == EditorToolStates.handTool) && t.isSelected();
-
-         boolean paintLabelBackground = t.isSelected() || (t.getHighlightStatus() != HighlightTypes.NoHighlight || fakeTrans);
-
-        Graphics2D g = this.graphics;
-        int s1x = s1.getState_Properties().getXPos();
-        int s1y = s1.getState_Properties().getYPos();
-
-        int s2x = s2.getState_Properties().getXPos();
-        int s2y = s2.getState_Properties().getYPos();
-
-        g.setColor(color);
-
-        //-- arc case or linear --
-        boolean isBidirectional = false;
-        if (!fakeTrans)
-        {
-           try {
-            isBidirectional = dfaEditor.getDfa().isBidirectionalTransition(s1, s2);
-             } catch(NoSuchTransitionException ex) {
-            //TODO
-            System.out.println(ex.getMessage());
-             }
-        } else
-            isBidirectional = true;
-
-        if (s1 != s2 && isBidirectional)
-        {
-            //-- get control point --
-            int dx = s2x - s1x;
-            int dy = s2y - s1y;
-            double vlength = calcVectorLength(dx,dy);
-
-            if (vlength > 0)
-            {
-                QuadCurve2D c = new QuadCurve2D.Double();
-
-                double centerx = (s2x + s1x)/2;
-                double centery = (s2y + s1y)/2;
-
-                double normx = dx/vlength;
-                double normy = dy/vlength;
-
-                double additionalArcDistance = vlength/100;
-                //-- turn vector 90 degrees --
-                double turnedx = arcDistance*normy*additionalArcDistance*t.getCurveFactor();
-                double turnedy = -arcDistance*normx*additionalArcDistance*t.getCurveFactor();
-
-                int cpointx = (int) (centerx + turnedx);
-                int cpointy = (int) (centery + turnedy);
-
-                int textpointx = (int) (centerx + turnedx/(2)+normy*20);
-                int textpointy = (int) (centery + turnedy/(2)-normx*20);
-
-                //-- tangential crossing with the circles (start and end of curve) --
-                Vector<Double> p1 = getIntersectionPoint(s1x,s1y,cpointx,cpointy,1.2*stateDrawSize/2);
-                Vector<Double> p2 = getIntersectionPoint(s2x,s2y,cpointx,cpointy,1.4*stateDrawSize/2);
-
-                int h1x = (int)Math.round(p1.get(0)) + dfaEditor.getOffsetX();
-                int h1y = (int)Math.round(p1.get(1)) + dfaEditor.getOffsetY();
-
-                int h2x = (int)Math.round(p2.get(0)) + dfaEditor.getOffsetX();
-                int h2y = (int)Math.round(p2.get(1)) + dfaEditor.getOffsetY();
-
-                g.setColor(colorLineColor);
-                //-- quadratic arc --
-                c.setCurve(h1x,h1y,
-                        cpointx+dfaEditor.getOffsetX(), cpointy+dfaEditor.getOffsetY(),
-                        h2x, h2y);
-                g.draw(c);
-                //-- draw text --
-                if (paintLabelBackground)
-                {
-                    Rectangle2D fbounds = getFontBounds(caption,textpointx +t.getCaptionOffsetX()+ dfaEditor.getOffsetX(), textpointy +t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont, g);
-                    paintTransitionHighlightRectangle(fbounds,colorCaptionColor,(int)(4*getDfaEditor().getZoomfactor()),g);
-                }
-                g.setColor(colorFont);
-                drawCenteredText(caption,textpointx+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textpointy +t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
-                captionPositionX = textpointx;
-                captionPositionY = textpointy;
-
-                //-- arrow --
-                double ax = h2x - cpointx -dfaEditor.getOffsetX();
-                double ay = h2y - cpointy -dfaEditor.getOffsetY();
-                double arrowAngle = Math.atan2(ay, ax);
-                 g.setColor(colorLineColor);
-                drawArrow(h2x,h2y,4,arrowAngle,g);
-
-                //-- touchup button --
-
-                if (showTouchButton)
-                    drawTouchTransitionButton(t,normx,normy,additionalArcDistance,h1x,h1y,h2x,h2y);
+            if (t.getHighlightStatus() == HighlightTypes.MouseOver) {
+                colorCaptionColor = colorTransitionLabelHighlighted;
+                colorLineColor = colorTransitionLineHighlighted;
             }
 
-        } else if (s1 != s2)
-        {
-            //-- linear-case --
-            Vector<Double> p1 = getIntersectionPoint(s1x,s1y,s2x,s2y,1.2*stateDrawSize/2);
-            Vector<Double> p2 = getIntersectionPoint(s2x,s2y,s1x,s1y,1.4*stateDrawSize/2);
-            int h1x = (int)Math.round(p1.get(0)) + dfaEditor.getOffsetX();
-            int h1y = (int)Math.round(p1.get(1)) + dfaEditor.getOffsetY();
+            if (t.isSelected()) {
+                colorCaptionColor = colorTransitionLabelSelected;
+                colorLineColor = colorTransitionLineSelected;
+                colorFont = colorTransitionFontSelected;
+            }
 
-            int h2x = (int)Math.round(p2.get(0)) + dfaEditor.getOffsetX();
-            int h2y = (int)Math.round(p2.get(1)) + dfaEditor.getOffsetY();
-            g.setColor(colorLineColor);
-            g.drawLine(h1x, h1y, h2x, h2y);
+            if (fakeTrans) {
+                colorCaptionColor = Color.white;
+                colorLineColor = color;
+                colorFont = Color.white;
+            }
 
-            double ax = s2x - s1x;
-            double ay = s2y - s1y;
+            boolean showTouchButton = (getDfaEditor().getToolState() == EditorToolStates.handTool) && t.isSelected();
 
+            boolean paintLabelBackground = t.isSelected() || (t.getHighlightStatus() != HighlightTypes.NoHighlight || fakeTrans);
 
-            double vlength = calcVectorLength(ax,ay);
+            Graphics2D g = this.graphics;
+            int s1x = s1.getState_Properties().getXPos();
+            int s1y = s1.getState_Properties().getYPos();
 
-            if (vlength > 0)
-            {
+            int s2x = s2.getState_Properties().getXPos();
+            int s2y = s2.getState_Properties().getYPos();
 
-                double centerx = (s2x + s1x)/2;
-                double centery = (s2y + s1y)/2;
+            g.setColor(color);
 
-                double normx = ax/vlength;
-                double normy = ay/vlength;
+            //-- arc case or linear --
+            boolean isBidirectional = false;
+            if (!fakeTrans) {
+                try {
+                    isBidirectional = dfaEditor.getDfa().isBidirectionalTransition(s1, s2);
+                } catch (NoSuchTransitionException ex) {
+                    //TODO
+                    System.out.println(ex.getMessage());
+                }
+            } else {
+                isBidirectional = true;
+            }
 
-                double arrowAngle = Math.atan2(ay, ax);
+            if (s1 != s2 && isBidirectional) {
+                //-- get control point --
+                int dx = s2x - s1x;
+                int dy = s2y - s1y;
+                double vlength = calcVectorLength(dx, dy);
+
+                if (vlength > 0) {
+                    QuadCurve2D c = new QuadCurve2D.Double();
+
+                    double centerx = (s2x + s1x) / 2;
+                    double centery = (s2y + s1y) / 2;
+
+                    double normx = dx / vlength;
+                    double normy = dy / vlength;
+
+                    double additionalArcDistance = vlength / 100;
+                    //-- turn vector 90 degrees --
+                    double turnedx = arcDistance * normy * additionalArcDistance * t.getCurveFactor();
+                    double turnedy = -arcDistance * normx * additionalArcDistance * t.getCurveFactor();
+
+                    int cpointx = (int) (centerx + turnedx);
+                    int cpointy = (int) (centery + turnedy);
+
+                    int textpointx = (int) (centerx + turnedx / (2) + normy * 20);
+                    int textpointy = (int) (centery + turnedy / (2) - normx * 20);
+
+                    //-- tangential crossing with the circles (start and end of curve) --
+                    Vector<Double> p1 = getIntersectionPoint(s1x, s1y, cpointx, cpointy, 1.2 * stateDrawSize / 2);
+                    Vector<Double> p2 = getIntersectionPoint(s2x, s2y, cpointx, cpointy, 1.4 * stateDrawSize / 2);
+
+                    int h1x = (int) Math.round(p1.get(0)) + dfaEditor.getOffsetX();
+                    int h1y = (int) Math.round(p1.get(1)) + dfaEditor.getOffsetY();
+
+                    int h2x = (int) Math.round(p2.get(0)) + dfaEditor.getOffsetX();
+                    int h2y = (int) Math.round(p2.get(1)) + dfaEditor.getOffsetY();
+
+                    g.setColor(colorLineColor);
+                    //-- quadratic arc --
+                    c.setCurve(h1x, h1y,
+                            cpointx + dfaEditor.getOffsetX(), cpointy + dfaEditor.getOffsetY(),
+                            h2x, h2y);
+                    g.draw(c);
+                    //-- draw text --
+                    if (paintLabelBackground) {
+                        Rectangle2D fbounds = getFontBounds(caption, textpointx + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textpointy + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
+                        paintTransitionHighlightRectangle(fbounds, colorCaptionColor, (int) (4 * getDfaEditor().getZoomfactor()), g);
+                    }
+                    g.setColor(colorFont);
+                    drawCenteredText(caption, textpointx + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textpointy + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
+                    captionPositionX = textpointx;
+                    captionPositionY = textpointy;
+
+                    //-- arrow --
+                    double ax = h2x - cpointx - dfaEditor.getOffsetX();
+                    double ay = h2y - cpointy - dfaEditor.getOffsetY();
+                    double arrowAngle = Math.atan2(ay, ax);
+                    g.setColor(colorLineColor);
+                    drawArrow(h2x, h2y, 4, arrowAngle, g);
+
+                    //-- touchup button --
+
+                    if (showTouchButton) {
+                        drawTouchTransitionButton(t, normx, normy, additionalArcDistance, h1x, h1y, h2x, h2y);
+                    }
+                }
+
+            } else if (s1 != s2) {
+                //-- linear-case --
+                Vector<Double> p1 = getIntersectionPoint(s1x, s1y, s2x, s2y, 1.2 * stateDrawSize / 2);
+                Vector<Double> p2 = getIntersectionPoint(s2x, s2y, s1x, s1y, 1.4 * stateDrawSize / 2);
+                int h1x = (int) Math.round(p1.get(0)) + dfaEditor.getOffsetX();
+                int h1y = (int) Math.round(p1.get(1)) + dfaEditor.getOffsetY();
+
+                int h2x = (int) Math.round(p2.get(0)) + dfaEditor.getOffsetX();
+                int h2y = (int) Math.round(p2.get(1)) + dfaEditor.getOffsetY();
                 g.setColor(colorLineColor);
-                drawArrow(h2x,h2y, 4,arrowAngle,g);
-                  // -- text --
-                int textX = (int) (centerx + 12*normy *dfaEditor.getZoomfactor());
-                int textY = (int) (centery - 12*normx*dfaEditor.getZoomfactor());
+                g.drawLine(h1x, h1y, h2x, h2y);
 
-                
-                if (paintLabelBackground)
-                {
-                    Rectangle2D fbounds = getFontBounds(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont, g);
-                    paintTransitionHighlightRectangle(fbounds,colorCaptionColor,(int)(4*getDfaEditor().getZoomfactor()),g);
+                double ax = s2x - s1x;
+                double ay = s2y - s1y;
+
+
+                double vlength = calcVectorLength(ax, ay);
+
+                if (vlength > 0) {
+
+                    double centerx = (s2x + s1x) / 2;
+                    double centery = (s2y + s1y) / 2;
+
+                    double normx = ax / vlength;
+                    double normy = ay / vlength;
+
+                    double arrowAngle = Math.atan2(ay, ax);
+                    g.setColor(colorLineColor);
+                    drawArrow(h2x, h2y, 4, arrowAngle, g);
+                    // -- text --
+                    int textX = (int) (centerx + 12 * normy * dfaEditor.getZoomfactor());
+                    int textY = (int) (centery - 12 * normx * dfaEditor.getZoomfactor());
+
+
+                    if (paintLabelBackground) {
+                        Rectangle2D fbounds = getFontBounds(caption, textX + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textY + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
+                        paintTransitionHighlightRectangle(fbounds, colorCaptionColor, (int) (4 * getDfaEditor().getZoomfactor()), g);
+                    }
+                    g.setColor(colorFont);
+                    drawCenteredText(caption, textX + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textY + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
+                    captionPositionX = textX;
+                    captionPositionY = textY;
+                }
+
+
+            } else {
+
+                //-- cirlce to state itself --
+                double boxX = s1x - stateDrawSize * 0.3;
+                double boxY = s1y - stateDrawSize * 0.95;
+                double w = stateDrawSize * 0.6;
+                double h = stateDrawSize * 0.6;
+
+                g.setColor(colorLineColor);
+                Arc2D arc = new Arc2D.Double(boxX + dfaEditor.getOffsetX(), boxY + dfaEditor.getOffsetY(), w, h, -20, 220, Arc2D.OPEN);
+                g.draw(arc);
+
+                // -- text --
+                int textX = (int) s1x;
+                int textY = (int) (s1y - stateDrawSize * 1.2);
+                if (paintLabelBackground) {
+                    Rectangle2D fbounds = getFontBounds(caption, textX + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textY + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
+                    paintTransitionHighlightRectangle(fbounds, colorCaptionColor, (int) (4 * getDfaEditor().getZoomfactor()), g);
                 }
                 g.setColor(colorFont);
-                drawCenteredText(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
+                drawCenteredText(caption, textX + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textY + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
                 captionPositionX = textX;
                 captionPositionY = textY;
+
+                //-- arrow --
+                double ax = s1x + 0.3 * stateDrawSize;
+                double ay = s1y - 0.6 * stateDrawSize;
+                double arrowAngle = 1.9D;
+                g.setColor(colorLineColor);
+                drawArrow((int) ax + dfaEditor.getOffsetX(), (int) ay + dfaEditor.getOffsetY(), 4, arrowAngle, g);
             }
-
-
-        } else
-        {
-
-            //-- cirlce to state itself --
-            double boxX = s1x-stateDrawSize*0.3;
-            double boxY = s1y-stateDrawSize*0.95;
-            double w = stateDrawSize*0.6;
-            double h = stateDrawSize*0.6;
-
-            g.setColor(colorLineColor);
-            Arc2D arc = new Arc2D.Double(boxX+dfaEditor.getOffsetX(), boxY+dfaEditor.getOffsetY(), w, h, -20, 220, Arc2D.OPEN);
-            g.draw(arc);
-
-            // -- text --
-            int textX = (int) s1x;
-            int textY = (int) (s1y-stateDrawSize*1.2);
-            if (paintLabelBackground)
-            {
-                Rectangle2D fbounds = getFontBounds(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont, g);
-                paintTransitionHighlightRectangle(fbounds,colorCaptionColor,(int)(4*getDfaEditor().getZoomfactor()),g);
-            }
-            g.setColor(colorFont );
-            drawCenteredText(caption,textX+t.getCaptionOffsetX()+ dfaEditor.getOffsetX(),textY+t.getCaptionOffsetY()+ dfaEditor.getOffsetY(),transitionFont,g);
-            captionPositionX = textX;
-            captionPositionY = textY;
-
-            //-- arrow --
-            double ax = s1x+0.3*stateDrawSize;
-            double ay = s1y - 0.6*stateDrawSize;
-            double arrowAngle = 1.9D;
-             g.setColor(colorLineColor);
-            drawArrow((int)ax+dfaEditor.getOffsetX(),(int)ay+dfaEditor.getOffsetY(),4,arrowAngle,g);
+            t.setClickPositionX(captionPositionX);
+            t.setClickPositionY(captionPositionY);
+            g.setColor(Color.black);
         }
-        t.setClickPositionX(captionPositionX);
-        t.setClickPositionY(captionPositionY);
-        g.setColor(Color.black);
-        }
-        
+
     }
 
     private void drawTouchTransitionButton(Transition t,double normx, double normy, double additionalArcDistance, double h1x, double h1y,double h2x, double h2y)

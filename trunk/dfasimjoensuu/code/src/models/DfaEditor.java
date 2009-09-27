@@ -257,7 +257,7 @@ public class DfaEditor{
         {
             if (transitionAddFrom != null)
             {
-                 State stateMouseOver = getStateatMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, false);
+                 State stateMouseOver = getStateAtMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, false);
                  if (stateMouseOver != null)
                  {
                      //-- draw highlight transitions --
@@ -298,7 +298,7 @@ public class DfaEditor{
     {
         if (this.transitionState == EditorTransitionStates.selectFromState)
         {
-            State stateHit = getStateatMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
+            State stateHit = getStateAtMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
             if (stateHit != null)
             {
                 transitionAddFrom = stateHit;
@@ -306,7 +306,7 @@ public class DfaEditor{
             }
         } else
         {
-            State stateHit = getStateatMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
+            State stateHit = getStateAtMouse(evt.getX(), evt.getY(), true, HighlightTypes.NoHighlight, true);
             if (stateHit != null)
             {
                 transitionAddTo = stateHit;
@@ -495,7 +495,7 @@ public class DfaEditor{
 
         if (!touchButton.isMoving())
         {
-             stateHit = getStateatMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, true);
+             stateHit = getStateAtMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, true);
              transHit = getTransitionatMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, true);
         }
 
@@ -517,7 +517,7 @@ public class DfaEditor{
 
 
 
-    private State getStateatMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
+    private State getStateAtMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
     {
         State s = null;
         double tx = px - offsetX;
@@ -594,7 +594,7 @@ public class DfaEditor{
     {
         if (toolState == EditorToolStates.handTool)
         {
-            State s = getStateatMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
+            State s = getStateAtMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
             Transition transHit = getTransitionatMouse(evt.getX(), evt.getY(), true, HighlightTypes.MouseOver, false);
 
             handleTouchUpHighlight(evt);
@@ -602,7 +602,7 @@ public class DfaEditor{
         }
         if (toolState == EditorToolStates.addTransition)
         {
-            State s = getStateatMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
+            State s = getStateAtMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
         }
     }
 
@@ -680,7 +680,7 @@ public class DfaEditor{
 
         if (toolState == EditorToolStates.handTool)
         {
-            State s = getStateatMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,true);
+            State s = getStateAtMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,true);
              handleTouchEndDrag(evt);
             updateGraphicsAll();
         }
