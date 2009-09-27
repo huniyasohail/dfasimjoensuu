@@ -199,6 +199,7 @@ public class DFATransitionWin extends JFrame {
         if (textInput.getText().length() == 0)
         {
             JOptionPane.showMessageDialog(this, "You must enter at least one transition letter!", "Error", JOptionPane.OK_OPTION);
+            textInput.requestFocus();
         } else
         {
             //dFAMainWin.getDfaSim().getDfa().writeTransitionsInputArray(textInput.getText(),transition);
@@ -212,6 +213,7 @@ public class DFATransitionWin extends JFrame {
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error while editing transition", JOptionPane.WARNING_MESSAGE);
+                 textInput.requestFocus();
             }
 
         }

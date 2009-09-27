@@ -509,7 +509,8 @@ public class DfaEditor{
              {
                 if (currentStateSelected != null)
                 {
-                 handleStateMovement(evt);
+                    if (currentTransSelected == null)
+                         handleStateMovement(evt);
                 }
 
                  updateGraphicsAll();
@@ -558,12 +559,9 @@ public class DfaEditor{
 
                 l = 6*(ddx*turnedx + ddy*turnedy)/vlength;
             }
-
-
             currentTransSelected.setCurveFactor(l);
             touchButton.setCurrentValue(l);
             touchButton.setVisible(true);
-
         }
         
     }
@@ -616,11 +614,24 @@ public class DfaEditor{
         {
              stateHit = getStateAtMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, true);
              transHit = getTransitionatMouse(evt.getX(), evt.getY(), false, HighlightTypes.NoHighlight, true);
+
+            if (stateHit != null && transHit != null)
+            {
+                    stateHit.getState_Properties().setSelected(false);
+                    stateHit = null;
+            }
+
+
         }
 
         if (transHit != null)
         {
             System.out.println("Trans hit!");
+            if (stateHit != null)
+            {
+                stateHit.getState_Properties().setSelected(false);
+                currentStateSelected = null;
+            }
 
         } else
         if (stateHit != null)
@@ -629,6 +640,7 @@ public class DfaEditor{
             System.out.println("Hit state: "+stateHit.getState_Properties().getName());
             dragOffsetX = evt.getX()-offsetX-stateHit.getState_Properties().getXPos();
             dragOffsetY = evt.getY()-offsetY-stateHit.getState_Properties().getYPos();
+           
         }
         this.currentStateSelected = stateHit;
         this.currentTransSelected = transHit;
@@ -799,7 +811,11 @@ public class DfaEditor{
 
         if (toolState == EditorToolStates.handTool)
         {
-            State s = getStateAtMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,true);
+            if (currentTransSelected == null)
+            {
+                State s = getStateAtMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,true);
+            }
+
              handleTouchEndDrag(evt);
             updateGraphicsAll();
         }

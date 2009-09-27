@@ -21,8 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -41,6 +39,7 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     Simulator dfaSim = null;
     boolean simBarVisible = false;
+    boolean fileChanged = false;
 
 
     /** Creates new form DFAMainWIn */
@@ -112,6 +111,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         textareaOutput = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
+        menuitemNewDFA = new javax.swing.JMenuItem();
         menuitemOpen = new javax.swing.JMenuItem();
         menuitemSave = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
@@ -124,12 +124,15 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuInfo = new javax.swing.JMenu();
         menuitemInfo = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("DFA Simulator");
         setBounds(new java.awt.Rectangle(0, 0, 600, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -358,6 +361,14 @@ public class DFAMainWin extends javax.swing.JFrame {
         jMenuBar1.setName("Tools"); // NOI18N
 
         menuFile.setText("File");
+
+        menuitemNewDFA.setText("New DFA");
+        menuitemNewDFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemNewDFAActionPerformed(evt);
+            }
+        });
+        menuFile.add(menuitemNewDFA);
 
         menuitemOpen.setText("Open File...");
         menuitemOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -592,6 +603,7 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     private void panelDrawAreaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMousePressed
         getDfaSim().getDfaEditor().handleMousePressed(evt);
+        fileChanged = true;
 
     }//GEN-LAST:event_panelDrawAreaMousePressed
 
@@ -644,6 +656,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                         ObjectOutputStream out = null;
                         out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
                         out.writeObject(this.dfaSim.getDfa());
+                        fileChanged = false;
                         out.close();
                     } catch (FileNotFoundException ex) {
                         //TODO
@@ -680,6 +693,35 @@ public class DFAMainWin extends javax.swing.JFrame {
 
         
     }//GEN-LAST:event_formKeyPressed
+
+    private void menuitemNewDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemNewDFAActionPerformed
+        createNewDFA();
+    }//GEN-LAST:event_menuitemNewDFAActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (fileChanged)
+        {
+            if (askUserMessageBoxYesNo("Exit", "Exit program without saving?"))
+            {
+                System.exit(0);
+            }
+        } else
+            System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
+
+
+    private void createNewDFA()
+    {
+        if (askUserMessageBoxYesNo("new DFA", "Do you want to create an empty DFA?"))
+        {
+            Dfa ndfa = new Dfa();
+            getDfaSim().getDfaEditor().setDfa(ndfa);
+            this.getDfaSim().setDfa(ndfa);
+            repaint();
+
+        }
+
+    }
 
 
     private void handleDoubleClick(java.awt.event.MouseEvent evt)
@@ -792,6 +834,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JMenu menuSimulation;
     private javax.swing.JMenuItem menuitemExit;
     private javax.swing.JMenuItem menuitemInfo;
+    private javax.swing.JMenuItem menuitemNewDFA;
     private javax.swing.JMenuItem menuitemOpen;
     private javax.swing.JMenuItem menuitemProperties;
     private javax.swing.JMenuItem menuitemSave;
