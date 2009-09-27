@@ -1,8 +1,8 @@
 package models;
 
 import controller.DFAPainter;
+import controller.Simulator;
 import gui.DFAMainWin;
-import javax.sound.midi.SysexMessage;
 import javax.swing.SwingUtilities;
 
 
@@ -53,6 +53,7 @@ public class DfaEditor{
 
     private Dfa dfa = null;
     private DFAPainter dFAPainter;
+    private Simulator dfaSim = null;
 
     public Dfa getDfa() {
         return dfa;
@@ -123,8 +124,9 @@ public class DfaEditor{
     // <editor-fold defaultstate="collapsed" desc=" UML Marker ">
     // #[regen=yes,id=DCE.07B7D0A4-8D42-06F0-1C6A-6AB91D0ED769]
     // </editor-fold>
-    public DfaEditor () {
-        dFAPainter = new DFAPainter();
+    public DfaEditor (Simulator dfaSimulator) {
+        dFAPainter = new DFAPainter(dfaSimulator);
+        dfaSim = dfaSimulator;
         dFAPainter.setDfaEditor(this);
         initEditor();
     }

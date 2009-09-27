@@ -467,7 +467,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         dfaSim.setDfa(loaded_dfa);
 
         connectGUItoDFA();
-        repaint();
+        panelDrawArea.repaint();
         
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
@@ -498,11 +498,16 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     private void buttonSimulateAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimulateAllActionPerformed
         while(dfaSim.getIsRunning()) {
-            buttonNextStepActionPerformed(evt);
+            doNextStep();
         }
     }//GEN-LAST:event_buttonSimulateAllActionPerformed
 
     private void buttonNextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextStepActionPerformed
+       doNextStep();
+       panelDrawArea.repaint();
+    }//GEN-LAST:event_buttonNextStepActionPerformed
+
+    private void doNextStep() {
         String inputWord = textareaInputWord.getText();
         Dfa dfa = dfaSim.getDfa();
         State activeState = dfa.getCurrentState();
@@ -532,8 +537,7 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
             textareaOutput.setText(textareaOutput.getText()+acceptMsg);
         }
-    }//GEN-LAST:event_buttonNextStepActionPerformed
-
+    }
     private void outputInfo(State fromState, State toState, int pos) {
         String input = textareaInputWord.getText().substring(pos, pos+1);
         String msg = "Reading input '"+input+"' and taking Transition from State ";
@@ -558,7 +562,6 @@ public class DFAMainWin extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        connectGUItoDFA();
        repaint();
-       dfaSim.updateGraphics();
     }//GEN-LAST:event_formWindowOpened
 
     private void panelDrawAreaAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panelDrawAreaAncestorResized
@@ -580,7 +583,6 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     private void panelDrawAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseReleased
         getDfaSim().getDfaEditor().handleMouseReleased(evt);
-        getDfaSim().updateGraphics();
     }//GEN-LAST:event_panelDrawAreaMouseReleased
 
     private void panelDrawAreaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseMoved

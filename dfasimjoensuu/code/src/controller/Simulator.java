@@ -22,7 +22,7 @@ public class Simulator {
     // </editor-fold> 
     public Simulator () {
         dfa = new Dfa();
-        dfaEditor = new DfaEditor();
+        dfaEditor = new DfaEditor(this);
         dfaEditor.setDfa(dfa);
         isRunning = false;
     }
@@ -45,11 +45,6 @@ public class Simulator {
 
     public void setDfaEditor(DfaEditor dfaEditor) {
         this.dfaEditor = dfaEditor;
-    }
-
-    public void updateGraphics()
-    {
-        this.dfaEditor.getdFAPainter().updateGraphics(null);
     }
 
 

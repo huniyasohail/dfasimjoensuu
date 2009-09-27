@@ -37,6 +37,7 @@ public class DFAPainter {
 
     private final Color colorStateLinesNotSelected = Color.black;
     private final Color colorStateLinesSelected = Color.blue;
+    private final Color colorStateLinesCurrent = Color.red;
 
     private final Color colorTransitionLineNormal = Color.BLACK;
     private final Color colorTransitionLineHighlighted = new Color(73,137,255);
@@ -56,10 +57,15 @@ public class DFAPainter {
 
     private boolean antialiasing = true;
 
+    private Simulator dfaSim = null;
     private DfaEditor dfaEditor = null;
     private Graphics2D graphics = null;
     private PaintPanel paintPanel = null;
     private Font transitionFont = null;
+
+    public DFAPainter(Simulator dfaSimulator) {
+        this.dfaSim = dfaSimulator;
+    }
 
     public DfaEditor getDfaEditor() {
         return dfaEditor;
@@ -148,6 +154,10 @@ public class DFAPainter {
                  backgroundColor = colorStateSelected;
                  lineColor = colorStateLinesSelected;
                  fontColor = colorStateFontSelected;
+            }
+
+            if(dfa.getCurrentState().equals(s) && dfaSim.getIsRunning()) {
+                lineColor = colorStateLinesCurrent;
             }
 
 
