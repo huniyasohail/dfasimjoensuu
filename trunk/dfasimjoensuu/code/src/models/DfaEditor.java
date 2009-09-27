@@ -695,7 +695,7 @@ public class DfaEditor{
         dFAPainter.requestRepaintAll();
     }
 
-    public boolean isIsEditable() {
+    public boolean isEditable() {
         return isEditable;
     }
 

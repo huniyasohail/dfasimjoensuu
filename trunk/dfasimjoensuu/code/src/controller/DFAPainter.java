@@ -156,7 +156,7 @@ public class DFAPainter {
                  fontColor = colorStateFontSelected;
             }
 
-            if(dfa.getCurrentState().equals(s) && dfaSim.getIsRunning()) {
+            if(dfaSim.getIsRunning() && dfa.getCurrentState().equals(s)) {
                 lineColor = colorStateLinesCurrent;
             }
 
