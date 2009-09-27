@@ -10,6 +10,5 @@ package models;
  * @author Fabian
  */
 public enum HighlightTypes {
-    NoHighlight, MouseOver
-
+    NoHighlight, MouseOver, CurrentState
 }
