@@ -366,10 +366,6 @@ public class DFAPainter {
                         Rectangle2D fbounds = getFontBounds(caption, textpointx + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textpointy + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
                         paintTransitionHighlightRectangle(fbounds, colorCaptionColor, (int) (4 * getDfaEditor().getZoomfactor()), g);
                     }
-                    g.setColor(colorFont);
-                    drawCenteredText(caption, textpointx + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textpointy + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
-                    captionPositionX = textpointx;
-                    captionPositionY = textpointy;
 
                     //-- arrow --
                     double ax = h2x - cpointx - dfaEditor.getOffsetX();
@@ -377,6 +373,13 @@ public class DFAPainter {
                     double arrowAngle = Math.atan2(ay, ax);
                     g.setColor(colorLineColor);
                     drawArrow(h2x, h2y, 4, arrowAngle, g);
+
+                    g.setColor(colorFont);
+                    drawCenteredText(caption, textpointx + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textpointy + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
+                    captionPositionX = textpointx;
+                    captionPositionY = textpointy;
+
+
 
                     //-- touchup button --
 
