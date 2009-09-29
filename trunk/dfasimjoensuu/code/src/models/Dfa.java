@@ -20,7 +20,7 @@ public class Dfa implements Serializable {
     // </editor-fold> 
     private int currentPosition;
 
-    private String description;
+    private String description = "";
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.605BE7FE-5F6E-ADC8-1805-4DB235B9D755]
@@ -193,6 +193,8 @@ public class Dfa implements Serializable {
      * @return Description.
      */
     public String getDescription() {
+        if (description == null)
+            return new String(""); else
         return description;
     }
 

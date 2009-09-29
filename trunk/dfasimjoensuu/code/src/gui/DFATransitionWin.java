@@ -106,7 +106,7 @@ public class DFATransitionWin extends JFrame {
 
         labelStates.setText("   ");
 
-        jLabel4.setText("Seperate by kommas like 'a,b,c'. If you need the ','-character use \\,");
+        jLabel4.setText("Enter several input letters like 'abc' or 'a,b,c'");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,7 +127,7 @@ public class DFATransitionWin extends JFrame {
                         .addContainerGap(320, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addContainerGap(66, Short.MAX_VALUE))
+                        .addContainerGap(178, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(buttonCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
