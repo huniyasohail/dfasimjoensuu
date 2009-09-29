@@ -61,7 +61,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         getContentPane().add(jLabel2);
         jLabel2.setBounds(30, 70, 410, 17);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel3.setText("GNU License");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(30, 210, 390, 17);
@@ -80,12 +80,12 @@ public class DFAInfoWin extends javax.swing.JFrame {
         getContentPane().add(jButton1);
         jButton1.setBounds(460, 200, 90, 40);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel6.setText("This program comes with ABSOLUTELY NO WARRANTY!");
         getContentPane().add(jLabel6);
         jLabel6.setBounds(30, 180, 440, 17);
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel7.setText("University of Joensuu, Finland");
         getContentPane().add(jLabel7);
         jLabel7.setBounds(30, 90, 440, 17);
@@ -94,7 +94,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         getContentPane().add(jLabel4);
         jLabel4.setBounds(-20, 0, 621, 141);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel8.setText("Student project of the Object Orientated Programming Course.");
         getContentPane().add(jLabel8);
         jLabel8.setBounds(30, 160, 440, 17);
@@ -105,7 +105,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         jLabel9.setBounds(30, 160, 440, 17);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel10.setText("Version 0.1 alpha, 2009");
+        jLabel10.setText("Version 0.9 beta, 2009");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(30, 230, 370, 17);
 

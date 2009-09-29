@@ -44,7 +44,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="66" max="32767" attributes="0"/>
+                      <EmptySpace pref="178" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="buttonCancel" min="-2" max="-2" attributes="1"/>
@@ -124,7 +124,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Seperate by kommas like &apos;a,b,c&apos;. If you need the &apos;,&apos;-character use \,"/>
+        <Property name="text" type="java.lang.String" value="Enter several input letters like &apos;abc&apos; or &apos;a,b,c&apos;"/>
       </Properties>
     </Component>
   </SubComponents>

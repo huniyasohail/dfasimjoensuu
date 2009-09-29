@@ -119,7 +119,7 @@ public class Simulator {
         }
     }
 
-    private ArrayList<String> getAlphabetFromTransitions() {
+    public ArrayList<String> getAlphabetFromTransitions() {
         ArrayList<String> alphabet = new ArrayList<String>();
         ArrayList<State> states = dfa.getStates();
 
