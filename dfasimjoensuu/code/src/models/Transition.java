@@ -8,6 +8,7 @@ import java.util.ArrayList;
 // #[regen=yes,id=DCE.87C11C34-F942-9444-FDCC-B025A77DB87B]
 // </editor-fold> 
 public class Transition implements Serializable {
+    private static final long serialVersionUID = -5590268576506217927L;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.FFDC584F-92A7-C21D-8870-4B084854C2DA]

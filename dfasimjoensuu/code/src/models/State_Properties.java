@@ -7,6 +7,7 @@ import java.io.Serializable;
 // #[regen=yes,id=DCE.3289D7DB-C89B-5F67-EDC9-7932FA63A9BB]
 // </editor-fold> 
 public class State_Properties implements Serializable{
+    private static final long serialVersionUID = -5590868576506617927L;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.20CCD347-10B1-6597-1FCB-7359E09DBC7E]

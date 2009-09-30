@@ -1,0 +1,43 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package models;
+
+/**
+ *
+ * @author Kai
+ */
+public class SquareState extends State {
+
+    private State state1;
+    private State state2;
+
+    public State getState1() {
+        return state1;
+    }
+
+    public void setState1(State state1) throws IllegalArgumentException{
+        if(state1 != null)
+            this.state1 = state1;
+        else
+            throw new IllegalArgumentException();
+    }
+
+    public State getState2() {
+        return state2;
+    }
+
+    public void setState2(State state2) throws IllegalArgumentException{
+        if(state2 != null)
+            this.state2 = state2;
+        else
+            throw new IllegalArgumentException();
+    }
+
+    public SquareState(String name) throws IllegalArgumentException {
+        super(name);
+    }
+    
+}
