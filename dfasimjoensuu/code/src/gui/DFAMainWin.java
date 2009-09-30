@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -41,8 +43,9 @@ public class DFAMainWin extends javax.swing.JFrame {
     boolean simBarVisible = false;
     boolean fileChanged = false;
     private int splitSizeInfoBar = 220;
-    private int splitSizeSimulationBar = 180;
+    private int splitSizeSimulationBar = 260;
     private String currentFilename = null;
+    HelpFileLoader helpFiles = new HelpFileLoader();
 
 
 
@@ -807,6 +810,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuitemStartSim.setEnabled(false);
         dfaSim.getDfaEditor().setIsEditable(false);
         dfaSim.getDfaEditor().setToolState(EditorToolStates.noTool);
+        dfaSim.setSimulationModeActive(true);
         updateButtons();
     }
 
@@ -867,6 +871,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuitemStartSim.setEnabled(true);
         dfaSim.getDfaEditor().setIsEditable(true);
         dfaSim.getDfaEditor().setToolState(EditorToolStates.handTool);
+        dfaSim.setSimulationModeActive(false);
         updateButtons();
     }
 
@@ -937,10 +942,9 @@ public class DFAMainWin extends javax.swing.JFrame {
             getDfaSim().getDfaEditor().setDfa(ndfa);
             this.getDfaSim().setDfa(ndfa);
             repaint();
-
         }
-
     }
+
 
 
     private void handleDoubleClick(java.awt.event.MouseEvent evt)
@@ -973,6 +977,36 @@ public void updateButtons()
     panelConsole.setVisible(simBarVisible);
     updateToolButtons();
     updateSidebar();
+    manageHelp();
+}
+
+public void manageHelp()
+{
+    String currentSite = "";
+    if (!getDfaSim().isSimulationModeActive())
+    {
+        if (getDfaSim().getDfaEditor().getToolState() == EditorToolStates.handTool)
+       currentSite = "handtool";
+        if (getDfaSim().getDfaEditor().getToolState() == EditorToolStates.addState)
+        currentSite = "addstatetool";
+        if (getDfaSim().getDfaEditor().getToolState() == EditorToolStates.addTransition)
+        currentSite = "addtransitiontool";
+      
+    } else
+        currentSite ="simulation";
+
+    if (currentSite != "")
+        showHelpFile(currentSite);
+
+}
+
+public void showHelpFile(String pageName)
+{
+        try {
+            editorHelp.setPage(helpFiles.getUrlByKey(pageName));
+        } catch (IOException ex) {
+            
+        }
 }
 
 /**
