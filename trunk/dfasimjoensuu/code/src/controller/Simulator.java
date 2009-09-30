@@ -212,4 +212,14 @@ public class Simulator {
         dfa.setInput(null);
     }
 
+    /**
+     * Calculates dfa^2, that is the automaton that works on QxQ
+     * @param Dfa to square.
+     * @return Squared Automaton.
+     */
+    private Dfa calculateSquareAutomaton(Dfa inputDfa) {
+        return null;
+        //remove isolated states out of inputDfa
+    }
+
 }

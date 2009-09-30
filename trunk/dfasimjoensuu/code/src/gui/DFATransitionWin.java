@@ -194,7 +194,7 @@ public class DFATransitionWin extends JFrame {
 
     }
 
-    void saveFormtoTransition()
+    void saveFormToTransition()
     {
         if (textInput.getText().length() == 0)
         {
@@ -202,7 +202,6 @@ public class DFATransitionWin extends JFrame {
             textInput.requestFocus();
         } else
         {
-            //dFAMainWin.getDfaSim().getDfa().writeTransitionsInputArray(textInput.getText(),transition);
             ArrayList<String> inputArray = getTransitionsInputArray(textInput.getText());
             try {
                 transition.getFromState().setTransitionInput(transition, inputArray);
@@ -237,7 +236,7 @@ public class DFATransitionWin extends JFrame {
 }//GEN-LAST:event_textInputActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        saveFormtoTransition();
+        saveFormToTransition();
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
@@ -254,7 +253,7 @@ public class DFATransitionWin extends JFrame {
     private void textInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textInputKeyPressed
          int key = evt.getKeyCode();
          if (key == KeyEvent.VK_ENTER) {
-            saveFormtoTransition();
+            saveFormToTransition();
 
          }
     }//GEN-LAST:event_textInputKeyPressed

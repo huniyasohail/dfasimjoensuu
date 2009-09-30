@@ -8,6 +8,7 @@ import java.util.ArrayList;
 // #[regen=yes,id=DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD]
 // </editor-fold> 
 public class State implements Serializable{
+    private static final long serialVersionUID = -5590868376506217927L;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.4B631DDD-D7DD-EBBD-0264-5BC4D4D8A198]
@@ -83,6 +84,38 @@ public class State implements Serializable{
     }
 
     /**
+     * Checks if there is already a Transition with this state as start state and target
+     * state t.getToState(). If there is such a transition, this existing Transition will be
+     * returned. Otherwise null will be returned.
+     * @param t The Transition to be checked.
+     * @return Transition, if existing. Otherwise null.
+     */
+    public Transition getExistingTransition(Transition t) {
+        Transition existing = null;
+        State toState = t.getToState();
+        for(int i=0; i<transitions.size() && existing == null; i++) {
+            State from = transitions.get(i).getFromState();
+            State to = transitions.get(i).getToState();
+            if(from.equals(this) && to.equals(toState)) {
+                existing = transitions.get(i);
+            }
+        }
+        return existing;
+    }
+
+    /**
+     * Merges Transitions t1 and t2 so that the labels of t2 get added to the labels of t1.
+     * @param t1 Transition t1.
+     * @param t2 Transition t2-
+     * @return Transition t1 expanded by the labels of t2.
+     */
+    private Transition mergeTransitions(Transition t1, Transition t2) throws NoSuchTransitionException, Exception {
+        for(String c:t2.getInput()) {
+                addLabelToTransition(t1, c);
+            }
+        return t1;
+    }
+    /**
      * Adds transition t to the state.
      * @param t The transition to be added.
      * @return The added transition.
@@ -90,6 +123,13 @@ public class State implements Serializable{
      * the same states or if there is already a transition with the same label.
      */
     public Transition addTransition(Transition t) throws Exception{
+        //check if there is not yet another transition with the same target state
+        Transition existing = getExistingTransition(t);
+
+        if(existing != null) {
+            //merge
+            return mergeTransitions(existing, t);
+        }
         //check if there is not yet another transition with the same label
         if(!transitions.contains(t)) {
             if(t.getInput().size() == 0) {
@@ -159,7 +199,15 @@ public class State implements Serializable{
             }
             return t;
         } else {
-            throw new NoSuchTransitionException();
+            Transition existing = getExistingTransition(t);
+            if(existing != null) {
+                //merge
+                for(String c:input)
+                    addLabelToTransition(existing, c);
+                return existing;
+            } else {
+                throw new NoSuchTransitionException();
+            }
         }
     }
 
