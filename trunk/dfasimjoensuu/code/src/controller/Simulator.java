@@ -16,6 +16,7 @@ public class Simulator {
     private Dfa dfa;
     private DfaEditor dfaEditor;
     private boolean isRunning;
+    private boolean simulationModeActive = false;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.265879AE-72DD-068D-26F6-2EA61AD07845]
@@ -39,12 +40,28 @@ public class Simulator {
         }
     }
 
+    public boolean isSimulationModeActive() {
+        return simulationModeActive;
+    }
+
+    public void setSimulationModeActive(boolean simulationModeActive) {
+        this.simulationModeActive = simulationModeActive;
+    }
+
     public DfaEditor getDfaEditor() {
         return dfaEditor;
     }
 
     public void setDfaEditor(DfaEditor dfaEditor) {
         this.dfaEditor = dfaEditor;
+    }
+
+    public boolean isIsRunning() {
+        return isRunning;
+    }
+
+    public void setIsRunning(boolean isRunning) {
+        this.isRunning = isRunning;
     }
 
 
@@ -174,6 +191,7 @@ public class Simulator {
     // #[regen=yes,id=DCE.C245F85F-9EBB-3228-73CF-853407C3F3DF]
     // </editor-fold> 
     public void nextStep () {
+
         String input = dfa.getInput();
         if(input.length() == 0)
             isRunning = false;
