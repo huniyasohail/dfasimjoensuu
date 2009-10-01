@@ -23,6 +23,7 @@ public class State implements Serializable{
     private ArrayList<Transition> incomingTransitions;
     private State_Properties prop;
     private int dfsNum;
+    private int id;
 
     public int getDfsNum() {
         return dfsNum;
@@ -40,11 +41,12 @@ public class State implements Serializable{
      * @param name Name of the state.
      * @throws IllegalArgumentException Name of the state must not be null.
      */
-    State (String name) throws IllegalArgumentException{
+    State (String name, int id) throws IllegalArgumentException{
         outgoingTransitions = new ArrayList<Transition>();
         incomingTransitions = new ArrayList<Transition>();
         prop = new State_Properties();
         dfsNum = 0;
+        this.id = id;
         if (name == null)
             throw new IllegalArgumentException();
         //name != null
@@ -60,6 +62,10 @@ public class State implements Serializable{
      */
     public boolean getIsFinalState () {
         return isFinalState;
+    }
+
+    public int getId() {
+        return id;
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 

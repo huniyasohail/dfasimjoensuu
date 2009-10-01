@@ -36,8 +36,8 @@ public class SquareState extends State implements Comparable{
             throw new IllegalArgumentException();
     }
 
-    public SquareState(String name) throws IllegalArgumentException {
-        super(name);
+    public SquareState(String name, int id) throws IllegalArgumentException {
+        super(name, id);
         state1 = null;
         state2 = null;
     }

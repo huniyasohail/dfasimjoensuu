@@ -43,7 +43,7 @@ public class DfaEditor{
     boolean waitForEditWindow = false;
 
     //-- dummies for userinteraction --
-    private State dummyState = new State("new");
+    private State dummyState = new State("new", -1);
     private Transition dummyTransition = new Transition(null,null);
 
     //-- LineToucher --
