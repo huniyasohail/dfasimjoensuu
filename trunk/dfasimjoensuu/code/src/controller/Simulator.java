@@ -1,8 +1,8 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import models.Dfa;
 import models.DfaEditor;
@@ -337,30 +337,33 @@ public class Simulator {
         Dfa squared = new Dfa();
         ArrayList<State> inputStates = inputDfa.getStates();
         int statenum = inputStates.size();
+        HashMap<Integer, HashMap<Integer, SquareState>> stateStorage = new HashMap<Integer, HashMap<Integer, SquareState>>(statenum);
         //generate states
         for (int i = 0; i < statenum; i++) {
             State state1 = inputStates.get(i);
             String name1 = state1.getState_Properties().getName();
             boolean state1IsFinal = state1.getIsFinalState();
             boolean state1isStart = state1.getIsStartState();
+            HashMap<Integer, SquareState> hashmap = new HashMap<Integer, SquareState>(statenum);
             for (int j = 0; j < statenum; j++) {
                 State state2 = inputStates.get(j);
                 String name2 = state2.getState_Properties().getName();
-                SquareState newState = new SquareState("("+name1+","+name2+")");
+                SquareState newState = new SquareState("("+name1+","+name2+")", i*statenum+j);
                 newState.setState1(state1);
                 newState.setState2(state2);
                 squared.addState(newState);
+                hashmap.put(state2.getId(), newState);
                 if(state1IsFinal && state2.getIsFinalState())
                     newState.setIsFinalState(true);
                 if(state1isStart && state1 == state2)
                     squared.setStartState(newState);
             }
+            stateStorage.put(state1.getId(), hashmap);
         }
         //make sure the input dfa is completely defined
         ArrayList<String> alphabet = checkPreconditions();
         ArrayList<State> states = squared.getStates();
         SquareState[] sqStateArray = new SquareState[states.size()];
-        //Arrays.sort(sqStateArray);
         for(int i=0; i<states.size(); i++) {
             sqStateArray[i] = (SquareState)states.get(i);
         }
@@ -371,7 +374,7 @@ public class Simulator {
             for(String c:alphabet) {
                 State target1 = s1.getTargetState(c);
                 State target2 = s2.getTargetState(c);
-                SquareState targetState = getSquareState(target1, target2, sqStateArray);
+                SquareState targetState = stateStorage.get(target1.getId()).get(target2.getId());
                 Transition t = new Transition(sqState, targetState);
                 t.addToInput(c);
                 sqState.addOutgoingTransition(t, true);
@@ -402,35 +405,6 @@ public class Simulator {
             toState.addOutgoingTransition(t, false);
         }
     }
-
-    private SquareState getSquareState(State state1, State state2, SquareState[] states) {
-        for(int i=0; i<states.length; i++) {
-            if(states[i].getState1() == state1 && states[i].getState2() == state2)
-                return states[i];
-        }
-        return null;
-    }
-
-    /**
-     * Performs a binary search on SquareState objects.
-     * @param s1 State1.
-     * @param s2 State2.
-     * @param sqStates Array of all SquareStates.
-     * @return The SquareState consisting of states (s1, s2)
-     */
-//    private SquareState binarySearch(State s1, State s2, SquareState[] sqStates) {
-//        int solution = -1;
-//        int first = 0;
-//        int last = sqStates.length-1;
-//
-//        while(first <= last && solution == -1) {
-//            int middle = first + (last - first)/2;
-//            String name1 = s1.getState_Properties().getName();
-//            String name2 = s2.getState_Properties().getName();
-//            String sqname1 = sqStates[middle].getState1().getState_Properties().getName();
-//            String sqname2 = sqStates[middle].getState2().getState_Properties().getName();
-//        }
-//    }
 
     /**
      * Perform a depth first search on the input DFA.

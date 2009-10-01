@@ -52,7 +52,7 @@ public class Dfa implements Serializable {
      * @return The new state.
      */
     public State addState () {
-        State s = new State("s" + states_added);
+        State s = new State("s" + states_added, states_added);
         this.states.add(s);
         states_added++;
         return s;
