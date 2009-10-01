@@ -85,8 +85,13 @@ public class Simulator {
             return false;
         Collections.sort(inputAlphabet);
         Collections.sort(transitionsAlphabet);
+        int j = 0;
         for(int i=0; i<inputAlphabet.size(); i++) {
-            if(!inputAlphabet.get(i).equals(transitionsAlphabet.get(i)))
+            boolean found = false;
+            for(;j<transitionsAlphabet.size() && !found;j++) {
+                found = inputAlphabet.get(i).equals(transitionsAlphabet.get(j));
+            }
+            if(!found)
                 return false;
         }
         return true;
@@ -103,7 +108,7 @@ public class Simulator {
         int currentPosition = dfa.getCurrentPosition();
         State currentSate = dfa.getCurrentState();
         String input = dfa.getInput();
-        return (currentPosition == input.length()-1 && currentSate.getIsFinalState());
+        return ((input.length() == 0 || currentPosition == input.length()-1) && currentSate.getIsFinalState());
     }
 
     private ArrayList<String> checkPreconditions()  throws IncompleteAutomatonException {
@@ -138,7 +143,7 @@ public class Simulator {
         //check for start state
         dfa.setInput(input);
         if (dfa.getStartState() == null) {
-            throw new IncompleteAutomatonException("No start state defined!");
+            throw new IncompleteAutomatonException("Please define a start state first!");
         }
 
         //Make sure the input alphabet equals the dfa's alphabet
@@ -304,7 +309,7 @@ public class Simulator {
     public void resetDfa() {
         dfa.setCurrentPosition(0);
         dfa.setCurrentState(dfa.getStartState());
-        dfa.setInput(null);
+        dfa.setInput(new String());
     }
 
     /**

@@ -650,6 +650,7 @@ public class DFAMainWin extends javax.swing.JFrame {
             } catch (ClassNotFoundException ex) {
                 System.out.println(ex.getMessage());
             }
+            currentFilename = fc.getSelectedFile().getName();
         }
 
         stopSimulation();
@@ -660,7 +661,6 @@ public class DFAMainWin extends javax.swing.JFrame {
 
         connectGUItoDFA();
         panelDrawArea.repaint();
-        currentFilename = fc.getSelectedFile().getName();
         setWindowCaption();
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
@@ -728,19 +728,22 @@ public class DFAMainWin extends javax.swing.JFrame {
         Dfa dfa = dfaSim.getDfa();
         State activeState = dfa.getCurrentState();
         State nextState;
-        if (!dfaSim.getIsRunning()) {
-            try {
-               dfaSim.startSimulation(inputWord);
-               textareaInputWord.setEditable(false);
-            } catch (IncompleteAutomatonException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Cannot start simulation" , JOptionPane.WARNING_MESSAGE);
+        //handle the empty word
+        if (!inputWord.equals("")) {
+            if (!dfaSim.getIsRunning()) {
+                try {
+                    dfaSim.startSimulation(inputWord);
+                    textareaInputWord.setEditable(false);
+                } catch (IncompleteAutomatonException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Cannot start simulation", JOptionPane.WARNING_MESSAGE);
+                }
             }
+            int pos = dfa.getCurrentPosition();
+            dfaSim.nextStep();
+            nextState = dfa.getCurrentState();
+            highlightCurrentPosition(pos);
+            outputInfo(activeState, nextState, pos);
         }
-        int pos = dfa.getCurrentPosition();
-        dfaSim.nextStep();
-        nextState = dfa.getCurrentState();
-        highlightCurrentPosition(pos);
-        outputInfo(activeState, nextState, pos);
         if(!dfaSim.getIsRunning()) {
             //All input has been read
             buttonNextStep.setEnabled(false);
