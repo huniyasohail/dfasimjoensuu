@@ -39,6 +39,7 @@ public class Dfa implements Serializable {
      */
     public Dfa () {
         states = new ArrayList<State>();
+        input = new String();
         states_added = 0;
         currentPosition = 0;
     }
