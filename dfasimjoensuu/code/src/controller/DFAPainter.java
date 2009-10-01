@@ -11,7 +11,14 @@ import java.awt.RenderingHints;
 import java.awt.geom.Arc2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import models.Dfa;
 import models.DfaEditor;
 import models.EditorToolStates;
@@ -30,6 +37,8 @@ public class DFAPainter {
 
     private final Color colorStateHighlight = new Color(197,222,255);
     private final Color colorStateSelected = new Color(0,0,255);
+    private final Color colorStateCurrent = new Color(255,253,100);
+
     private final Color colorStateNormal = Color.white;
     private final Color colorStateFontNormal = Color.black;
     private final Color colorStateFontSelected = Color.white;
@@ -102,6 +111,82 @@ public class DFAPainter {
             this.paintPanel.repaint();
     }
 
+    public boolean exportPNGFile(File f)
+    {
+        //-- get dimensions of image --
+        int minX = 9999999;
+        int minY = 9999999;
+        int maxX = -9999999;
+        int maxY = -9999999;
+
+        Dfa d = getDfaEditor().getDfa();
+        for (int i=0;i<d.getStates().size();i++)
+        {
+            State s = d.getStates().get(i);
+            if (s.getState_Properties().getXPos() < minX)
+            {
+                 minX = s.getState_Properties().getXPos();
+                 if (s.getIsStartState())
+                     minX = minX-30;
+            }
+               
+            if (s.getState_Properties().getYPos() < minY)
+                minY = s.getState_Properties().getYPos();
+            if (s.getState_Properties().getXPos() > maxX)
+                maxX = s.getState_Properties().getXPos();
+            if (s.getState_Properties().getYPos() > maxY)
+                maxY = s.getState_Properties().getYPos();
+
+            for (int j=0;j<s.getOutgoingTransitions().size();j++)
+            {
+                Transition t = s.getOutgoingTransitions().get(j);
+
+                if (t.getClickPositionX() < minX)
+                    minX = (int)t.getClickPositionX();
+                if (t.getClickPositionY() < minY)
+                    minY = (int)t.getClickPositionY();
+                if (t.getClickPositionX() > maxX)
+                    maxX = (int)t.getClickPositionX();
+                if (t.getClickPositionY() > maxY)
+                    maxY = (int)t.getClickPositionY();
+            }
+        }
+            if (d.getStates().size()>0)
+            {
+                int safetyDistance = 35;
+                int imWidth = Math.max(0,maxX-minX)+3*safetyDistance;
+                int imHeight = Math.max(0,maxY-minY)+2*safetyDistance;
+
+                dfaEditor.setOffsetX(-minX+(int)(1.5*safetyDistance));
+                dfaEditor.setOffsetY(-minY+safetyDistance);
+
+
+                BufferedImage bi = new BufferedImage(imWidth, imHeight, BufferedImage.TYPE_INT_RGB);
+                Graphics2D gimg = (Graphics2D) bi.getGraphics();
+                gimg.setColor(Color.WHITE);
+                gimg.fillRect(0, 0, imWidth, imHeight);
+                updateGraphics(gimg);
+
+            try {
+                ImageIO.write(bi, "png", f);
+                JOptionPane.showMessageDialog(null, "File saved successfully!","Image export",JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+              JOptionPane.showMessageDialog(null, "Error while saving file!","Image export",JOptionPane.ERROR_MESSAGE);
+            }
+
+                return true;
+            } else
+            {
+                JOptionPane.showMessageDialog(null, "No elements to export!","Image export",JOptionPane.ERROR_MESSAGE);
+
+                return false;
+            }
+
+
+        
+    }
+
+
     /**
      * paints the States and Transitions
      */
@@ -159,6 +244,7 @@ public class DFAPainter {
 
             if(dfaSim.getIsRunning() && dfa.getCurrentState().equals(s)) {
                 lineColor = colorStateLinesCurrent;
+                backgroundColor = colorStateCurrent;
             }
 
 
@@ -246,7 +332,7 @@ public class DFAPainter {
                     c = c + t.getInput().get(i);
                 } else
                 {
-                    c = c + t.getInput().get(i) + ", ";
+                    c = c + t.getInput().get(i) + ",";
                 }
             }
             return c;
@@ -279,6 +365,7 @@ public class DFAPainter {
                 colorFont = Color.white;
             }
 
+            
             boolean showTouchButton = (getDfaEditor().getToolState() == EditorToolStates.handTool) && t.isSelected();
 
           //  boolean paintLabelBackground = t.isSelected() || (t.getHighlightStatus() != HighlightTypes.NoHighlight || fakeTrans);

@@ -181,6 +181,10 @@ public class DfaEditor{
         {
             dummyState.getState_Properties().setVisible(false);
             dummyTransition.setVisible(false);
+            touchButton.setVisible(false);
+            touchButton.setMoving(false);
+            touchButton.setSelected(false);
+            
         }
         if (toolState == EditorToolStates.addState)
         {

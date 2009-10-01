@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Dfa;
 import models.DfaEditor;
 import models.SquareState;
@@ -191,6 +193,50 @@ public class Simulator {
         }
         return alphabet;
     }
+
+    /**
+     * add missing transitions to all states
+     * @return
+     */
+    public int autocompleteDFATransitions( ArrayList<String> alphabet)
+    {
+        int counter = 0;
+
+        for (int i = 0;i<dfa.getStates().size();i++)
+        {
+            HashMap<String,Boolean> checklist = new HashMap<String, Boolean>();
+            State s = dfa.getStates().get(i);
+            for (int j=0;j<s.getOutgoingTransitions().size();j++)
+            {
+                Transition t = s.getOutgoingTransitions().get(j);
+                for (int k = 0; k<t.getInput().size();k++)
+                {
+                    checklist.put(t.getInput().get(k),new Boolean(true));
+                }
+            }
+            ArrayList<String> transittionsToAdd = new ArrayList<String>();
+            for (int l = 0; l<alphabet.size();l++)
+            {
+                if (checklist.get(alphabet.get(l))==null)
+                {
+                    transittionsToAdd.add(alphabet.get(l));
+                }
+            }
+            if (transittionsToAdd.size() > 0)
+            {
+                try {
+                    Transition newTrans = new Transition(s, s);
+                    newTrans.setInput(transittionsToAdd);
+                    s.addOutgoingTransition(newTrans, false);
+                    counter++;
+                } catch (Exception ex) {
+                }
+            }
+        }
+        return counter;
+    }
+
+
 
     private void print_automaton() {
         System.out.println("Starting a simulation with the following automaton:");

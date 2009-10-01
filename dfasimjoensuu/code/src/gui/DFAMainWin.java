@@ -94,6 +94,7 @@ public class DFAMainWin extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        jSeparator3 = new javax.swing.JSeparator();
         jToolBar1 = new javax.swing.JToolBar();
         togglePointer = new javax.swing.JToggleButton();
         toggleAddState = new javax.swing.JToggleButton();
@@ -113,8 +114,6 @@ public class DFAMainWin extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         textareaInputWord = new javax.swing.JTextArea();
         buttonReset = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textareaOutput = new javax.swing.JTextArea();
@@ -131,19 +130,22 @@ public class DFAMainWin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuitemNewDFA = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JSeparator();
         menuitemOpen = new javax.swing.JMenuItem();
         menuitemSave = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
         menuitemExit = new javax.swing.JMenuItem();
         menuDFA = new javax.swing.JMenu();
+        menuitemExportImage = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
         menuitemProperties = new javax.swing.JMenuItem();
         menuItemMinimizeDfa = new javax.swing.JMenuItem();
+        menuitemAutocomplete = new javax.swing.JMenuItem();
         menuSimulation = new javax.swing.JMenu();
         menuitemStartSim = new javax.swing.JMenuItem();
         menuItemStopSim = new javax.swing.JMenuItem();
         menuInfo = new javax.swing.JMenu();
         menuitemInfo = new javax.swing.JMenuItem();
+        menuFile.add(jSeparator3);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("DFA Simulator");
@@ -222,7 +224,7 @@ public class DFAMainWin extends javax.swing.JFrame {
 
         panelContainer.setLayout(new java.awt.BorderLayout());
 
-        splitterInfobar.setDividerLocation(500);
+        splitterInfobar.setDividerLocation(550);
         splitterInfobar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 splitterInfobarMouseReleased(evt);
@@ -289,7 +291,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelDrawArea.setLayout(panelDrawAreaLayout);
         panelDrawAreaLayout.setHorizontalGroup(
             panelDrawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 497, Short.MAX_VALUE)
+            .addGap(0, 547, Short.MAX_VALUE)
         );
         panelDrawAreaLayout.setVerticalGroup(
             panelDrawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,12 +340,6 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
-        jLabel3.setText("Current letter");
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12));
-        jLabel4.setText("<>");
-
         javax.swing.GroupLayout panelConsoleTopLayout = new javax.swing.GroupLayout(panelConsoleTop);
         panelConsoleTop.setLayout(panelConsoleTopLayout);
         panelConsoleTopLayout.setHorizontalGroup(
@@ -354,19 +350,16 @@ public class DFAMainWin extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonNextStep)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonSimulateAll)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelConsoleTopLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
+                        .addComponent(buttonNextStep)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonReset))
-                    .addComponent(jLabel3))
-                .addGap(31, 31, 31))
+                        .addComponent(buttonSimulateAll))
+                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonReset)))
+                .addGap(176, 176, 176))
         );
         panelConsoleTopLayout.setVerticalGroup(
             panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,7 +369,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                         .addGap(9, 9, 9)
                         .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(buttonReset)))
                     .addGroup(panelConsoleTopLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
@@ -385,9 +378,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                             .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(buttonNextStep)
-                                .addComponent(buttonSimulateAll)
-                                .addComponent(buttonReset)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(buttonSimulateAll)))))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -429,7 +420,7 @@ public class DFAMainWin extends javax.swing.JFrame {
             .addGroup(panelDFADescLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelDFADescLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                     .addComponent(jLabel6))
                 .addContainerGap())
         );
@@ -458,8 +449,8 @@ public class DFAMainWin extends javax.swing.JFrame {
             .addGroup(panelHELPLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(155, Short.MAX_VALUE))
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addContainerGap(203, Short.MAX_VALUE))
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
         );
         panelHELPLayout.setVerticalGroup(
             panelHELPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -467,7 +458,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -491,8 +482,8 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         menuFile.add(menuitemNewDFA);
-        menuFile.add(jSeparator2);
 
+        menuitemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/iconopenfile.png"))); // NOI18N
         menuitemOpen.setText("Open File...");
         menuitemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -501,6 +492,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         });
         menuFile.add(menuitemOpen);
 
+        menuitemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/iconsavefile.png"))); // NOI18N
         menuitemSave.setText("Save File...");
         menuitemSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -508,7 +500,7 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         menuFile.add(menuitemSave);
-        menuFile.add(jSeparator1);
+        menuFile.add(jSeparator3);
 
         menuitemExit.setText("Exit");
         menuitemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -521,6 +513,15 @@ public class DFAMainWin extends javax.swing.JFrame {
         jMenuBar1.add(menuFile);
 
         menuDFA.setText("DFA");
+
+        menuitemExportImage.setText("Image Export");
+        menuitemExportImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemExportImageActionPerformed(evt);
+            }
+        });
+        menuDFA.add(menuitemExportImage);
+        menuDFA.add(jSeparator1);
 
         menuitemProperties.setText("Description and Alphabet...");
         menuitemProperties.addActionListener(new java.awt.event.ActionListener() {
@@ -537,6 +538,14 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         menuDFA.add(menuItemMinimizeDfa);
+
+        menuitemAutocomplete.setText("Autocomplete DFA...");
+        menuitemAutocomplete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemAutocompleteActionPerformed(evt);
+            }
+        });
+        menuDFA.add(menuitemAutocomplete);
 
         jMenuBar1.add(menuDFA);
 
@@ -820,6 +829,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         dfaSim.getDfaEditor().setIsEditable(false);
         dfaSim.getDfaEditor().setToolState(EditorToolStates.noTool);
         dfaSim.setSimulationModeActive(true);
+        dfaSim.getDfaEditor().removeAllSelections();
         updateButtons();
     }
 
@@ -901,7 +911,6 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     private void controlSplitPaneSizes()
     {
-        System.out.println("resize");
         splitterInfobar.setDividerLocation(this.getWidth()-splitSizeInfoBar);
         splitterSimulationBar.setDividerLocation(this.getHeight()-splitSizeSimulationBar);
 
@@ -952,6 +961,49 @@ public class DFAMainWin extends javax.swing.JFrame {
         dfaSim.getDfa().autoArrangeDFA();
         panelDrawArea.repaint();
     }//GEN-LAST:event_menuItemMinimizeDfaActionPerformed
+
+    private void menuitemExportImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemExportImageActionPerformed
+  JFileChooser fc = new JFileChooser();
+        fc.setFileFilter(new FileNameExtensionFilter("PNG Image Files (lossless)", "png"));
+        int retVal = fc.showSaveDialog(this);
+        if (retVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String fpath = file.getPath();
+
+            if (!fpath.toLowerCase().endsWith(".png")) {
+                String newName = fpath + ".png";
+                file = new File(newName);
+            }
+            
+
+            if (file.exists()) {
+                String msg = "The file you have chosen already exists! Do you want to overwrite this file?";
+                retVal = JOptionPane.showConfirmDialog(this, msg, "Overwrite?", JOptionPane.YES_NO_CANCEL_OPTION);
+            } else {
+                retVal = JOptionPane.YES_OPTION;
+            }
+            switch (retVal) {
+                case JOptionPane.YES_OPTION:
+
+                    if (getDfaSim().getDfaEditor().getdFAPainter().exportPNGFile(file))
+                        repaint();
+                   break;
+                case JOptionPane.NO_OPTION:
+                    menuitemExportImageActionPerformed(evt);
+                    break;
+                default:
+                    //do nothing
+            }
+        }
+    }//GEN-LAST:event_menuitemExportImageActionPerformed
+
+    private void menuitemAutocompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemAutocompleteActionPerformed
+        DFAAutoCompleteWin win = new DFAAutoCompleteWin();
+        win.setAlwaysOnTop(true);
+        win.setdFAMainWin(this);
+        win.setSim(dfaSim);
+        win.setVisible(true);
+    }//GEN-LAST:event_menuitemAutocompleteActionPerformed
 
 
     private void createNewDFA()
@@ -1096,8 +1148,6 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JEditorPane editorHelp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
@@ -1107,7 +1157,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenu menuDFA;
     private javax.swing.JMenu menuFile;
@@ -1115,7 +1165,9 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JMenuItem menuItemMinimizeDfa;
     private javax.swing.JMenuItem menuItemStopSim;
     private javax.swing.JMenu menuSimulation;
+    private javax.swing.JMenuItem menuitemAutocomplete;
     private javax.swing.JMenuItem menuitemExit;
+    private javax.swing.JMenuItem menuitemExportImage;
     private javax.swing.JMenuItem menuitemInfo;
     private javax.swing.JMenuItem menuitemNewDFA;
     private javax.swing.JMenuItem menuitemOpen;
