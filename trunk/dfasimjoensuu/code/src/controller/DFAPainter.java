@@ -213,9 +213,9 @@ public class DFAPainter {
         for (int i=0; i < dfa.getStates().size(); i++)
         {
             State s = dfa.getStates().get(i);
-            for (int j=0; j<s.getTransitions().size();j++)
+            for (int j=0; j<s.getOutgoingTransitions().size();j++)
             {
-                Transition t = s.getTransitions().get(j);
+                Transition t = s.getOutgoingTransitions().get(j);
                 State s1 = t.getFromState();
                 State s2 = t.getToState();
 

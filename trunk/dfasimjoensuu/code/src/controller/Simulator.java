@@ -1,9 +1,12 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import models.Dfa;
 import models.DfaEditor;
+import models.SquareState;
 import models.State;
 import models.Transition;
 
@@ -101,17 +104,45 @@ public class Simulator {
         return (currentPosition == input.length()-1 && currentSate.getIsFinalState());
     }
 
-    private void checkPreconditions(String input) throws IncompleteAutomatonException{
+    private ArrayList<String> checkPreconditions()  throws IncompleteAutomatonException {
+        //check all pre-conditions
+        //check for start state
+        if (dfa.getStartState() == null) {
+            throw new IncompleteAutomatonException("No start state defined!");
+        }
+
+        //check for completeness of the transition function
+        ArrayList<String> alphabet = getAlphabetFromTransitions();
+
+        for(State s:dfa.getStates()) {
+            ArrayList<Transition> transitions = s.getOutgoingTransitions();
+            for(String c:alphabet) {
+                boolean found = false;
+                for(Transition t:transitions) {
+                    if(t.getInput().contains(c)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found)
+                    throw new IncompleteAutomatonException("Missing transition for character "+c+" in state "+s.getState_Properties().getName()+".");
+            }
+        }
+        return alphabet;
+    }
+
+    private void checkPreconditions(String input) throws IncompleteAutomatonException {
         //check all pre-conditions
         //check for start state
         dfa.setInput(input);
-        if(dfa.getStartState() == null)
+        if (dfa.getStartState() == null) {
             throw new IncompleteAutomatonException("No start state defined!");
+        }
 
         //Make sure the input alphabet equals the dfa's alphabet
         ArrayList<String> alphabetFromInput = getAlphabetFromInput(input);
         ArrayList<String> alphabetFromTransitions = getAlphabetFromTransitions();
-        if(!alphabetsAreEqual(alphabetFromInput, alphabetFromTransitions)) {
+        if (!alphabetsAreEqual(alphabetFromInput, alphabetFromTransitions)) {
             String msg = "Error: The input alphabet does not match the alphabet derived from the transitions!";
             throw new IncompleteAutomatonException(msg);
         }
@@ -120,7 +151,7 @@ public class Simulator {
         ArrayList<String> alphabet = getAlphabetFromInput(input);
 
         for(State s:dfa.getStates()) {
-            ArrayList<Transition> transitions = s.getTransitions();
+            ArrayList<Transition> transitions = s.getOutgoingTransitions();
             for(String c:alphabet) {
                 boolean found = false;
                 for(Transition t:transitions) {
@@ -141,7 +172,7 @@ public class Simulator {
         ArrayList<State> states = dfa.getStates();
 
         for(State s:states) {
-            for(Transition t:s.getTransitions()) {
+            for(Transition t:s.getOutgoingTransitions()) {
                 for(String c:t.getInput()) {
                     if(!alphabet.contains(c))
                         alphabet.add(c);
@@ -176,7 +207,7 @@ public class Simulator {
                     else
                         stateMsg += ":";
             System.out.println(stateMsg);
-            ArrayList<Transition> transitions = s.getTransitions();
+            ArrayList<Transition> transitions = s.getOutgoingTransitions();
             for(Transition t:transitions) {
                 System.out.print("\tTransition from "+t.getFromState().getState_Properties().getName()+" to "+t.getToState().getState_Properties().getName()+" labled with: ");
                 for(String c:t.getInput()) {
@@ -201,7 +232,7 @@ public class Simulator {
             if(currentPosition < input.length()) {
                 State currentState = dfa.getCurrentState();
                 String read = input.substring(currentPosition, currentPosition+1);
-                ArrayList<Transition> transitions = currentState.getTransitions();
+                ArrayList<Transition> transitions = currentState.getOutgoingTransitions();
                 for(int i=0; i<transitions.size() && nextposition == currentPosition; i++) {
                     Transition t = transitions.get(i);
                     if(t.getInput().contains(read)) {
@@ -231,13 +262,195 @@ public class Simulator {
     }
 
     /**
+     * Minimizes a DFA.
+     * @param inputDfa DFA to minimize.
+     * @return Minimized DFA.
+     */
+    public Dfa minimizeDfa(Dfa inputDfa) throws IncompleteAutomatonException, Exception {
+        int dfanum = 1;
+        removeAllIsolatedStates(inputDfa);
+        Dfa squared =  calcSquareAutomaton(inputDfa);
+        reverseTransitions(squared);
+        for(State s:squared.getStates()) {
+            State s1 = ((SquareState)s).getState1();
+            State s2 = ((SquareState)s).getState2();
+            if((s1.getIsFinalState() ^ s2.getIsFinalState()) && s.getDfsNum() == 0) {
+                dfanum = dfaDfs(s, dfanum);
+            }
+        }
+        for(State s:squared.getStates()) {
+            SquareState sqState = ((SquareState)s);
+            if(sqState.getState1() == sqState.getState2())
+                continue;
+            if(sqState.getDfsNum() == 0) {
+                //states are equivalent
+                State removable = sqState.getState1();
+                State keepable = sqState.getState2();
+                if(removable.getIsStartState()) {
+                    removable = sqState.getState2();
+                    keepable = sqState.getState1();
+                }
+                if(inputDfa.getStates().contains(removable)) {
+                    Transition[] transArray = new Transition[removable.getIncomingTransitions().size()];
+                    for(int i=0; i<transArray.length; i++)
+                        transArray[i] = removable.getIncomingTransitions().get(i);
+                    for(int i=0; i<transArray.length; i++) {
+                        Transition t = transArray[i];
+                        t.getFromState().removeOutgoingTransition(t);
+                        t.getToState().removeIncomingTransition(t);
+                        t.setToState(keepable);
+                        t.getFromState().addOutgoingTransition(t, true);
+                    }
+                    inputDfa.removeState(removable);
+                }
+            }
+        }
+
+        return inputDfa;
+    }
+
+    /**
+     * Removes all isolated states from the input DFA, that is states that cannot be reached from
+     * the DFA's start state.
+     * @param inputDfa The input DFA.
+     * @return DFA without isolated states.
+     */
+    private Dfa removeAllIsolatedStates(Dfa inputDfa) {
+        dfaDfs(inputDfa.getStartState(), 1);
+        for(State s:inputDfa.getStates()) {
+            if(s.getDfsNum() == 0) {
+                inputDfa.removeState(s);
+            } else {
+                s.setDfsNum(0);
+            }
+        }
+        return inputDfa;
+    }
+
+    /**
      * Calculates dfa^2, that is the automaton that works on QxQ
      * @param Dfa to square.
      * @return Squared Automaton.
      */
-    private Dfa calculateSquareAutomaton(Dfa inputDfa) {
+    private Dfa calcSquareAutomaton(Dfa inputDfa) throws IncompleteAutomatonException, Exception {
+        Dfa squared = new Dfa();
+        ArrayList<State> inputStates = inputDfa.getStates();
+        int statenum = inputStates.size();
+        //generate states
+        for (int i = 0; i < statenum; i++) {
+            State state1 = inputStates.get(i);
+            String name1 = state1.getState_Properties().getName();
+            boolean state1IsFinal = state1.getIsFinalState();
+            boolean state1isStart = state1.getIsStartState();
+            for (int j = 0; j < statenum; j++) {
+                State state2 = inputStates.get(j);
+                String name2 = state2.getState_Properties().getName();
+                SquareState newState = new SquareState("("+name1+","+name2+")");
+                newState.setState1(state1);
+                newState.setState2(state2);
+                squared.addState(newState);
+                if(state1IsFinal && state2.getIsFinalState())
+                    newState.setIsFinalState(true);
+                if(state1isStart && state1 == state2)
+                    squared.setStartState(newState);
+            }
+        }
+        //make sure the input dfa is completely defined
+        ArrayList<String> alphabet = checkPreconditions();
+        ArrayList<State> states = squared.getStates();
+        SquareState[] sqStateArray = new SquareState[states.size()];
+        //Arrays.sort(sqStateArray);
+        for(int i=0; i<states.size(); i++) {
+            sqStateArray[i] = (SquareState)states.get(i);
+        }
+        for(int i=0; i<states.size(); i++) {
+            SquareState sqState = (SquareState)states.get(i);
+            State s1 = sqState.getState1();
+            State s2 = sqState.getState2();
+            for(String c:alphabet) {
+                State target1 = s1.getTargetState(c);
+                State target2 = s2.getTargetState(c);
+                SquareState targetState = getSquareState(target1, target2, sqStateArray);
+                Transition t = new Transition(sqState, targetState);
+                t.addToInput(c);
+                sqState.addOutgoingTransition(t, true);
+            }
+        }
+        return squared;
+    }
+
+    /**
+     * Reverses all transitions in a DFA.
+     * @param dfa The input DFA.
+     */
+    private void reverseTransitions(Dfa dfa) throws Exception {
+        ArrayList<State> states = dfa.getStates();
+        LinkedList<Transition> transitions = new LinkedList<Transition>();
+        for(State s:states) {
+            transitions.addAll(s.getOutgoingTransitions());
+            s.removeAllOutgoingTransitions();
+        }
+        for(Transition t:transitions) {
+            State toState = t.getToState();
+            State fromState = t.getFromState();
+            t.setFromState(toState);
+            t.setToState(fromState);
+            /**
+             * Turn off consistency check (we can get an invalid DFA after reversing its transitions)
+             */
+            toState.addOutgoingTransition(t, false);
+        }
+    }
+
+    private SquareState getSquareState(State state1, State state2, SquareState[] states) {
+        for(int i=0; i<states.length; i++) {
+            if(states[i].getState1() == state1 && states[i].getState2() == state2)
+                return states[i];
+        }
         return null;
-        //remove isolated states out of inputDfa
+    }
+
+    /**
+     * Performs a binary search on SquareState objects.
+     * @param s1 State1.
+     * @param s2 State2.
+     * @param sqStates Array of all SquareStates.
+     * @return The SquareState consisting of states (s1, s2)
+     */
+//    private SquareState binarySearch(State s1, State s2, SquareState[] sqStates) {
+//        int solution = -1;
+//        int first = 0;
+//        int last = sqStates.length-1;
+//
+//        while(first <= last && solution == -1) {
+//            int middle = first + (last - first)/2;
+//            String name1 = s1.getState_Properties().getName();
+//            String name2 = s2.getState_Properties().getName();
+//            String sqname1 = sqStates[middle].getState1().getState_Properties().getName();
+//            String sqname2 = sqStates[middle].getState2().getState_Properties().getName();
+//        }
+//    }
+
+    /**
+     * Perform a depth first search on the input DFA.
+     * @param inputDfa Input DFA.
+     * @param dfsnum DFS number to start with
+     * @return DFS number
+     */
+    private int dfaDfs(State startState, int dfsnum) {
+        int num = dfsnum+1;
+        if(startState != null) {
+            startState.setDfsNum(dfsnum);
+            ArrayList<Transition> transitions = startState.getOutgoingTransitions();
+            for(int i=0; i<transitions.size(); i++) {
+                State toState = transitions.get(i).getToState();
+                if(toState.getDfsNum() == 0) {
+                    num = dfaDfs(toState, num);
+                }
+            }
+            return num;
+        }
+        return 0;
     }
 
 }
