@@ -204,7 +204,7 @@ public class DFATransitionWin extends JFrame {
         {
             ArrayList<String> inputArray = getTransitionsInputArray(textInput.getText());
             try {
-                transition.getFromState().setTransitionInput(transition, inputArray);
+                transition.getFromState().setOutgoingTransitionInput(transition, inputArray);
                 editedOK = true;
                 setVisible(false);
                 dFAMainWin.repaint();

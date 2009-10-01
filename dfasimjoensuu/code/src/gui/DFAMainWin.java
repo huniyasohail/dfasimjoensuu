@@ -138,6 +138,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuitemExit = new javax.swing.JMenuItem();
         menuDFA = new javax.swing.JMenu();
         menuitemProperties = new javax.swing.JMenuItem();
+        menuItemMinimizeDfa = new javax.swing.JMenuItem();
         menuSimulation = new javax.swing.JMenu();
         menuitemStartSim = new javax.swing.JMenuItem();
         menuItemStopSim = new javax.swing.JMenuItem();
@@ -466,7 +467,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -528,6 +529,14 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         menuDFA.add(menuitemProperties);
+
+        menuItemMinimizeDfa.setText("Minimize DFA");
+        menuItemMinimizeDfa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemMinimizeDfaActionPerformed(evt);
+            }
+        });
+        menuDFA.add(menuItemMinimizeDfa);
 
         jMenuBar1.add(menuDFA);
 
@@ -931,6 +940,19 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     }//GEN-LAST:event_splitterInfobarPropertyChange
 
+    private void menuItemMinimizeDfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemMinimizeDfaActionPerformed
+        Dfa minimized = null;
+        try {
+            minimized = dfaSim.minimizeDfa(dfaSim.getDfa());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        dfaSim.setDfa(minimized);
+        dfaSim.getDfa().autoArrangeDFA();
+        panelDrawArea.repaint();
+    }//GEN-LAST:event_menuItemMinimizeDfaActionPerformed
+
 
     private void createNewDFA()
     {
@@ -1090,6 +1112,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JMenu menuDFA;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuInfo;
+    private javax.swing.JMenuItem menuItemMinimizeDfa;
     private javax.swing.JMenuItem menuItemStopSim;
     private javax.swing.JMenu menuSimulation;
     private javax.swing.JMenuItem menuitemExit;

@@ -179,11 +179,11 @@ public class Transition implements Serializable {
             this.input.add(input);
     }
 
-    public void setS1(State s1) {
+    public void setFromState(State s1) {
         this.s1 = s1;
     }
 
-    public void setS2(State s2) {
+    public void setToState(State s2) {
         this.s2 = s2;
     }
 

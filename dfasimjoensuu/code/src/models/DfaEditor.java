@@ -204,9 +204,9 @@ public class DfaEditor{
         for (int i=0;i<getDfa().getStates().size();i++)
         {
             State st = getDfa().getStates().get(i);
-            for (int j=0;j<st.getTransitions().size();j++)
+            for (int j=0;j<st.getOutgoingTransitions().size();j++)
             {
-                Transition tt = st.getTransitions().get(j);
+                Transition tt = st.getOutgoingTransitions().get(j);
                 tt.setSelected(false);
                 tt.setHighlightStatus(HighlightTypes.NoHighlight);
             }
@@ -277,8 +277,8 @@ public class DfaEditor{
                  if (stateMouseOver != null)
                  {
                      //-- draw highlight transitions --
-                     dummyTransition.setS1(transitionAddFrom);
-                     dummyTransition.setS2(stateMouseOver);
+                     dummyTransition.setFromState(transitionAddFrom);
+                     dummyTransition.setToState(stateMouseOver);
                      dummyTransition.setVisible(true);
                  }
 
@@ -687,9 +687,9 @@ public class DfaEditor{
         for (int i=0;i<getDfa().getStates().size();i++)
         {
             State st = getDfa().getStates().get(i);
-            for (int j=0;j<st.getTransitions().size();j++)
+            for (int j=0;j<st.getOutgoingTransitions().size();j++)
             {
-                Transition tt = st.getTransitions().get(j);
+                Transition tt = st.getOutgoingTransitions().get(j);
                 
                 double dx = tx-tt.getClickPositionX();
                 double dy = ty-tt.getClickPositionY();

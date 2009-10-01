@@ -13,22 +13,22 @@ public class Dfa implements Serializable {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.71083E97-6397-D2D6-853D-97DBD63CFF6A]
     // </editor-fold> 
-    private String input;
+    protected String input;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.B5A933E2-233B-A1A4-EDA6-51D88CB7AD62]
     // </editor-fold> 
-    private int currentPosition;
+    protected int currentPosition;
 
-    private String description = "";
+    protected String description = "";
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.605BE7FE-5F6E-ADC8-1805-4DB235B9D755]
     // </editor-fold> 
-    private State currentState;
-    private State startState;
-    private ArrayList<State> states;
-    private int states_added;
+    protected State currentState;
+    protected State startState;
+    protected ArrayList<State> states;
+    protected int states_added;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.EC7BEFBE-E5DE-0F26-2936-4860283E2109]
@@ -58,6 +58,15 @@ public class Dfa implements Serializable {
         return s;
     }
 
+    public State addState(State s) {
+        if(s != null) {
+            this.states.add(s);
+            states_added++;
+            return s;
+        }
+        return null;
+    }
+
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.DE235C0F-584F-4591-F990-DBB9F923B5E7]
     // </editor-fold>
@@ -70,19 +79,21 @@ public class Dfa implements Serializable {
         if (s == null)
                 throw new IllegalArgumentException();
         //-- remove connected transitions --
-        for (int i=states.size()-1;i>=0;i--)
-        {
-            State ss = states.get(i);
-            for (int j=ss.getTransitions().size()-1;j>=0;j--)
-            {
-                Transition t = ss.getTransitions().get(j);
-                if (t.getToState() == s)
-                    removeTransition(t);
-            }
-        }
+        //TODO: clean up!
+//        for (int i=states.size()-1;i>=0;i--)
+//        {
+//            State ss = states.get(i);
+//            for (int j=ss.getOutgoingTransitions().size()-1;j>=0;j--)
+//            {
+//                Transition t = ss.getOutgoingTransitions().get(j);
+//                if (t.getToState() == s)
+//                    removeTransition(t);
+//            }
+//        }
+        for(Transition t:s.getIncomingTransitions())
+            removeTransition(t);
         // s != null
         this.states.remove(s);
-
 
     }
 
@@ -98,7 +109,7 @@ public class Dfa implements Serializable {
     public Transition addTransition (State s1, State s2) {
         Transition t = new Transition(s1, s2);
         try {
-            s1.addTransition(t);
+            s1.addOutgoingTransition(t, true);
         } catch (Exception ex) {
             //TODO:
             System.out.println(ex.getMessage());
@@ -106,7 +117,7 @@ public class Dfa implements Serializable {
         //check for transition in opposite direction
         boolean found = false;
         int i = 0;
-        ArrayList<Transition> transitions = s2.getTransitions();
+        ArrayList<Transition> transitions = s2.getOutgoingTransitions();
         while(i<transitions.size() && !found) {
             Transition s2_transition = transitions.get(i);
             if(s2_transition.getToState().equals(s1)) {
@@ -127,7 +138,7 @@ public class Dfa implements Serializable {
      * @param t The transition to remove.
      */
     public void removeTransition (Transition t) {
-        t.getFromState().removeTransition(t);
+        t.getFromState().removeOutgoingTransition(t);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -297,7 +308,7 @@ public class Dfa implements Serializable {
      * @throws NoSuchTransitionException There is no transition from s1 to s2.
      */
     public boolean isBidirectionalTransition(State s1, State s2) throws NoSuchTransitionException {
-        Transition t = s1.getTransition(s2);
+        Transition t = s1.getOutgoingTransition(s2);
         return t.isHasBackTransition();
     }
 

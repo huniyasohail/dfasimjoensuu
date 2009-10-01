@@ -19,8 +19,18 @@ public class State implements Serializable{
     // #[regen=yes,id=DCE.C0EE8059-23DE-B596-6A75-675F1615D3A7]
     // </editor-fold> 
     private boolean isStartState;
-    private ArrayList<Transition> transitions;
+    private ArrayList<Transition> outgoingTransitions;
+    private ArrayList<Transition> incomingTransitions;
     private State_Properties prop;
+    private int dfsNum;
+
+    public int getDfsNum() {
+        return dfsNum;
+    }
+
+    public void setDfsNum(int dfsNum) {
+        this.dfsNum = dfsNum;
+    }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.440B62F6-A5F4-8219-24A6-DD573FD0A0A6]
@@ -30,9 +40,11 @@ public class State implements Serializable{
      * @param name Name of the state.
      * @throws IllegalArgumentException Name of the state must not be null.
      */
-    public State (String name) throws IllegalArgumentException{
-        transitions = new ArrayList<Transition>();
+    State (String name) throws IllegalArgumentException{
+        outgoingTransitions = new ArrayList<Transition>();
+        incomingTransitions = new ArrayList<Transition>();
         prop = new State_Properties();
+        dfsNum = 0;
         if (name == null)
             throw new IllegalArgumentException();
         //name != null
@@ -90,14 +102,14 @@ public class State implements Serializable{
      * @param t The Transition to be checked.
      * @return Transition, if existing. Otherwise null.
      */
-    public Transition getExistingTransition(Transition t) {
+    public Transition getExistingOutgoingTransition(Transition t) {
         Transition existing = null;
         State toState = t.getToState();
-        for(int i=0; i<transitions.size() && existing == null; i++) {
-            State from = transitions.get(i).getFromState();
-            State to = transitions.get(i).getToState();
+        for(int i=0; i<outgoingTransitions.size() && existing == null; i++) {
+            State from = outgoingTransitions.get(i).getFromState();
+            State to = outgoingTransitions.get(i).getToState();
             if(from.equals(this) && to.equals(toState)) {
-                existing = transitions.get(i);
+                existing = outgoingTransitions.get(i);
             }
         }
         return existing;
@@ -109,40 +121,45 @@ public class State implements Serializable{
      * @param t2 Transition t2-
      * @return Transition t1 expanded by the labels of t2.
      */
-    private Transition mergeTransitions(Transition t1, Transition t2) throws NoSuchTransitionException, Exception {
+    private Transition mergeOutgoingTransitions(Transition t1, Transition t2) throws NoSuchTransitionException, Exception {
         for(String c:t2.getInput()) {
-                addLabelToTransition(t1, c);
+                addLabelToOutgoingTransition(t1, c);
             }
         return t1;
     }
     /**
      * Adds transition t to the state.
      * @param t The transition to be added.
+     * @param consistency Determines weather consistency should be preserved. If set to false,
+     * there will not be an exception thrown in case of for example two different transitions with
+     * the same label.
      * @return The added transition.
      * @throws Exception Throws an Exception if there is already a transition between
      * the same states or if there is already a transition with the same label.
      */
-    public Transition addTransition(Transition t) throws Exception{
+    public Transition addOutgoingTransition(Transition t, boolean consistency) throws Exception{
         //check if there is not yet another transition with the same target state
-        Transition existing = getExistingTransition(t);
+        Transition existing = getExistingOutgoingTransition(t);
 
         if(existing != null) {
             //merge
-            return mergeTransitions(existing, t);
+            return mergeOutgoingTransitions(existing, t);
         }
         //check if there is not yet another transition with the same label
-        if(!transitions.contains(t)) {
-            if(t.getInput().size() == 0) {
-                transitions.add(t);
+        if(!outgoingTransitions.contains(t)) {
+            if(t.getInput().size() == 0 || !consistency) {
+                outgoingTransitions.add(t);
+                t.getToState().addIncomingTransition(t);
             } else {
                 ArrayList<String> input = t.getInput();
                 t.setInput(new ArrayList<String>());
-                transitions.add(t);
+                outgoingTransitions.add(t);
+                t.getToState().addIncomingTransition(t);
                 for(String s:input) {
                     try{
-                        addLabelToTransition(t, s);
+                        addLabelToOutgoingTransition(t, s);
                     } catch(Exception ex) {
-                        transitions.remove(t);
+                        outgoingTransitions.remove(t);
                         throw ex;
                     }
                 }
@@ -156,6 +173,19 @@ public class State implements Serializable{
     }
 
     /**
+     * Adds transition t to the list of incoming transitions of this state.
+     * @param t The incoming transition
+     * @return The added incoming transition.(null iff t is null)
+     */
+    public Transition addIncomingTransition(Transition t) {
+        if(t != null && !incomingTransitions.contains(t)) {
+            incomingTransitions.add(t);
+            return t;
+        }
+        return null;
+    }
+
+    /**
      *  Adds a label to a transition.
      * @param t The transition to be labled.
      * @param label The label to be added.
@@ -163,9 +193,9 @@ public class State implements Serializable{
      * @throws Exception There must not be a second transition with the same label.
      * @throws NoSuchTransitionException The given transition must be part of the DFA.
      */
-    public Transition addLabelToTransition(Transition t, String label) throws Exception, NoSuchTransitionException{
-         if(transitions.contains(t)) {
-             for (Transition trans : transitions) {
+    public Transition addLabelToOutgoingTransition(Transition t, String label) throws Exception, NoSuchTransitionException{
+         if(outgoingTransitions.contains(t)) {
+             for (Transition trans : outgoingTransitions) {
                  if(trans == t)
                      continue;
                  if (trans.getInput().contains(label)) {
@@ -191,19 +221,19 @@ public class State implements Serializable{
      * @throws NoSuchTransitionException Transition t is not part of the DFA.
      * @throws Exception There is already another transition with the same label.
      */
-    public Transition setTransitionInput(Transition t, ArrayList<String> input) throws NoSuchTransitionException, Exception{
-        if(transitions.contains(t)) {
+    public Transition setOutgoingTransitionInput(Transition t, ArrayList<String> input) throws NoSuchTransitionException, Exception{
+        if(outgoingTransitions.contains(t)) {
             t.setInput(null);
             for(String label:input) {
-                addLabelToTransition(t, label);
+                addLabelToOutgoingTransition(t, label);
             }
             return t;
         } else {
-            Transition existing = getExistingTransition(t);
+            Transition existing = getExistingOutgoingTransition(t);
             if(existing != null) {
                 //merge
                 for(String c:input)
-                    addLabelToTransition(existing, c);
+                    addLabelToOutgoingTransition(existing, c);
                 return existing;
             } else {
                 throw new NoSuchTransitionException();
@@ -215,8 +245,41 @@ public class State implements Serializable{
      * Removes a transition from the DFA.
      * @param t Transition to be removed.
      */
-    public void removeTransition(Transition t) {
-        transitions.remove(t);
+    public void removeOutgoingTransition(Transition t) {
+        t.getToState().removeIncomingTransition(t);
+        outgoingTransitions.remove(t);
+    }
+
+    /**
+     * Removes all transitions from this state, that is after running this method there
+     * are no transitions to other states.
+     */
+    public void removeAllOutgoingTransitions() {
+        for(Transition t:outgoingTransitions) {
+            t.getToState().removeIncomingTransition(t);
+        }
+        outgoingTransitions = new ArrayList<Transition>();
+    }
+
+    public void removeIncomingTransition(Transition t) {
+        if(t != null && incomingTransitions.contains(t)) {
+            incomingTransitions.remove(t);
+        }
+    }
+
+    /**
+     * Calculates the state that the DFA will change to when it reads 'input'
+     * @param input The input read.
+     * @return The target state. (null if input is null)
+     */
+    public State getTargetState(String input) {
+        if(input != null) {
+            for(Transition t:outgoingTransitions) {
+                if(t.getInput().contains(input))
+                    return t.getToState();
+            }
+        }
+        return null;
     }
 
     /**
@@ -234,9 +297,9 @@ public class State implements Serializable{
      * @throws NoSuchTransitionException Throws an exception if there is no transition
      * to toState.
      */
-    public Transition getTransition (State toState) throws NoSuchTransitionException {
+    public Transition getOutgoingTransition (State toState) throws NoSuchTransitionException {
         Transition trans = null;
-        for(Transition t:transitions) {
+        for(Transition t:outgoingTransitions) {
             if (t.getToState() == toState) {
                 trans = t;
                 break;
@@ -252,9 +315,12 @@ public class State implements Serializable{
      * Returns the set of Transitions
      * @return Set of transitions as ArrayList
      */
-    public ArrayList<Transition> getTransitions() {
-        return transitions;
+    public ArrayList<Transition> getOutgoingTransitions() {
+        return outgoingTransitions;
     }
 
+    public ArrayList<Transition> getIncomingTransitions() {
+        return incomingTransitions;
+    }
 
 }
