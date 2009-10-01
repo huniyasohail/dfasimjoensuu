@@ -317,7 +317,8 @@ public class Simulator {
      */
     private Dfa removeAllIsolatedStates(Dfa inputDfa) {
         dfaDfs(inputDfa.getStartState(), 1);
-        for(State s:inputDfa.getStates()) {
+        State[] states = inputDfa.getStates().toArray(new State[inputDfa.getStates().size()]);
+        for(State s:states) {
             if(s.getDfsNum() == 0) {
                 inputDfa.removeState(s);
             } else {

@@ -78,19 +78,8 @@ public class Dfa implements Serializable {
     public void removeState (State s) throws IllegalArgumentException{
         if (s == null)
                 throw new IllegalArgumentException();
-        //-- remove connected transitions --
-        //TODO: clean up!
-//        for (int i=states.size()-1;i>=0;i--)
-//        {
-//            State ss = states.get(i);
-//            for (int j=ss.getOutgoingTransitions().size()-1;j>=0;j--)
-//            {
-//                Transition t = ss.getOutgoingTransitions().get(j);
-//                if (t.getToState() == s)
-//                    removeTransition(t);
-//            }
-//        }
-        for(Transition t:s.getIncomingTransitions())
+        Transition[] transitions = s.getIncomingTransitions().toArray(new Transition[s.getIncomingTransitions().size()]);
+        for(Transition t:transitions)
             removeTransition(t);
         // s != null
         this.states.remove(s);
