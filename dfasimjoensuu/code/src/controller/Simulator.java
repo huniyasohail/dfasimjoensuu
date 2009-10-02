@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ListIterator;
 import models.Dfa;
 import models.DfaEditor;
 import models.SquareState;
@@ -235,6 +234,7 @@ public class Simulator {
                     s.addOutgoingTransition(newTrans, false);
                     counter++;
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -319,6 +319,7 @@ public class Simulator {
      */
     public Dfa minimizeDfa(Dfa inputDfa) throws IncompleteAutomatonException, Exception {
         int dfanum = 1;
+        checkPreconditions();
         removeAllIsolatedStates(inputDfa);
         Dfa squared =  calcSquareAutomaton(inputDfa);
         reverseTransitions(squared);
@@ -329,34 +330,51 @@ public class Simulator {
                 dfanum = dfaDfs(s, dfanum);
             }
         }
-        for(State s:squared.getStates()) {
-            SquareState sqState = ((SquareState)s);
-            if(sqState.getState1() == sqState.getState2())
+        LinkedList<SquareState> eqivalentStates = new LinkedList<SquareState>();
+        ArrayList<State> sqStates = squared.getStates();
+        for(int i=0; i<squared.getStates().size(); i++) {
+            SquareState sqState = (SquareState)sqStates.get(i);
+            State s1 = sqState.getState1();
+            State s2 = sqState.getState2();
+            if(s1 == s2)
                 continue;
             if(sqState.getDfsNum() == 0) {
-                //states are equivalent
-                State removable = sqState.getState1();
-                State keepable = sqState.getState2();
-                if(removable.getIsStartState()) {
-                    removable = sqState.getState2();
-                    keepable = sqState.getState1();
+                boolean found = false;
+                ListIterator iterator = eqivalentStates.listIterator();
+                for(int j=0; j<eqivalentStates.size() && !found; j++) {
+                    SquareState x = (SquareState)iterator.next();
+                    found = x.getState1() == s2 && x.getState2() == s1;
                 }
-                if(inputDfa.getStates().contains(removable)) {
-                    Transition[] transArray = new Transition[removable.getIncomingTransitions().size()];
-                    for(int i=0; i<transArray.length; i++)
-                        transArray[i] = removable.getIncomingTransitions().get(i);
-                    for(int i=0; i<transArray.length; i++) {
-                        Transition t = transArray[i];
-                        t.getFromState().removeOutgoingTransition(t);
-                        t.getToState().removeIncomingTransition(t);
-                        t.setToState(keepable);
-                        t.getFromState().addOutgoingTransition(t, true);
-                    }
-                    inputDfa.removeState(removable);
+                if(!found) {
+                    System.out.println(sqState.getState_Properties().getName());
+                    eqivalentStates.add(sqState);
                 }
             }
         }
-
+        for (SquareState sqState : eqivalentStates) {
+            //states are equivalent
+            State removable = sqState.getState1();
+            State keepable = sqState.getState2();
+            if (removable.getIsStartState()) {
+                removable = sqState.getState2();
+                keepable = sqState.getState1();
+            }
+            if (inputDfa.getStates().contains(removable)) {
+                Transition[] transArray = new Transition[removable.getIncomingTransitions().size()];
+                for (int i = 0; i < transArray.length; i++) {
+                    transArray[i] = removable.getIncomingTransitions().get(i);
+                }
+                for (int i = 0; i < transArray.length; i++) {
+                    Transition t = transArray[i];
+                    t.getFromState().removeOutgoingTransition(t);
+                    t.getToState().removeIncomingTransition(t);
+                    t.setToState(keepable);
+                    t.getFromState().addOutgoingTransition(t, true);
+                }
+                inputDfa.removeState(removable);
+            }
+        }
+        //return inputDfa;
         return inputDfa;
     }
 
