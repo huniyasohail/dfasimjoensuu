@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package models;
 
 /**
- *
+ * Enum for Tools selected
  * @author Fabian
  */
  public enum EditorToolStates {

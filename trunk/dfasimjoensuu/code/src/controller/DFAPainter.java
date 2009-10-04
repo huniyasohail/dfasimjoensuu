@@ -102,13 +102,20 @@ public class DFAPainter {
     public int getVirtualTransitionSite() {
         return virtualTransitionSite;
     }
-
+/**
+ * request a complete repaint of the drawing area
+ */
     public void requestRepaintAll()
     {
         if (this.paintPanel != null)
             this.paintPanel.repaint();
     }
 
+    /**
+     * Export the current DFA as a cropped picture
+     * @param f Destination file
+     * @return true if all OK
+     */
     public boolean exportPNGFile(File f)
     {
         //-- get dimensions of image --
@@ -185,9 +192,10 @@ public class DFAPainter {
     }
 
 
-    /**
-     * paints the States and Transitions
-     */
+/**
+ * Paints DFA main procedure
+ * @param g Destination Graphics2D object
+ */
     public void updateGraphics(Graphics2D g)
     {
         if (g != null)
@@ -317,7 +325,11 @@ public class DFAPainter {
 
 
 
-
+/**
+ * get the comma seperated string from Arraylist like 'a, b, c'
+ * @param t Transition object
+ * @return Stirng
+ */
     private String getStringFromInputArray(Transition t)
     {
         if (t != null)
@@ -338,6 +350,15 @@ public class DFAPainter {
         return "-";
     }
 
+    /**
+     * paints a transition
+     * @param s1 From state
+     * @param s2 To state
+     * @param t Transition object
+     * @param caption Label of the edge
+     * @param color color (if special)
+     * @param fakeTrans Boolean flag to distinguish between real and the helping transition in add transition mode
+     */
     public void paintTransition(State s1, State s2, Transition t, String caption, Color color, boolean fakeTrans) {
         if (s1 != null && s2 != null) {
             int captionPositionX = 0;
@@ -423,7 +444,7 @@ public class DFAPainter {
                     }
                     if (absCurveFactor < 2)
                     {
-                        textAdaption =  Math.max(20, textAdaption*curveAdoptionFactor(absCurveFactor));
+                        textAdaption =  Math.max(20, textAdaption*curveAdaptionFactor(absCurveFactor));
                     }
                     textAdaption = textAdaption*direction;
                     //System.out.println(t.getCurveFactor());
@@ -560,15 +581,29 @@ public class DFAPainter {
 
     }
 
-    private double curveAdoptionFactor(double input)
+    /**
+     * get the curve adaption factor for the quadratic curves
+     * @param input double value
+     * @return
+     */
+    private double curveAdaptionFactor(double input)
     {
-
         double f = (input-1);
         f = 1/(f*f*f*f+1);
         return 0.7*(input/2)*(input/2)+0.3*f;
-
     }
 
+    /**
+     * handle the drawing of the little touch button to change the curves of the transitions
+     * @param t the Transition object
+     * @param normx the normed vector x
+     * @param normy the normed vector x
+     * @param additionalArcDistance depends on distance
+     * @param h1x special point for nice arrows
+     * @param h1y special point for nice arrows
+     * @param h2x special point for nice arrows
+     * @param h2y special point for nice arrows
+     */
     private void drawTouchTransitionButton(Transition t,double normx, double normy, double additionalArcDistance, double h1x, double h1y,double h2x, double h2y)
     {
         TouchButton tb = getDfaEditor().getTouchButton();
@@ -609,6 +644,12 @@ public class DFAPainter {
                 textpointy-tb.getSize(), 2*tb.getSize(), 2*tb.getSize());
     }
 
+    /**
+     * another adaption factor for the best postions of captions
+     * @param input
+     * @param min
+     * @return
+     */
 private double curvePointAdaptionFactor(double input,double min)
 {
     double x = input - min;
@@ -616,13 +657,26 @@ private double curvePointAdaptionFactor(double input,double min)
 }
 
 
-
+/**
+ * paint the rounded background highlight box of transitions
+ * @param r coordinates
+ * @param c color to fill
+ * @param additionalBorder determines the additional distance to the border
+ * @param g canvas to draw on
+ */
     private void paintTransitionHighlightRectangle(Rectangle2D r, Color c, int additionalBorder, Graphics2D g)
     {
         g.setColor(c);
        g.fillRoundRect((int)(r.getX()-additionalBorder), (int)( r.getY()-additionalBorder), (int)(r.getWidth()+2*additionalBorder),(int)( r.getHeight()+2*additionalBorder), 10, 10);
     }
 
+    /**
+     * draw the start state arrow
+     * @param px position x
+     * @param py position y
+     * @param c Color to paint it
+     * @param g canvas to paint on
+     */
     private void drawStartArrow(int px, int py, Color c,Graphics2D g)
     {
         double s1x = px-20*getDfaEditor().getZoomfactor();
@@ -634,6 +688,15 @@ private double curvePointAdaptionFactor(double input,double min)
         drawArrow(px,py, 4,0,g);
     }
 
+
+/**
+ * draw the transition arrows
+ * @param px position x
+ * @param py position y
+ * @param size size (not used in the moment)
+ * @param angle Angle the arrow should be painted
+ * @param g canvas to paint on
+ */
     private void drawArrow(int px, int py, double size, double angle, Graphics2D g)
     {
         double p1x = -0.5*size*dfaEditor.getZoomfactor();
@@ -649,25 +712,45 @@ private double curvePointAdaptionFactor(double input,double min)
         double t2y = py + turnYbyAngle(p2x,p2y, angle);
         double t3x = px + turnXbyAngle(p3x,p3y, angle);
         double t3y = py + turnYbyAngle(p3x,p3y, angle);
-
         Polygon s = new Polygon();
         s.addPoint((int)t1x,(int)t1y);
         s.addPoint((int)t2x,(int)t2y);
         s.addPoint((int)t3x,(int)t3y);
-
         g.fillPolygon(s);
     }
 
+    /**
+     * turn a x vector component
+     * @param x vector x
+     * @param y vector y
+     * @param a angle
+     * @return new x value
+     */
     private double turnXbyAngle(double x, double y, double a)
     {
         return Math.cos(a)*x - Math.sin(a)*y;
     }
-
+/**
+ *  turn a y vector component
+     * @param x vector x
+     * @param y vector y
+     * @param a angle
+     * @return new y value
+ */
     private double turnYbyAngle(double x, double y, double a)
     {
         return Math.sin(a)*x + Math.cos(a)*y;
     }
 
+    /**
+     * get the boundaries of a string with a special font context
+     * @param s Text
+     * @param centerX position x
+     * @param centerY position y
+     * @param f Font
+     * @param g canvas
+     * @return
+     */
     private Rectangle2D getFontBounds(String s,int centerX, int centerY, Font f, Graphics2D g)
     {
          //-- center the string --
@@ -684,7 +767,15 @@ private double curvePointAdaptionFactor(double input,double min)
          return rect;
     }
 
-
+/**
+ * draw a centered text at a certain position
+ * @param s Text to draw
+ * @param centerX position x
+ * @param centerY position y
+ * @param f Font
+ * @param g canvas
+ * @return rectangle of text bounds
+ */
     private Rectangle2D drawCenteredText(String s, int centerX, int centerY , Font f, Graphics2D g)
     {
          //-- center the string --
@@ -700,6 +791,15 @@ private double curvePointAdaptionFactor(double input,double min)
          return rect;
     }
 
+    /**
+     * calculate the intersection point of a line with a circle
+     * @param fromX vector x
+     * @param fromY vector y
+     * @param toX vector x
+     * @param toY vector y
+     * @param distance radius/distance of circle
+     * @return vector objects
+     */
     public Vector<Double> getIntersectionPoint(double fromX, double fromY, double toX, double toY, double distance)
     {
         Vector<Double> v = new Vector<Double>();
@@ -745,17 +845,22 @@ private double curvePointAdaptionFactor(double input,double min)
     }
 
 
+/**
+ * paint user help actions like show possible transitions/states
+ */
     private void paintUserActions() {
         if (dfaEditor.getDummyState().getState_Properties().isVisible())
         {
             paintDummyState(dfaEditor.getDummyState());
-
         }
        paintDummyTransition(dfaEditor.getDummyTransition());
-
     }
 
 
+    /**
+     * paint the user helping state
+     * @param s State to paint
+     */
     public void paintDummyState(State s){
         Graphics2D g = this.graphics;
 
@@ -775,6 +880,10 @@ private double curvePointAdaptionFactor(double input,double min)
         g.setColor(Color.black);
     }
 
+    /**
+     * paint the dummy transition in add transition mode
+     * @param t paint transition
+     */
     public void paintDummyTransition(Transition t)
     {
         if (t.isVisible())

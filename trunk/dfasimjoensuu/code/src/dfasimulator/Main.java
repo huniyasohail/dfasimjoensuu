@@ -5,13 +5,9 @@
 
 package dfasimulator;
 
-import controller.IncompleteAutomatonException;
 import controller.Simulator;
 import gui.DFAMainWin;
 import javax.swing.UIManager;
-import models.Dfa;
-import models.State;
-import models.Transition;
 
 /**
  * The main function where the main window is created

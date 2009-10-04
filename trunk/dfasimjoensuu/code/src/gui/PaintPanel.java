@@ -30,7 +30,10 @@ DFAPainter dFAPainter;
         this.dFAPainter = dFAPainter;
     }
 
-
+/**
+ * override the paintComponent method to have own painting methods
+ * @param g canvas
+ */
 @Override public void paintComponent(Graphics g) {
          super.paintComponent(g);    // paints background
          if (dFAPainter != null)

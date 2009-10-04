@@ -78,6 +78,12 @@ public class Simulator {
         isRunning = true;
     }
 
+    /**
+     * compare 2 alphabets represented as ArrayList<String>
+     * @param inputAlphabet
+     * @param transitionsAlphabet
+     * @return true or false
+     */
     private boolean alphabetsAreEqual(ArrayList<String> inputAlphabet, ArrayList<String> transitionsAlphabet) {
         if(inputAlphabet.size() > transitionsAlphabet.size())
             return false;
@@ -95,6 +101,9 @@ public class Simulator {
         return true;
     }
 
+    /**
+     * simulate the DFA in one step
+     */
     public void simulateAll () {
         int currentPosition = dfa.getCurrentPosition();
         String input = dfa.getInput();
@@ -102,6 +111,10 @@ public class Simulator {
             nextStep();
     }
 
+    /**
+     * check if the DFA accpets the given word
+     * @return true or false
+     */
     public boolean isAccepting() {
         int currentPosition = dfa.getCurrentPosition();
         State currentSate = dfa.getCurrentState();
@@ -112,6 +125,11 @@ public class Simulator {
             return ((input.length() == 0 || currentPosition == input.length()-1) && currentSate.getIsFinalState());
     }
 
+/**
+ * check preconditions for simulation
+ * @return
+ * @throws IncompleteAutomatonException
+ */
     private ArrayList<String> checkPreconditions()  throws IncompleteAutomatonException {
         //check all pre-conditions
         //check for start state
@@ -139,6 +157,11 @@ public class Simulator {
         return alphabet;
     }
 
+    /**
+     * check preconditions for simulation
+     * @param input
+     * @throws IncompleteAutomatonException
+     */
     private void checkPreconditions(String input) throws IncompleteAutomatonException {
         //check all pre-conditions
         //check for start state
@@ -175,6 +198,10 @@ public class Simulator {
         }
     }
 
+    /**
+     * get the alphabet as ArrayList<String> derived from the labels of the transition
+     * @return a list of letters
+     */
     public ArrayList<String> getAlphabetFromTransitions() {
         ArrayList<String> alphabet = new ArrayList<String>();
         ArrayList<State> states = dfa.getStates();
@@ -190,6 +217,11 @@ public class Simulator {
         return alphabet;
     }
 
+    /**
+     * get the Alphabet from Input (union all different letters)
+     * @param input String
+     * @return List of unique letters
+     */
     private ArrayList<String> getAlphabetFromInput(String input) {
         ArrayList<String> alphabet = new ArrayList<String>();
         for(int i=0; i<input.length(); i++) {
@@ -202,7 +234,7 @@ public class Simulator {
 
     /**
      * add missing transitions to all states
-     * @return
+     * @return number of labels added
      */
     public int autocompleteDFATransitions( ArrayList<String> alphabet)
     {
@@ -244,7 +276,9 @@ public class Simulator {
     }
 
 
-
+/**
+ * get a textual print of the current automaton
+ */
     private void print_automaton() {
         System.out.println("Starting a simulation with the following automaton:");
         for(State s:dfa.getStates()) {
@@ -271,9 +305,9 @@ public class Simulator {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.C245F85F-9EBB-3228-73CF-853407C3F3DF]
-    // </editor-fold> 
+/**
+ * simulate the next step
+ */
     public void nextStep () {
 
         String input = dfa.getInput();
@@ -304,10 +338,14 @@ public class Simulator {
         }
     }
 
+
     public boolean getIsRunning() {
         return isRunning;
     }
 
+    /**
+     * reset the dfa to normal start parameters
+     */
     public void resetDfa() {
         if(this.dfa.getInput().length() > 0)
             dfa.setCurrentPosition(0);

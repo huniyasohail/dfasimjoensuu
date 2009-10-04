@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 /**
- *
+ * a class to load HTML URL from the JAR file
  * @author Fabian
  */
 public class HelpFileLoader {
@@ -22,6 +22,10 @@ public class HelpFileLoader {
         loadFiles();
     }
 
+    /**
+     * load files
+     * @return OK
+     */
     public boolean loadFiles()
     {
         boolean readOk = true;
@@ -31,13 +35,21 @@ public class HelpFileLoader {
         loadFile("simulation");
         return readOk;
     }
-
+/**
+ * load a specific file from the jar
+ * @param s
+ */
     private void loadFile(String s)
     {
         URL d = this.getClass().getResource("help/"+s+".html");
         helpfiles.put(s, d);
     }
 
+    /**
+     * get the url to a request
+     * @param k
+     * @return
+     */
     public URL getUrlByKey(String k)
     {
         return helpfiles.get(k);
