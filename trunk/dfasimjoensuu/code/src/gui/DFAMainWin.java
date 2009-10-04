@@ -58,6 +58,7 @@ public class DFAMainWin extends javax.swing.JFrame {
       //  this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+
     public Simulator getDfaSim() {
         return dfaSim;
     }
@@ -67,8 +68,17 @@ public class DFAMainWin extends javax.swing.JFrame {
     }
 
   private void panelDrawAreaMouseClicked(java.awt.event.MouseEvent evt) {                                           
-        if (evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1)
         handleDoubleClick(evt);
+
+        if ( evt.getButton() == java.awt.event.MouseEvent.BUTTON3)
+        {
+            if (getDfaSim().getDfaEditor().isAnythingSelected())
+            {
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+            
+        }
     }
 
 /**
@@ -94,7 +104,9 @@ public class DFAMainWin extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jSeparator3 = new javax.swing.JSeparator();
+        popupMenu = new javax.swing.JPopupMenu();
+        menuitemEditpopup = new javax.swing.JMenuItem();
+        menuitemDeletepopup = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         togglePointer = new javax.swing.JToggleButton();
         toggleAddState = new javax.swing.JToggleButton();
@@ -132,20 +144,35 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuitemNewDFA = new javax.swing.JMenuItem();
         menuitemOpen = new javax.swing.JMenuItem();
         menuitemSave = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
         menuitemExit = new javax.swing.JMenuItem();
         menuDFA = new javax.swing.JMenu();
         menuitemExportImage = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
         menuitemProperties = new javax.swing.JMenuItem();
-        menuItemMinimizeDfa = new javax.swing.JMenuItem();
         menuitemAutocomplete = new javax.swing.JMenuItem();
+        menuItemMinimizeDfa = new javax.swing.JMenuItem();
         menuSimulation = new javax.swing.JMenu();
         menuitemStartSim = new javax.swing.JMenuItem();
         menuItemStopSim = new javax.swing.JMenuItem();
         menuInfo = new javax.swing.JMenu();
         menuitemInfo = new javax.swing.JMenuItem();
-        menuFile.add(jSeparator3);
+
+        menuitemEditpopup.setText("Edit object");
+        menuitemEditpopup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemEditpopupActionPerformed(evt);
+            }
+        });
+        popupMenu.add(menuitemEditpopup);
+
+        menuitemDeletepopup.setLabel("Delete object");
+        menuitemDeletepopup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemDeletepopupActionPerformed(evt);
+            }
+        });
+        popupMenu.add(menuitemDeletepopup);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("DFA Simulator");
@@ -500,7 +527,7 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         menuFile.add(menuitemSave);
-        menuFile.add(jSeparator3);
+        menuFile.add(jSeparator4);
 
         menuitemExit.setText("Exit");
         menuitemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -531,14 +558,6 @@ public class DFAMainWin extends javax.swing.JFrame {
         });
         menuDFA.add(menuitemProperties);
 
-        menuItemMinimizeDfa.setText("Minimize DFA");
-        menuItemMinimizeDfa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemMinimizeDfaActionPerformed(evt);
-            }
-        });
-        menuDFA.add(menuItemMinimizeDfa);
-
         menuitemAutocomplete.setText("Autocomplete DFA...");
         menuitemAutocomplete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -546,6 +565,14 @@ public class DFAMainWin extends javax.swing.JFrame {
             }
         });
         menuDFA.add(menuitemAutocomplete);
+
+        menuItemMinimizeDfa.setText("Minimize DFA");
+        menuItemMinimizeDfa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemMinimizeDfaActionPerformed(evt);
+            }
+        });
+        menuDFA.add(menuItemMinimizeDfa);
 
         jMenuBar1.add(menuDFA);
 
@@ -1008,6 +1035,14 @@ public class DFAMainWin extends javax.swing.JFrame {
         win.setVisible(true);
     }//GEN-LAST:event_menuitemAutocompleteActionPerformed
 
+    private void menuitemEditpopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemEditpopupActionPerformed
+     getDfaSim().getDfaEditor().handleDoubleClick(null);
+    }//GEN-LAST:event_menuitemEditpopupActionPerformed
+
+    private void menuitemDeletepopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemDeletepopupActionPerformed
+       getDfaSim().getDfaEditor().handleDeleteObject(null);
+    }//GEN-LAST:event_menuitemDeletepopupActionPerformed
+
 
     private void createNewDFA()
     {
@@ -1160,7 +1195,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenu menuDFA;
     private javax.swing.JMenu menuFile;
@@ -1169,6 +1204,8 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JMenuItem menuItemStopSim;
     private javax.swing.JMenu menuSimulation;
     private javax.swing.JMenuItem menuitemAutocomplete;
+    private javax.swing.JMenuItem menuitemDeletepopup;
+    private javax.swing.JMenuItem menuitemEditpopup;
     private javax.swing.JMenuItem menuitemExit;
     private javax.swing.JMenuItem menuitemExportImage;
     private javax.swing.JMenuItem menuitemInfo;
@@ -1186,6 +1223,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JPanel panelHelpSide;
     private javax.swing.JPanel panelMainDrawArea;
     private javax.swing.JPanel panelTop;
+    private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JSplitPane splitterInfobar;
     private javax.swing.JSplitPane splitterSimulationBar;
     private javax.swing.JTextPane textDescription;
