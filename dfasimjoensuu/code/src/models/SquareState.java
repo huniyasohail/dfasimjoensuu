@@ -9,7 +9,7 @@ package models;
  *
  * @author Kai
  */
-public class SquareState extends State implements Comparable{
+public class SquareState extends State{
 
     private State state1;
     private State state2;
@@ -40,26 +40,6 @@ public class SquareState extends State implements Comparable{
         super(name, id);
         state1 = null;
         state2 = null;
-    }
-
-    public int compareTo(Object o) {
-        SquareState comp = (SquareState)o;
-        String thisname1 = this.state1.getState_Properties().getName();
-        String thisname2 = this.state2.getState_Properties().getName();
-        String thatname1 = comp.getState1().getState_Properties().getName();
-        String thatname2 = comp.getState2().getState_Properties().getName();
-
-        if(thisname1.compareTo(thatname1) < 0) {
-            return -1;
-        } else if(thisname1.compareTo(thatname1) > 0) {
-            return 1;
-        } else if(thisname2.compareTo(thatname2) < 0) {
-            return -1;
-        } else if(thisname2.compareTo(thatname2) > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
     
 }

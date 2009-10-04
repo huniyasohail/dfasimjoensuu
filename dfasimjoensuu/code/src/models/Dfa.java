@@ -2,12 +2,13 @@ package models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.CCC2B68F-8475-9ECB-2126-E50681B0C4B0]
 // </editor-fold> 
-public class Dfa implements Serializable {
+public class Dfa extends Observable implements Serializable{
     private static final long serialVersionUID = -5590868576506217927L;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -210,21 +211,26 @@ public class Dfa implements Serializable {
     /**
      * Sets state s as the start state of the DFA. A DFA must have exactly one start state.
      * If there is already a state set as start state, it gets overwritten.
-     * @param s The state to be set as the start state.
-     * @throws IllegalArgumentException If the given argument is null or the given state
-     * is not part of the DFA.
+     * @param s The state to be set as the start state. null deletes the current start state.
+     * @throws IllegalArgumentException If the given state is not part of the DFA.
      */
     public void setStartState (State s) throws IllegalArgumentException {
-        if (s == null)
-            throw new IllegalArgumentException("You must define a start state!");
-        if (!state_known(s))
+        if (s != null && !state_known(s)) {
             throw new IllegalArgumentException("The state you are trying to declare as the start state is not a part of the DFA!");
-        //else
-        if (this.startState != null)
+        }
+        if (this.startState != null) {
             this.startState.setIsStartState(false);
-        this.startState = s;
-        s.setIsStartState(true);
-        currentState = startState;
+        }
+        if (s == null) {
+            startState = null;
+            currentState = null;
+        } else {
+            this.startState = s;
+            s.setIsStartState(true);
+            currentState = startState;
+        }
+        setChanged();
+        notifyObservers();
     }
 
     /**

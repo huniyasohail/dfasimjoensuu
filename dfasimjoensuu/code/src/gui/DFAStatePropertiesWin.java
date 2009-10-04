@@ -76,6 +76,8 @@ public class DFAStatePropertiesWin extends JFrame {
         state.setIsFinalState(checkAccept.isSelected());
         if(checkStart.isSelected())
             dFAMainWin.getDfaSim().getDfa().setStartState(state);
+        else if(state.getIsStartState())
+            dFAMainWin.getDfaSim().getDfa().setStartState(null);
         editedOK = true;
         setVisible(false);
         dFAMainWin.repaint();
