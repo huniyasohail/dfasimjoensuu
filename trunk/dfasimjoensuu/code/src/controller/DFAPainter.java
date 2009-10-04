@@ -112,6 +112,61 @@ public class DFAPainter {
     }
 
     /**
+     * set the offset values to an optimal fit
+     */
+    public void optimizeCropPan()
+    {
+        //-- get dimensions of image --
+        int minX = 9999999;
+        int minY = 9999999;
+        int maxX = -9999999;
+        int maxY = -9999999;
+
+        Dfa d = getDfaEditor().getDfa();
+        for (int i=0;i<d.getStates().size();i++)
+        {
+            State s = d.getStates().get(i);
+            if (s.getState_Properties().getXPos() < minX)
+            {
+                 minX = s.getState_Properties().getXPos();
+                 if (s.getIsStartState())
+                     minX = minX-30;
+            }
+
+            if (s.getState_Properties().getYPos() < minY)
+                minY = s.getState_Properties().getYPos();
+            if (s.getState_Properties().getXPos() > maxX)
+                maxX = s.getState_Properties().getXPos();
+            if (s.getState_Properties().getYPos() > maxY)
+                maxY = s.getState_Properties().getYPos();
+
+            for (int j=0;j<s.getOutgoingTransitions().size();j++)
+            {
+                Transition t = s.getOutgoingTransitions().get(j);
+
+                if (t.getClickPositionX() < minX)
+                    minX = (int)t.getClickPositionX();
+                if (t.getClickPositionY() < minY)
+                    minY = (int)t.getClickPositionY();
+                if (t.getClickPositionX() > maxX)
+                    maxX = (int)t.getClickPositionX();
+                if (t.getClickPositionY() > maxY)
+                    maxY = (int)t.getClickPositionY();
+            }
+        }
+        if (d.getStates().size()>0)
+        {
+            int safetyDistance = 35;
+            int imWidth = Math.max(0,maxX-minX)+3*safetyDistance;
+            int imHeight = Math.max(0,maxY-minY)+2*safetyDistance;
+
+            dfaEditor.setOffsetX(-minX+(int)(1.5*safetyDistance));
+            dfaEditor.setOffsetY(-minY+safetyDistance);
+        }     
+    }
+
+
+    /**
      * Export the current DFA as a cropped picture
      * @param f Destination file
      * @return true if all OK

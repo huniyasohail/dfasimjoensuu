@@ -22,7 +22,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
     public DFAInfoWin() {
         
         initComponents();
-        this.setSize(new Dimension(600, 300));
+        this.setSize(new Dimension(540, 360));
         centreWindow(this);
 
     }
@@ -48,6 +48,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DFA Simulator");
@@ -78,12 +79,12 @@ public class DFAInfoWin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(460, 200, 90, 40);
+        jButton1.setBounds(420, 250, 90, 40);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel6.setText("This program comes with ABSOLUTELY NO WARRANTY!");
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Menu icons from http://www.thewwwblog.com (freeware)  ");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(30, 180, 440, 17);
+        jLabel6.setBounds(30, 260, 390, 17);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel7.setText("University of Joensuu, Finland");
@@ -108,6 +109,11 @@ public class DFAInfoWin extends javax.swing.JFrame {
         jLabel10.setText("Version 0.9 beta, 2009");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(30, 230, 370, 17);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText("This program comes with ABSOLUTELY NO WARRANTY!");
+        getContentPane().add(jLabel11);
+        jLabel11.setBounds(30, 180, 440, 17);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -146,6 +152,7 @@ public static void centreWindow(JFrame frame) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

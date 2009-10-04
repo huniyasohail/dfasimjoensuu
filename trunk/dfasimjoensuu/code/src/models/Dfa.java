@@ -324,7 +324,8 @@ public class Dfa extends Observable implements Serializable{
         int cy = -20;
         int row = 1;
         int col = 1;
-        int optrowsize = (int)Math.ceil(Math.sqrt(states.size()));
+        int optrowsize = (int)Math.ceil(Math.sqrt(states.size()))+1;
+
         int spaceBetween = 100;
 
         for (int i=0; i<states.size();i++)
