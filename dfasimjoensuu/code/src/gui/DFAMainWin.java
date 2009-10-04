@@ -150,17 +150,18 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         jSeparator4 = new javax.swing.JSeparator();
         menuitemExit = new javax.swing.JMenuItem();
         menuDFA = new javax.swing.JMenu();
-        menuitemExportImage = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JSeparator();
         menuitemProperties = new javax.swing.JMenuItem();
         menuitemAutocomplete = new javax.swing.JMenuItem();
         menuItemMinimizeDfa = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JSeparator();
+        menuitemExportImage = new javax.swing.JMenuItem();
         menuSimulation = new javax.swing.JMenu();
         menuitemStartSim = new javax.swing.JMenuItem();
         menuItemStopSim = new javax.swing.JMenuItem();
         menuInfo = new javax.swing.JMenu();
         menuitemInfo = new javax.swing.JMenuItem();
 
+        menuitemEditpopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/spanner_blue.png"))); // NOI18N
         menuitemEditpopup.setText("Edit object");
         menuitemEditpopup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +170,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
         popupMenu.add(menuitemEditpopup);
 
+        menuitemDeletepopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_remove.png"))); // NOI18N
         menuitemDeletepopup.setLabel("Delete object");
         menuitemDeletepopup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -488,7 +490,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -544,15 +546,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         menuDFA.setText("DFA");
 
-        menuitemExportImage.setText("Image Export");
-        menuitemExportImage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuitemExportImageActionPerformed(evt);
-            }
-        });
-        menuDFA.add(menuitemExportImage);
-        menuDFA.add(jSeparator1);
-
         menuitemProperties.setText("Description and Alphabet...");
         menuitemProperties.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -561,6 +554,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
         menuDFA.add(menuitemProperties);
 
+        menuitemAutocomplete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/bulb_add.png"))); // NOI18N
         menuitemAutocomplete.setText("Autocomplete DFA...");
         menuitemAutocomplete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -569,6 +563,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
         menuDFA.add(menuitemAutocomplete);
 
+        menuItemMinimizeDfa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/arrow_contract.png"))); // NOI18N
         menuItemMinimizeDfa.setText("Minimize DFA");
         menuItemMinimizeDfa.setEnabled(false);
         menuItemMinimizeDfa.addActionListener(new java.awt.event.ActionListener() {
@@ -577,11 +572,22 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
         menuDFA.add(menuItemMinimizeDfa);
+        menuDFA.add(jSeparator1);
+
+        menuitemExportImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/mime_png.png"))); // NOI18N
+        menuitemExportImage.setText("Image Export");
+        menuitemExportImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemExportImageActionPerformed(evt);
+            }
+        });
+        menuDFA.add(menuitemExportImage);
 
         jMenuBar1.add(menuDFA);
 
         menuSimulation.setText("Simulation");
 
+        menuitemStartSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/arrow_go.png"))); // NOI18N
         menuitemStartSim.setText("Start Simulation");
         menuitemStartSim.setEnabled(false);
         menuitemStartSim.addActionListener(new java.awt.event.ActionListener() {
@@ -591,6 +597,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
         menuSimulation.add(menuitemStartSim);
 
+        menuItemStopSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_stop.png"))); // NOI18N
         menuItemStopSim.setText("Stop Simulation");
         menuItemStopSim.setEnabled(false);
         menuItemStopSim.addActionListener(new java.awt.event.ActionListener() {
@@ -694,9 +701,12 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         connectGUItoDFA();
         panelDrawArea.repaint();
         setWindowCaption();
+        dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan();
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
-
+/**
+ * set the window caption when a file is chosen
+ */
     private void setWindowCaption()
     {
         String winName = "DFA Simulator";
@@ -897,7 +907,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                         out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
                         out.writeObject(this.dfaSim.getDfa());
                         fileChanged = false;
-                         currentFilename = fc.getSelectedFile().getName();
+                         currentFilename = file.getName();
                         setWindowCaption();
                         out.close();
                     } catch (FileNotFoundException ex) {
@@ -992,16 +1002,25 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_splitterInfobarPropertyChange
 
     private void menuItemMinimizeDfaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemMinimizeDfaActionPerformed
+        fileChanged = true;
+        int statesbefore = dfaSim.getDfa().getStates().size();
         Dfa minimized = null;
         try {
             minimized = dfaSim.minimizeDfa(dfaSim.getDfa());
+            dfaSim.setDfa(minimized);
+            int statesafter = dfaSim.getDfa().getStates().size();
+            dfaSim.getDfa().autoArrangeDFA();
+            repaint();
+            dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan();
+            panelDrawArea.repaint();
+            JOptionPane.showMessageDialog(this, "The DFA is minimized now. States before: "+statesbefore+" now: "+statesafter+"\nThe number of states is minimized and it will still accept the same language.\nNote: The DFA does not have to be easier to understand now.", "DFA minimized", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
-        dfaSim.setDfa(minimized);
-        dfaSim.getDfa().autoArrangeDFA();
         panelDrawArea.repaint();
+        setWindowCaption();
     }//GEN-LAST:event_menuItemMinimizeDfaActionPerformed
 
     private void menuitemExportImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemExportImageActionPerformed
@@ -1045,6 +1064,8 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         win.setdFAMainWin(this);
         win.setSim(dfaSim);
         win.setVisible(true);
+        fileChanged = true;
+        setWindowCaption();
     }//GEN-LAST:event_menuitemAutocompleteActionPerformed
 
     private void menuitemEditpopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemEditpopupActionPerformed

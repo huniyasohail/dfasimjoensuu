@@ -12,6 +12,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="menuitemEditpopup">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/gui/img/spanner_blue.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Edit object"/>
           </Properties>
           <Events>
@@ -20,6 +23,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="menuitemDeletepopup">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/gui/img/sign_remove.png"/>
+            </Property>
             <Property name="label" type="java.lang.String" value="Delete object"/>
           </Properties>
           <Events>
@@ -85,16 +91,6 @@
             <Property name="text" type="java.lang.String" value="DFA"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuitemExportImage">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Image Export"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemExportImageActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuitemProperties">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Description and Alphabet..."/>
@@ -105,6 +101,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuitemAutocomplete">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/img/bulb_add.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Autocomplete DFA..."/>
               </Properties>
               <Events>
@@ -113,11 +112,27 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuItemMinimizeDfa">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/img/arrow_contract.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Minimize DFA"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemMinimizeDfaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuitemExportImage">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/img/mime_png.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Image Export"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemExportImageActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -129,6 +144,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuitemStartSim">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/img/arrow_go.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Start Simulation"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -138,6 +156,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuItemStopSim">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/img/sign_stop.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Stop Simulation"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -649,7 +670,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jScrollPane3" pref="261" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane3" pref="265" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
