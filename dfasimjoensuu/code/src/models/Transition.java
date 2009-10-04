@@ -4,6 +4,14 @@ package models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class represents a transition between two states,
+ * it contains all needed data to represent the graph edges and
+ * all information for drawing
+ * @author Fabian
+ */
+
+
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.87C11C34-F942-9444-FDCC-B025A77DB87B]
 // </editor-fold> 
@@ -60,18 +68,31 @@ public class Transition implements Serializable {
         return input;
     }
 
+    /**
+     * where to hit the transition by the mouse X?
+     * @return
+     */
     public double getClickPositionX() {
         return clickPositionX;
     }
-
+    /**
+     * where to hit the transition by the mouse X?
+     * @return
+     */
     public void setClickPositionX(int clickPositionX) {
         this.clickPositionX = clickPositionX;
     }
-
+    /**
+     * where to hit the transition by the mouse Y?
+     * @return
+     */
     public double getClickPositionY() {
         return clickPositionY;
     }
-
+    /**
+     * where to hit the transition by the mouse Y?
+     * @return
+     */
     public void setClickPositionY(int clickPositionY) {
         this.clickPositionY = clickPositionY;
     }
@@ -85,11 +106,17 @@ public class Transition implements Serializable {
     }
 
     
-
+/**
+ * this is the factor which adjusts the arc of the transition
+ * @return curvefactor 1 = normal, -1 = mirrored
+ */
     public double getCurveFactor() {
         return curveFactor;
     }
-
+/**
+ * this is the factor which adjusts the arc of the transition
+ * @return curvefactor 1 = normal, -1 = mirrored
+ */
     public void setCurveFactor(double curveFactor) {
         this.curveFactor = curveFactor;
     }
@@ -111,7 +138,6 @@ public class Transition implements Serializable {
     }
 
 
-
     public boolean isSelected() {
         return selected;
     }
@@ -120,8 +146,10 @@ public class Transition implements Serializable {
         this.selected = selected;
     }
 
-    
-
+    /**
+     * gets the x-coordinate of the label relative to its original position.
+     * @param captionOffsetX x-coordinate
+     */
     public int getCaptionOffsetX() {
         return captionOffsetX;
     }

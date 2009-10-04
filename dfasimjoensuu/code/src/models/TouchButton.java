@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package models;
 
 import java.awt.Color;
 
 /**
- *
+ * The small round button to change the arc of transitions
  * @author Fabian
  */
 public class TouchButton {
@@ -97,37 +93,27 @@ public class TouchButton {
         this.selected = selected;
     }
 
-
+/**
+ * reset button
+ */
     public void hideAndReset()
     {
         visible = false;
         currentValue = 1;
     }
 
-    public void showAsLinearToucher(Transition t, int x, int y, double pangle, double value)
-    {
-        this.transition = t;
-        this.px = x;
-        this.py = y;
-        this.angle = pangle;
-        this.currentValue = value;
-        this.type = 0;
-    }
-
-    public void showAsCircleToucher(Transition t, int x, int y, double pangle, double value)
-    {
-        this.transition = t;
-        this.px = x;
-        this.py = y;
-        this.angle = pangle;
-        this.currentValue = value;
-        this.type = 1;
-    }
-
+    /**
+     * which transition is adjusted
+     * @return
+     */
     public Transition getTransition() {
         return transition;
     }
 
+    /**
+     * which transition is adjusted
+     * @param transition
+     */
     public void setTransition(Transition transition) {
         this.transition = transition;
     }

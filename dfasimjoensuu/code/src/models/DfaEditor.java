@@ -83,6 +83,10 @@ public class DfaEditor{
         return dummyState;
     }
 
+    /**
+     * get the selection state for the context menu
+     * @return true if something is selected
+     */
     public boolean isAnythingSelected()
     {
         return currentStateSelected != null || currentTransSelected != null;
@@ -205,6 +209,10 @@ public class DfaEditor{
         }
     }
 
+    /**
+     * clear all selection flags from states and transitions
+     *
+     */
     public void removeAllSelections()
     {
         this.currentStateSelected = null;
@@ -227,7 +235,7 @@ public class DfaEditor{
     }
 
 /**
- * handle the mouse
+ * handle the mouse PRESSED event
  * @param evt
  */
     public void handleMousePressed(java.awt.event.MouseEvent evt)
@@ -250,7 +258,7 @@ public class DfaEditor{
 
 
     /**
- * handle the mouse
+ * handle the mouse MOVED event
  * @param evt
  */
     public void handleMouseMoved(java.awt.event.MouseEvent evt)
@@ -276,7 +284,10 @@ public class DfaEditor{
 
     }
 
-
+/**
+ * user interaction helper in add transition add mode
+ * @param evt
+ */
     public void showPossibleTransitons(java.awt.event.MouseEvent evt)
     {
         if (this.transitionState == EditorTransitionStates.selectToState)
@@ -299,7 +310,7 @@ public class DfaEditor{
 
 
 /**
- * handle the mouse
+ * handle the mouse RELEASED event
  * @param evt
  */
     public void handleMouseReleased(java.awt.event.MouseEvent evt)
@@ -322,6 +333,10 @@ public class DfaEditor{
     }
 
 
+    /**
+     * a new transition is added, steps control
+     * @param evt
+     */
     public void handleAddTransitionStep(java.awt.event.MouseEvent evt)
     {
         if (this.transitionState == EditorTransitionStates.selectFromState && !waitForEditWindow)
@@ -435,7 +450,14 @@ public class DfaEditor{
         return deleted;
     }
 
-        public boolean deleteTransition(Transition t, boolean askUser)
+    /**
+     * delete a transition
+     * @param t concering transition
+     * @param askUser boolean flag if a messagebox should appear to ask the user
+     * @return was it deleted?
+     */
+
+    public boolean deleteTransition(Transition t, boolean askUser)
     {
         boolean deleted = false;
         if (askUser)
@@ -459,7 +481,12 @@ public class DfaEditor{
 
 
 
-
+/**
+ * add a new Transition between 2 States
+ * @param from State to start
+ * @param to State to end
+ * @return the new created Transition
+ */
     private Transition addNewTransition(State from, State to)
     {
        Transition t =  dfa.addTransition(from, to);
@@ -472,6 +499,10 @@ public class DfaEditor{
     }
 
 
+    /**
+     * handle the mouse DOUBLE click
+     * @param evt
+     */
     public void handleDoubleClick(java.awt.event.MouseEvent evt)
     {
         if (toolState == EditorToolStates.handTool)
@@ -481,7 +512,11 @@ public class DfaEditor{
     }
 
 
-
+/**
+ * open a properties window if needed (like double clicking of the user on an
+ * object)
+ * @param evt
+ */
     private void CheckOpenPropertiesWindows(java.awt.event.MouseEvent evt)
     {
         if (currentStateSelected != null)
@@ -495,6 +530,10 @@ public class DfaEditor{
 
     }
 
+    /**
+     * handle mouse DRAG event
+     * @param evt
+     */
     private void handleToolHandMouseDragged(java.awt.event.MouseEvent evt)
     {
 
@@ -530,6 +569,10 @@ public class DfaEditor{
        
     }
 
+/**
+ * handle the mouse TOUCH BUTTON VALUE
+ * @param evt
+ */
     private void handleTouchButtonMoveValue(java.awt.event.MouseEvent evt)
     {
        
@@ -577,6 +620,12 @@ public class DfaEditor{
         
     }
 
+    /**
+     * helping function to get the euclidian length of a vector
+     * @param dx
+     * @param dy
+     * @return
+     */
     private double calcVectorLength(double dx, double dy)
     {
         if (dx == 0 && dy == 0)
@@ -587,7 +636,10 @@ public class DfaEditor{
             return Math.sqrt(dx*dx+dy*dy);
         }
     }
-
+/**
+ * handle the mouse drag of a state
+ * @param evt
+ */
     private void handleAddStatesMove(java.awt.event.MouseEvent evt)
     {
        dummyState.getState_Properties().setVisible(true);
@@ -595,6 +647,10 @@ public class DfaEditor{
        dummyState.getState_Properties().setYPos(evt.getY()-getOffsetY());
     }
 
+    /**
+     * handle the ADDING state procedure
+     * @param evt
+     */
     private void handleAddState(java.awt.event.MouseEvent evt)
     {
         dummyState.getState_Properties().setVisible(false);
@@ -610,6 +666,10 @@ public class DfaEditor{
     }
 
 
+    /**
+     * handle the SELECTION process of objects
+     * @param evt
+     */
     private void handleObjectSelection(java.awt.event.MouseEvent evt)
     {
         State stateHit = currentStateSelected;
@@ -631,10 +691,7 @@ public class DfaEditor{
                     stateHit.getState_Properties().setSelected(false);
                     stateHit = null;
             }
-
-
         }
-
         if (transHit != null)
         {
             System.out.println("Trans hit!");
@@ -643,7 +700,6 @@ public class DfaEditor{
                 stateHit.getState_Properties().setSelected(false);
                 currentStateSelected = null;
             }
-
         } else
         if (stateHit != null)
         {
@@ -658,7 +714,15 @@ public class DfaEditor{
     }
 
 
-
+/**
+ * get State at mouse position an select it or highlight it if needed
+ * @param px Mouse x
+ * @param py Mouse y
+ * @param changeHighlight boolean should the highlight value be changed?
+ * @param highlightIndex to which  index should be changed in case of hit
+ * @param selectOnHit should it be selected in case of hit
+ * @return the State hit or null
+ */
     private State getStateAtMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
     {
         State s = null;
@@ -689,6 +753,15 @@ public class DfaEditor{
         return s;
     }
 
+    /**
+     * get transition which is hit by mouse
+     * @param px Mousex
+     * @param py Mousey
+     * @param changeHighlight should the highlight state be changed?
+     * @param highlightIndex to which index should be switched?
+     * @param selectOnHit should transition be selected on hit?
+     * @return the tranistion hit or null
+     */
       private Transition getTransitionatMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
     {
         Transition t = null;
@@ -730,7 +803,7 @@ public class DfaEditor{
 
 
     /**
-     * highlight objects
+     * highlight objects handlers
      */
     private void handleObjectHighlighting(java.awt.event.MouseEvent evt)
     {
@@ -749,6 +822,10 @@ public class DfaEditor{
     }
 
 
+    /**
+     * handle the state movement procedure
+     * @param evt
+     */
     private void handleStateMovement(java.awt.event.MouseEvent evt)
     {
         if (currentStateSelected != null)
@@ -760,6 +837,13 @@ public class DfaEditor{
         }
     }
 
+
+    /**
+     * touch up button hightlight (transition arc control) control
+     *
+     * @param evt
+     * @return
+     */
     private boolean handleTouchUpHighlight(java.awt.event.MouseEvent evt)
     {
         if (touchButton.isVisible())
@@ -776,14 +860,16 @@ public class DfaEditor{
                 } else
                     touchButton.hideAndReset();
             }
-         
             return hit;
         } else
             return false;
-
     }
 
-
+/**
+ * handle START drag of Arc control touch up button control
+ * @param evt
+ * @return
+ */
     private boolean handleTouchStartDrag(java.awt.event.MouseEvent evt)
     {
         if (touchButton.isVisible())
@@ -795,27 +881,29 @@ public class DfaEditor{
              touchButton.setMoving(false);
              return false;
         }
-        
     }
 
-
+/**
+ * handle END drag of Arc control touch up button control 
+ * @param evt
+ */
      private void handleTouchEndDrag(java.awt.event.MouseEvent evt)
     {
         if (touchButton.isMoving() && touchButton.isVisible())
         {
-            touchButton.setMoving(false);
-            
+            touchButton.setMoving(false);            
         } else
         {
-             touchButton.setMoving(false);
-            
+             touchButton.setMoving(false);           
         }
-
     }
 
 
 
-
+/**
+ * handle Hand Tool Mouse realease
+ * @param evt
+ */
     private void handleHandToolMouseRelease(java.awt.event.MouseEvent evt)
     {
         handleStateMovement(evt);
@@ -833,7 +921,9 @@ public class DfaEditor{
     }
 
 
-
+/**
+ * repaint all
+ */
     private void updateGraphicsAll()
     {
         dFAPainter.requestRepaintAll();
@@ -880,12 +970,19 @@ public class DfaEditor{
         this.transitionState = transitionState;
     }
 
-    
+
+
+    /**
+     * enum for select states
+     */
  enum EditorSelectionStates {
      selectNothing, selecetState, selectTransition, selectAll
  }
 
 
+ /**
+  * enum for transition states
+  */
  enum EditorTransitionStates {
      selectFromState, selectToState
  }

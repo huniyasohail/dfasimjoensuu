@@ -60,6 +60,11 @@ public class Dfa extends Observable implements Serializable{
         return s;
     }
 
+    /**
+     * adds a state s to the automaton
+     * @param s State to add
+     * @return the state
+     */
     public State addState(State s) {
         if(s != null) {
             this.states.add(s);
@@ -319,7 +324,7 @@ public class Dfa extends Observable implements Serializable{
         int cy = -20;
         int row = 1;
         int col = 1;
-        int optrowsize = 5;
+        int optrowsize = (int)Math.ceil(Math.sqrt(states.size()));
         int spaceBetween = 100;
 
         for (int i=0; i<states.size();i++)
@@ -328,7 +333,7 @@ public class Dfa extends Observable implements Serializable{
             s.getState_Properties().setXPos(cx+col*spaceBetween);
             s.getState_Properties().setYPos(cy+row*spaceBetween);
             col++;
-            if (col % optrowsize == 0 )
+            if (col % optrowsize == 0)
             {
                 col = 1;
                 row++;
@@ -337,7 +342,11 @@ public class Dfa extends Observable implements Serializable{
     }
 
 
-
+/**
+ * get the label of a transition, comma seperated values
+ * @param t Transition
+ * @return commaseperated string
+ */
     public String getCommaSeperatedTranstionInputs(Transition t)
     {
         if (t == null)

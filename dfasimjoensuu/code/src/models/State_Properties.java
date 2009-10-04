@@ -74,10 +74,18 @@ public class State_Properties implements Serializable{
         this.selected = selected;
     }
 
+    /**
+     * get highlight index - important for drawing purposes
+     * @return
+     */
     public HighlightTypes getHighlightIndex() {
         return HighlightIndex;
     }
 
+    /**
+     * set highlight index - eg by a mouse event
+     * @param HighlightIndex
+     */
     public void setHighlightIndex(HighlightTypes HighlightIndex) {
         this.HighlightIndex = HighlightIndex;
     }
