@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -37,7 +39,7 @@ import models.Transition;
  *
  * @author Fabian
  */
-public class DFAMainWin extends javax.swing.JFrame {
+public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
     Simulator dfaSim = null;
     boolean simBarVisible = false;
@@ -65,6 +67,7 @@ public class DFAMainWin extends javax.swing.JFrame {
 
     public void setDfaSim(Simulator dfaSim) {
         this.dfaSim = dfaSim;
+        dfaSim.getDfa().addObserver(this);
     }
 
   private void panelDrawAreaMouseClicked(java.awt.event.MouseEvent evt) {                                           
@@ -485,7 +488,7 @@ public class DFAMainWin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -579,6 +582,7 @@ public class DFAMainWin extends javax.swing.JFrame {
         menuSimulation.setText("Simulation");
 
         menuitemStartSim.setText("Start Simulation");
+        menuitemStartSim.setEnabled(false);
         menuitemStartSim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemStartSimActionPerformed(evt);
@@ -739,9 +743,9 @@ public class DFAMainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_menuitemPropertiesActionPerformed
 
     private void buttonSimulateAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimulateAllActionPerformed
-        while(dfaSim.getIsRunning()) {
+        do {
             doNextStep();
-        }
+        } while(dfaSim.getIsRunning());
         panelDrawArea.repaint();
     }//GEN-LAST:event_buttonSimulateAllActionPerformed
 
@@ -760,11 +764,12 @@ public class DFAMainWin extends javax.swing.JFrame {
             if (!dfaSim.getIsRunning()) {
                 try {
                     dfaSim.startSimulation(inputWord);
-                    textareaInputWord.setEditable(false);
                 } catch (IncompleteAutomatonException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Cannot start simulation", JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
             }
+            textareaInputWord.setEditable(false);
             int pos = dfa.getCurrentPosition();
             dfaSim.nextStep();
             nextState = dfa.getCurrentState();
@@ -856,6 +861,9 @@ public class DFAMainWin extends javax.swing.JFrame {
         splitterSimulationBar.setDividerLocation(0.65);
         menuItemStopSim.setEnabled(true);
         menuitemStartSim.setEnabled(false);
+        menuitemAutocomplete.setEnabled(false);
+        menuitemProperties.setEnabled(false);
+        menuItemMinimizeDfa.setEnabled(false);
         dfaSim.getDfaEditor().setIsEditable(false);
         dfaSim.getDfaEditor().setToolState(EditorToolStates.noTool);
         dfaSim.setSimulationModeActive(true);
@@ -918,6 +926,9 @@ public class DFAMainWin extends javax.swing.JFrame {
         panelConsole.setVisible(false);
         menuItemStopSim.setEnabled(false);
         menuitemStartSim.setEnabled(true);
+        menuitemAutocomplete.setEnabled(true);
+        menuitemProperties.setEnabled(true);
+        menuItemMinimizeDfa.setEnabled(true);
         dfaSim.getDfaEditor().setIsEditable(true);
         dfaSim.getDfaEditor().setToolState(EditorToolStates.handTool);
         dfaSim.setSimulationModeActive(false);
@@ -935,8 +946,8 @@ public class DFAMainWin extends javax.swing.JFrame {
     }//GEN-LAST:event_formKeyPressed
 
     private void menuitemNewDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemNewDFAActionPerformed
-        createNewDFA();
         stopSimulation();
+        createNewDFA();
     }//GEN-LAST:event_menuitemNewDFAActionPerformed
 
     private void controlSplitPaneSizes()
@@ -1053,6 +1064,9 @@ public class DFAMainWin extends javax.swing.JFrame {
             fileChanged = false;
             getDfaSim().getDfaEditor().setDfa(ndfa);
             this.getDfaSim().setDfa(ndfa);
+            ndfa.addObserver(this);
+            this.menuitemStartSim.setEnabled(false);
+            this.menuItemStopSim.setEnabled(false);
             repaint();
         }
     }
@@ -1107,7 +1121,7 @@ public void manageHelp()
     } else
         currentSite ="simulation";
 
-    if (currentSite != "")
+    if (!currentSite.equals(""))
         showHelpFile(currentSite);
 
 }
@@ -1233,5 +1247,12 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JToggleButton toggleAddTransition;
     private javax.swing.JToggleButton togglePointer;
     // End of variables declaration//GEN-END:variables
+
+    public void update(Observable o, Object arg) {
+        if(o instanceof Dfa) {
+            Dfa dfa = (Dfa)o;
+            this.menuitemStartSim.setEnabled(dfa.getStartState() != null);
+        }
+    }
 
 }

@@ -74,7 +74,6 @@ public class Simulator {
     // </editor-fold> 
     public void startSimulation (String input) throws IncompleteAutomatonException {
         //first check preconditions
-        print_automaton();
         checkPreconditions(input);
         isRunning = true;
     }
@@ -107,7 +106,10 @@ public class Simulator {
         int currentPosition = dfa.getCurrentPosition();
         State currentSate = dfa.getCurrentState();
         String input = dfa.getInput();
-        return ((input.length() == 0 || currentPosition == input.length()-1) && currentSate.getIsFinalState());
+        if(currentSate == null)
+            return false;
+        else
+            return ((input.length() == 0 || currentPosition == input.length()-1) && currentSate.getIsFinalState());
     }
 
     private ArrayList<String> checkPreconditions()  throws IncompleteAutomatonException {
@@ -307,7 +309,8 @@ public class Simulator {
     }
 
     public void resetDfa() {
-        dfa.setCurrentPosition(0);
+        if(this.dfa.getInput().length() > 0)
+            dfa.setCurrentPosition(0);
         dfa.setCurrentState(dfa.getStartState());
         dfa.setInput(new String());
     }
@@ -321,7 +324,7 @@ public class Simulator {
         int dfanum = 1;
         checkPreconditions();
         removeAllIsolatedStates(inputDfa);
-        Dfa squared =  calcSquareAutomaton(inputDfa);
+        Dfa squared = calcSquareAutomaton(inputDfa);
         reverseTransitions(squared);
         for(State s:squared.getStates()) {
             State s1 = ((SquareState)s).getState1();
@@ -346,13 +349,11 @@ public class Simulator {
                     found = x.getState1() == s2 && x.getState2() == s1;
                 }
                 if(!found) {
-                    System.out.println(sqState.getState_Properties().getName());
                     eqivalentStates.add(sqState);
                 }
             }
         }
         for (SquareState sqState : eqivalentStates) {
-            //states are equivalent
             State removable = sqState.getState1();
             State keepable = sqState.getState2();
             if (removable.getIsStartState()) {
@@ -374,7 +375,6 @@ public class Simulator {
                 inputDfa.removeState(removable);
             }
         }
-        //return inputDfa;
         return inputDfa;
     }
 
