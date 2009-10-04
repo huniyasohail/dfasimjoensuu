@@ -570,6 +570,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuDFA.add(menuitemAutocomplete);
 
         menuItemMinimizeDfa.setText("Minimize DFA");
+        menuItemMinimizeDfa.setEnabled(false);
         menuItemMinimizeDfa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemMinimizeDfaActionPerformed(evt);
@@ -1065,8 +1066,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             getDfaSim().getDfaEditor().setDfa(ndfa);
             this.getDfaSim().setDfa(ndfa);
             ndfa.addObserver(this);
-            this.menuitemStartSim.setEnabled(false);
-            this.menuItemStopSim.setEnabled(false);
+            this.update(ndfa, null);
             repaint();
         }
     }
@@ -1251,7 +1251,13 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     public void update(Observable o, Object arg) {
         if(o instanceof Dfa) {
             Dfa dfa = (Dfa)o;
-            this.menuitemStartSim.setEnabled(dfa.getStartState() != null);
+            if(dfa.getStartState() != null) {
+                this.menuitemStartSim.setEnabled(true);
+                this.menuItemMinimizeDfa.setEnabled(true);
+            } else {
+                this.menuitemStartSim.setEnabled(false);
+                this.menuItemMinimizeDfa.setEnabled(false);
+            }
         }
     }
 
