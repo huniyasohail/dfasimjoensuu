@@ -83,6 +83,12 @@ public class DfaEditor{
         return dummyState;
     }
 
+    public boolean isAnythingSelected()
+    {
+        return currentStateSelected != null || currentTransSelected != null;
+
+    }
+
     public void setDummyState(State dummyState) {
         this.dummyState = dummyState;
     }
@@ -365,6 +371,7 @@ public class DfaEditor{
             {
                 int key = evt.getKeyCode();
                 if (key == KeyEvent.VK_ENTER) {
+                    handleDoubleClick(null);
                 }
                 if (key == KeyEvent.VK_DELETE) {
                     handleDeleteObject(evt);
@@ -381,7 +388,7 @@ public class DfaEditor{
  * delete selected objects
  * @param evt
  */
-    private void handleDeleteObject(java.awt.event.KeyEvent evt)
+    public void handleDeleteObject(java.awt.event.KeyEvent evt)
     {
         if (currentStateSelected != null && currentTransSelected != null)
         {
