@@ -2,6 +2,7 @@
 package controller;
 
 import gui.PaintPanel;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -215,11 +216,11 @@ public class DFAPainter {
             if (d.getStates().size()>0)
             {
                 int safetyDistance = 35;
-                int imWidth = Math.max(0,maxX-minX)+3*safetyDistance;
-                int imHeight = Math.max(0,maxY-minY)+2*safetyDistance;
+                int imWidth = (int)(Math.max(0,maxX-minX)*getDfaEditor().getZoomfactor()+3*safetyDistance*getDfaEditor().getZoomfactor());
+                int imHeight = (int)(Math.max(0,maxY-minY)*getDfaEditor().getZoomfactor()+2*safetyDistance*getDfaEditor().getZoomfactor());
 
-                dfaEditor.setOffsetX(-minX+(int)(1.5*safetyDistance));
-                dfaEditor.setOffsetY(-minY+safetyDistance);
+                dfaEditor.setOffsetX((int)((-minX+1.5*safetyDistance)*getDfaEditor().getZoomfactor()));
+                dfaEditor.setOffsetY((int)((-minY+ safetyDistance)*getDfaEditor().getZoomfactor()));
 
 
                 BufferedImage bi = new BufferedImage(imWidth, imHeight, BufferedImage.TYPE_INT_RGB);
@@ -262,6 +263,15 @@ public class DFAPainter {
                 //-- nice rendering --
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             }
+            int width = 1;
+            if (getDfaEditor().getZoomfactor() < 1.1)
+                width = 1; else
+                    if (getDfaEditor().getZoomfactor() < 2)
+                        width = 2; else
+                            width = (int)getDfaEditor().getZoomfactor();
+
+            g.setStroke(new BasicStroke(width));
+
             paintStates();
             paintTransitions();
             paintUserActions();
@@ -316,26 +326,27 @@ public class DFAPainter {
 
 	   if (s.getIsFinalState())
            {
+                double z = dfaEditor.getZoomfactor();
                 int additionalradius = (int) (dfaEditor.getZoomfactor()*4);
                 g.setColor(backgroundColor);
-                g.fillOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
+                g.fillOval((int)(centerX-radius), (int)(centerY-radius),(int)(z*stateDrawSize), (int)(z*stateDrawSize));
                 g.setColor(lineColor);
-                g.drawOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
+                g.drawOval((int)(centerX-radius),(int)( centerY-radius),(int)(z*stateDrawSize),(int)( z*stateDrawSize));
                 if (s.getState_Properties().isSelected())
                     g.setColor(colorStateLineSeleced);
-                g.drawOval(centerX-(radius-additionalradius), centerY-(radius-additionalradius),stateDrawSize-2*additionalradius, stateDrawSize-2*additionalradius);
+                g.drawOval((int)(centerX-(radius-additionalradius)),(int)(centerY-(radius-additionalradius)),(int)(z*stateDrawSize-2*additionalradius), (int)( z*stateDrawSize-2*additionalradius));
 
            } else
            {
                 g.setColor(backgroundColor);
-                g.fillOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
+                g.fillOval((int)(centerX-radius),(int)(centerY-radius),(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
                 g.setColor(lineColor);
-                g.drawOval(centerX-radius, centerY-radius,stateDrawSize, stateDrawSize);
+                g.drawOval((int)(centerX-radius),(int)(centerY-radius),(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
            }
 
             if (s.getIsStartState())
             {
-                drawStartArrow(centerX-radius-10,centerY,lineColor,g);
+                drawStartArrow((int)(centerX-radius-10*getDfaEditor().getZoomfactor()),centerY,lineColor,g);
             }
 
         g.setColor(fontColor);
@@ -343,6 +354,8 @@ public class DFAPainter {
          drawCenteredText(s.getState_Properties().getName(),centerX,centerY,nameFont,g);
         }
          g.setColor(Color.black);
+
+       
     }
 
 
@@ -453,14 +466,15 @@ public class DFAPainter {
             
             boolean showTouchButton = (getDfaEditor().getToolState() == EditorToolStates.handTool) && t.isSelected();
 
+            double z = dfaEditor.getZoomfactor();
           //  boolean paintLabelBackground = t.isSelected() || (t.getHighlightStatus() != HighlightTypes.NoHighlight || fakeTrans);
             boolean paintLabelBackground = true;
             Graphics2D g = this.graphics;
-            int s1x = s1.getState_Properties().getXPos();
-            int s1y = s1.getState_Properties().getYPos();
+            int s1x = (int)(s1.getState_Properties().getXPos()*z);
+            int s1y = (int)(s1.getState_Properties().getYPos()*z);
 
-            int s2x = s2.getState_Properties().getXPos();
-            int s2y = s2.getState_Properties().getYPos();
+            int s2x = (int)(s2.getState_Properties().getXPos()*z);
+            int s2y = (int)(s2.getState_Properties().getYPos()*z);
 
             g.setColor(color);
 
@@ -515,12 +529,12 @@ public class DFAPainter {
                     textAdaption = textAdaption*direction;
                     //System.out.println(t.getCurveFactor());
 
-                    int textpointx = (int) (centerx + turnedx / (2) + normy * textAdaption);
-                    int textpointy = (int) (centery + turnedy / (2) - normx * textAdaption);
+                    int textpointx = (int) (centerx + turnedx / (2) + normy * textAdaption*z);
+                    int textpointy = (int) (centery + turnedy / (2) - normx * textAdaption*z);
 
                     //-- tangential crossing with the circles (start and end of curve) --
-                    Vector<Double> p1 = getIntersectionPoint(s1x, s1y, cpointx, cpointy, 1.2 * stateDrawSize / 2);
-                    Vector<Double> p2 = getIntersectionPoint(s2x, s2y, cpointx, cpointy, 1.4 * stateDrawSize / 2);
+                    Vector<Double> p1 = getIntersectionPoint(s1x, s1y, cpointx, cpointy, z* 1.2 * stateDrawSize / 2);
+                    Vector<Double> p2 = getIntersectionPoint(s2x, s2y, cpointx, cpointy, z * 1.4 * stateDrawSize / 2);
 
                     int h1x = (int) Math.round(p1.get(0)) + dfaEditor.getOffsetX();
                     int h1y = (int) Math.round(p1.get(1)) + dfaEditor.getOffsetY();
@@ -530,7 +544,7 @@ public class DFAPainter {
 
                     g.setColor(colorLineColor);
                     //-- quadratic arc --
-                    if (vlength > stateDrawSize+15)
+                    if (vlength/z > stateDrawSize+15)
                     {
                          c.setCurve(h1x, h1y,
                             cpointx + dfaEditor.getOffsetX(), cpointy + dfaEditor.getOffsetY(),
@@ -557,8 +571,6 @@ public class DFAPainter {
                     drawCenteredText(caption, textpointx + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textpointy + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
                     captionPositionX = textpointx;
                     captionPositionY = textpointy;
-
-
 
                     //-- touchup button --
 
@@ -612,10 +624,10 @@ public class DFAPainter {
                 }
             } else {
                 //-- cirlce to state itself --
-                double boxX = s1x - stateDrawSize * 0.3;
-                double boxY = s1y - stateDrawSize * 0.95;
-                double w = stateDrawSize * 0.6;
-                double h = stateDrawSize * 0.6;
+                double boxX = s1x - stateDrawSize * 0.3*z;
+                double boxY = s1y - stateDrawSize * 0.95*z;
+                double w = stateDrawSize * 0.6*z;
+                double h = stateDrawSize * 0.6*z;
 
                 g.setColor(colorLineColor);
                 Arc2D arc = new Arc2D.Double(boxX + dfaEditor.getOffsetX(), boxY + dfaEditor.getOffsetY(), w, h, -20, 220, Arc2D.OPEN);
@@ -623,7 +635,7 @@ public class DFAPainter {
 
                 // -- text --
                 int textX = (int) s1x;
-                int textY = (int) (s1y - stateDrawSize * 1.2);
+                int textY = (int) (s1y - stateDrawSize * 1.2*z);
                 if (paintLabelBackground) {
                     Rectangle2D fbounds = getFontBounds(caption, textX + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textY + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
                     paintTransitionHighlightRectangle(fbounds, colorCaptionColor, (int) (4 * getDfaEditor().getZoomfactor()), g);
@@ -634,14 +646,14 @@ public class DFAPainter {
                 captionPositionY = textY;
 
                 //-- arrow --
-                double ax = s1x + 0.3 * stateDrawSize;
-                double ay = s1y - 0.6 * stateDrawSize;
+                double ax = s1x + 0.3 * stateDrawSize*z;
+                double ay = s1y - 0.6 * stateDrawSize*z;
                 double arrowAngle = 1.9D;
                 g.setColor(colorLineColor);
                 drawArrow((int) ax + dfaEditor.getOffsetX(), (int) ay + dfaEditor.getOffsetY(), 4, arrowAngle, g);
             }
-            t.setClickPositionX(captionPositionX);
-            t.setClickPositionY(captionPositionY);
+            t.setClickPositionX((int)(captionPositionX/z));
+            t.setClickPositionY((int)(captionPositionY/z));
             g.setColor(Color.black);
         }
 
@@ -936,9 +948,9 @@ private double curvePointAdaptionFactor(double input,double min)
         int py = s.getState_Properties().getYPos()-radius + dfaEditor.getOffsetY();
 
         g.setColor(colorAddNewElement);
-        g.fillOval(px,py,stateDrawSize, stateDrawSize);
+        g.fillOval(px,py,(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
         g.setColor(colorAddNewElement2);
-        g.drawOval(px,py,stateDrawSize, stateDrawSize);
+        g.drawOval(px,py,(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
 
         Font nameFont = new Font("Arial", Font.PLAIN, (int)(textSize*dfaEditor.getZoomfactor()));
         g.setColor(Color.white);

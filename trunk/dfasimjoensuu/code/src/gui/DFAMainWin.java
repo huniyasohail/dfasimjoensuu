@@ -114,6 +114,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         togglePointer = new javax.swing.JToggleButton();
         toggleAddState = new javax.swing.JToggleButton();
         toggleAddTransition = new javax.swing.JToggleButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        buttonZoomOUT = new javax.swing.JButton();
+        buttonZoomIN = new javax.swing.JButton();
         panelContainer = new javax.swing.JPanel();
         splitterInfobar = new javax.swing.JSplitPane();
         panelMainDrawArea = new javax.swing.JPanel();
@@ -251,6 +254,31 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
         jToolBar1.add(toggleAddTransition);
+        jToolBar1.add(jSeparator2);
+
+        buttonZoomOUT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_zoomout.png"))); // NOI18N
+        buttonZoomOUT.setToolTipText("Zoom out");
+        buttonZoomOUT.setFocusable(false);
+        buttonZoomOUT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonZoomOUT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonZoomOUT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonZoomOUTActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonZoomOUT);
+
+        buttonZoomIN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_zoomin.png"))); // NOI18N
+        buttonZoomIN.setToolTipText("Zoom in");
+        buttonZoomIN.setFocusable(false);
+        buttonZoomIN.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonZoomIN.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonZoomIN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonZoomINActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonZoomIN);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
 
@@ -282,6 +310,11 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         panelTop.setLayout(new java.awt.BorderLayout());
 
         panelDrawArea.setBackground(new java.awt.Color(255, 255, 255));
+        panelDrawArea.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                panelDrawAreaMouseWheelMoved(evt);
+            }
+        });
         panelDrawArea.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelDrawAreaMouseClicked(evt);
@@ -1086,6 +1119,69 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
        getDfaSim().getDfaEditor().handleDeleteObject(null);
     }//GEN-LAST:event_menuitemDeletepopupActionPerformed
 
+    private void buttonZoomINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonZoomINActionPerformed
+        zoomIN(null);
+    }//GEN-LAST:event_buttonZoomINActionPerformed
+
+    private void buttonZoomOUTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonZoomOUTActionPerformed
+        zoomOUT(null);
+    }//GEN-LAST:event_buttonZoomOUTActionPerformed
+
+    private void panelDrawAreaMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseWheelMoved
+        if (evt.getWheelRotation() < 0)
+        {
+            zoomIN(evt);
+        } else
+            zoomOUT(evt);
+    }//GEN-LAST:event_panelDrawAreaMouseWheelMoved
+
+/**
+ * zoom the view
+ */
+    private void zoomIN(java.awt.event.MouseWheelEvent evt)
+    {
+        if (dfaSim.getDfaEditor().getZoomfactor()<3)
+        {
+             double z = getDfaSim().getDfaEditor().getZoomfactor();
+             dfaSim.getDfaEditor().setZoomfactor(z*1.5);
+
+             double newoffsetX = getDfaSim().getDfaEditor().getOffsetX()*1.5;
+             double newoffsetY = getDfaSim().getDfaEditor().getOffsetY()*1.5;
+
+             if (evt != null)
+             {
+                newoffsetX = newoffsetX -(evt.getX()/2);
+                newoffsetY = newoffsetY -(evt.getY()/2);
+             }
+             getDfaSim().getDfaEditor().setOffsetX((int)newoffsetX);
+             getDfaSim().getDfaEditor().setOffsetY((int)newoffsetY);
+        }
+        repaint();
+    }
+
+/**
+ * zoom the view
+ */
+    private void zoomOUT(java.awt.event.MouseWheelEvent evt)
+    {
+        if (dfaSim.getDfaEditor().getZoomfactor()>0.4)
+        {
+             double z = getDfaSim().getDfaEditor().getZoomfactor();
+             dfaSim.getDfaEditor().setZoomfactor(z/1.5);
+
+             double newoffsetX = getDfaSim().getDfaEditor().getOffsetX()/1.5;
+             double newoffsetY = getDfaSim().getDfaEditor().getOffsetY()/1.5;
+
+             if (evt != null)
+             {
+                newoffsetX = newoffsetX +(evt.getX()/3);
+                newoffsetY = newoffsetY +(evt.getY()/3);
+             }
+             getDfaSim().getDfaEditor().setOffsetX((int)newoffsetX);
+             getDfaSim().getDfaEditor().setOffsetY((int)newoffsetY);
+        }
+        repaint();
+    }
 
     private void createNewDFA()
     {
@@ -1228,6 +1324,8 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JButton buttonNextStep;
     private javax.swing.JButton buttonReset;
     private javax.swing.JButton buttonSimulateAll;
+    private javax.swing.JButton buttonZoomIN;
+    private javax.swing.JButton buttonZoomOUT;
     private javax.swing.JEditorPane editorHelp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1240,6 +1338,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenu menuDFA;
