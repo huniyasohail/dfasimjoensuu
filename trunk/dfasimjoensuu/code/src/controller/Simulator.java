@@ -65,7 +65,8 @@ public class Simulator {
     public void setSimulationModeActive(boolean simulationModeActive) {
         this.simulationModeActive = simulationModeActive;
         if (!simulationModeActive)
-            stopSimulation();
+            stopSimulation(); else
+                resetDfa();
     }
 
     public DfaEditor getDfaEditor() {
@@ -384,7 +385,8 @@ public class Simulator {
         dfa.setCurrentState(dfa.getStartState());
         dfa.setInput(new String());
         lastTransitionTaken = null;
-        currentHighlightedState = null;
+        currentHighlightedState = dfa.getStartState();
+        
     }
 
     /**
