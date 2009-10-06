@@ -21,6 +21,8 @@ public class Simulator {
     private DfaEditor dfaEditor;
     private boolean isRunning;
     private boolean simulationModeActive = false;
+    private Transition lastTransitionTaken = null;
+    private State currentHighlightedState = null;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.265879AE-72DD-068D-26F6-2EA61AD07845]
@@ -30,6 +32,7 @@ public class Simulator {
         dfaEditor = new DfaEditor(this);
         dfaEditor.setDfa(dfa);
         isRunning = false;
+
     }
 
     public Dfa getDfa() {
@@ -44,12 +47,25 @@ public class Simulator {
         }
     }
 
+    public Transition getLastTransitionTaken() {
+        return lastTransitionTaken;
+    }
+
+    
     public boolean isSimulationModeActive() {
         return simulationModeActive;
     }
 
+    public State getCurrentHighlightedState() {
+        return currentHighlightedState;
+    }
+
+    
+
     public void setSimulationModeActive(boolean simulationModeActive) {
         this.simulationModeActive = simulationModeActive;
+        if (!simulationModeActive)
+            stopSimulation();
     }
 
     public DfaEditor getDfaEditor() {
@@ -76,6 +92,8 @@ public class Simulator {
         //first check preconditions
         checkPreconditions(input);
         isRunning = true;
+        lastTransitionTaken = null;
+        currentHighlightedState = null;
     }
 
     /**
@@ -315,6 +333,7 @@ public class Simulator {
             isRunning = false;
         if(isRunning) {
             int currentPosition = dfa.getCurrentPosition();
+            currentHighlightedState = dfa.getCurrentState();
             int nextposition = currentPosition;
             if(currentPosition < input.length()) {
                 State currentState = dfa.getCurrentState();
@@ -324,10 +343,13 @@ public class Simulator {
                     Transition t = transitions.get(i);
                     if(t.getInput().contains(read)) {
                         //take transition and set new current state
+                        lastTransitionTaken = t;
                         nextposition = currentPosition+1;
                         dfa.setCurrentState(t.getToState());
+                        currentHighlightedState = t.getToState();
                         if(nextposition < input.length()) {
                             dfa.setCurrentPosition(nextposition);
+
                         } else {
                             //all input has been read
                             isRunning = false;
@@ -344,6 +366,16 @@ public class Simulator {
     }
 
     /**
+     * resets simulation variables
+     */
+    public void stopSimulation()
+    {
+        resetDfa();
+        isRunning = false;
+
+    }
+
+    /**
      * reset the dfa to normal start parameters
      */
     public void resetDfa() {
@@ -351,6 +383,8 @@ public class Simulator {
             dfa.setCurrentPosition(0);
         dfa.setCurrentState(dfa.getStartState());
         dfa.setInput(new String());
+        lastTransitionTaken = null;
+        currentHighlightedState = null;
     }
 
     /**

@@ -49,6 +49,7 @@ public class DFAPainter {
     private final Color colorTransitionLineNormal = Color.BLACK;
     private final Color colorTransitionLineHighlighted = new Color(73,137,255);
     private final Color colorTransitionLineSelected = Color.blue;
+    private final Color colorTransitionLineTaken= Color.RED;
     private final Color colorTransitionLabelHighlighted = new Color(197,222,255);
     private final Color colorTransitionLabelSelected = Color.blue;
     private final Color colorTransitionLabelNormal = new Color(255,255,255,155);
@@ -303,7 +304,7 @@ public class DFAPainter {
                  fontColor = colorStateFontSelected;
             }
 
-            if(dfaSim.getIsRunning() && dfa.getCurrentState().equals(s)) {
+            if(dfaSim.getCurrentHighlightedState() == s) {
                 lineColor = colorStateLinesCurrent;
                 backgroundColor = colorStateCurrent;
             }
@@ -439,6 +440,16 @@ public class DFAPainter {
                 colorFont = Color.white;
             }
 
+            //-- simulation purposes --
+            if (dfaSim.isIsRunning())
+            {
+                if (dfaSim.getLastTransitionTaken() != null && t == dfaSim.getLastTransitionTaken())
+                {
+                    colorCaptionColor = colorTransitionLineTaken;
+                    colorLineColor = colorTransitionLineTaken;
+                    colorFont = Color.white;    
+                }
+            }
             
             boolean showTouchButton = (getDfaEditor().getToolState() == EditorToolStates.handTool) && t.isSelected();
 
