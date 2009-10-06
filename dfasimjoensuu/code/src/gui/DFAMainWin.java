@@ -44,7 +44,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     Simulator dfaSim = null;
     boolean simBarVisible = false;
     boolean fileChanged = false;
-    private int splitSizeInfoBar = 220;
+    private int splitSizeInfoBar = 230;
     private int splitSizeSimulationBar = 260;
     private String currentFilename = null;
     HelpFileLoader helpFiles = new HelpFileLoader();
