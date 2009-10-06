@@ -765,6 +765,15 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
        panelDrawArea.repaint();
     }//GEN-LAST:event_buttonNextStepActionPerformed
 
+    private void resetSimulationBar()
+    {
+        textareaInputWord.setSelectionStart(0);
+        textareaInputWord.setSelectionEnd(0);
+    }
+
+    /**
+     * next step in Simulation and visualisation
+     */
     private void doNextStep() {
         String inputWord = textareaInputWord.getText();
         Dfa dfa = dfaSim.getDfa();
@@ -879,6 +888,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         dfaSim.getDfaEditor().setToolState(EditorToolStates.noTool);
         dfaSim.setSimulationModeActive(true);
         dfaSim.getDfaEditor().removeAllSelections();
+        resetSimulationBar();
         updateButtons();
     }
 
