@@ -181,7 +181,7 @@ public class DFAPropertiesWin extends javax.swing.JFrame {
             for (int i=0;i<a.size();i++)
             {
                 if (i != a.size()-1)
-                    s = s + a.get(i) + ", ";
+                    s = s + a.get(i) + ",";
                 else
                     s = s + a.get(i);
             }

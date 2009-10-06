@@ -598,11 +598,11 @@ public class DfaEditor{
 
             if (vlength > 0)
             {
-                double centerx = (s2x + s1x)/2;
-                double centery = (s2y + s1y)/2;
+                double centerx = zoomfactor*(s2x + s1x)/2;
+                double centery = zoomfactor*(s2y + s1y)/2;
 
-                double normx = dx/vlength;
-                double normy = dy/vlength;
+                double normx = zoomfactor*dx/vlength;
+                double normy = zoomfactor*dy/vlength;
 
                 double turnedx = normy;
                 double turnedy = -normx;
@@ -611,7 +611,7 @@ public class DfaEditor{
                 double ddy = evt.getY()-offsetY-centery;
 
 
-                l = 6*(ddx*turnedx + ddy*turnedy)/vlength;
+                l = (6*(ddx*turnedx + ddy*turnedy)/vlength)/zoomfactor;
             }
             currentTransSelected.setCurveFactor(l);
             touchButton.setCurrentValue(l);
@@ -659,8 +659,8 @@ public class DfaEditor{
         State s = dfa.addState();
         s.getState_Properties().setName("q"+(dfa.getStates().size()-1));
         s.getState_Properties().setSelected(true);
-        s.getState_Properties().setXPos(this.dummyState.getState_Properties().getXPos());
-        s.getState_Properties().setYPos(this.dummyState.getState_Properties().getYPos());
+        s.getState_Properties().setXPos((int)(this.dummyState.getState_Properties().getXPos()/zoomfactor));
+        s.getState_Properties().setYPos((int)(this.dummyState.getState_Properties().getYPos()/zoomfactor));
         updateGraphicsAll();
         dFAMainWin.showStateEditWin(s,true);
     }
@@ -704,9 +704,8 @@ public class DfaEditor{
         if (stateHit != null)
         {
             updateGraphicsAll();
-            System.out.println("Hit state: "+stateHit.getState_Properties().getName());
-            dragOffsetX = evt.getX()-offsetX-stateHit.getState_Properties().getXPos();
-            dragOffsetY = evt.getY()-offsetY-stateHit.getState_Properties().getYPos();
+            dragOffsetX = (int) (evt.getX()-offsetX-stateHit.getState_Properties().getXPos()*zoomfactor);
+            dragOffsetY = (int) (evt.getY()-offsetY-stateHit.getState_Properties().getYPos()*zoomfactor);
            
         }
         this.currentStateSelected = stateHit;
@@ -726,8 +725,9 @@ public class DfaEditor{
     private State getStateAtMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
     {
         State s = null;
-        double tx = px - offsetX;
-        double ty = py - offsetY;
+        double z = zoomfactor;
+        double tx = (px - offsetX)/z;
+        double ty = (py - offsetY)/z;
 
         for (int i=0;i<getDfa().getStates().size();i++)
         {
@@ -765,8 +765,9 @@ public class DfaEditor{
       private Transition getTransitionatMouse(int px, int py, boolean changeHighlight, HighlightTypes highlightIndex, boolean selectOnHit)
     {
         Transition t = null;
-        double tx = px - offsetX;
-        double ty = py - offsetY;
+        double z = zoomfactor;
+        double tx = (px - offsetX)/z;
+        double ty = (py - offsetY)/z;
 
         for (int i=0;i<getDfa().getStates().size();i++)
         {
@@ -830,8 +831,12 @@ public class DfaEditor{
     {
         if (currentStateSelected != null)
         {
-            int px = evt.getX()-offsetX-dragOffsetX;
-            int py = evt.getY()-offsetY-dragOffsetY ;
+
+            double tx = (evt.getX()- dragOffsetX -offsetX);
+            double ty = (evt.getY()- dragOffsetY -offsetY);
+
+            int px = (int)(tx/zoomfactor);
+            int py = (int)(ty/zoomfactor);
             currentStateSelected.getState_Properties().setXPos(px);
             currentStateSelected.getState_Properties().setYPos(py);
         }
