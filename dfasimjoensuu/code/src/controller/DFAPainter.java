@@ -304,7 +304,7 @@ public class DFAPainter {
                  fontColor = colorStateFontSelected;
             }
 
-            if(dfaSim.getCurrentHighlightedState() == s) {
+            if(dfaSim.isSimulationModeActive() && dfaSim.getCurrentHighlightedState() == s) {
                 lineColor = colorStateLinesCurrent;
                 backgroundColor = colorStateCurrent;
             }
