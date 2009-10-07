@@ -23,8 +23,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -44,8 +42,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     Simulator dfaSim = null;
     boolean simBarVisible = false;
     boolean fileChanged = false;
-    private int splitSizeInfoBar = 230;
-    private int splitSizeSimulationBar = 260;
+    private final int SPLIT_SIZE_INFO_BAR = 230;
+    private final int SPLIT_SIZE_SIMULATION_BAR = 260;
+    private final int WINDOW_WIDTH = 720;
+    private final int WINDOW_HEIGHT = 500;
     private String currentFilename = null;
     HelpFileLoader helpFiles = new HelpFileLoader();
 
@@ -55,7 +55,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     public DFAMainWin() {
         
         initComponents();
-        this.setSize(new Dimension(700, 500));
+        this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         centreWindow(this);
       //  this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
@@ -174,7 +174,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         popupMenu.add(menuitemEditpopup);
 
         menuitemDeletepopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_remove.png"))); // NOI18N
-        menuitemDeletepopup.setLabel("Delete object");
+        menuitemDeletepopup.setText("Delete object");
         menuitemDeletepopup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemDeletepopupActionPerformed(evt);
@@ -718,7 +718,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 in.close();
             } catch (IOException ex) {
                 String msg = "File not found!";
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error: File not found", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
             } catch (ClassNotFoundException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -1006,8 +1006,8 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
     private void controlSplitPaneSizes()
     {
-        splitterInfobar.setDividerLocation(this.getWidth()-splitSizeInfoBar);
-        splitterSimulationBar.setDividerLocation(this.getHeight()-splitSizeSimulationBar);
+        splitterInfobar.setDividerLocation(this.getWidth()-SPLIT_SIZE_INFO_BAR);
+        splitterSimulationBar.setDividerLocation(this.getHeight()-SPLIT_SIZE_SIMULATION_BAR);
 
 
     }
@@ -1210,6 +1210,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new DFAMainWin().setVisible(true);
                 
@@ -1378,6 +1379,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JToggleButton togglePointer;
     // End of variables declaration//GEN-END:variables
 
+    @Override
     public void update(Observable o, Object arg) {
         if(o instanceof Dfa) {
             Dfa dfa = (Dfa)o;

@@ -65,8 +65,9 @@ public class Simulator {
     public void setSimulationModeActive(boolean simulationModeActive) {
         this.simulationModeActive = simulationModeActive;
         if (!simulationModeActive)
-            stopSimulation(); else
-                resetDfa();
+            stopSimulation();
+        else
+            resetDfa();
     }
 
     public DfaEditor getDfaEditor() {
@@ -184,6 +185,8 @@ public class Simulator {
     private void checkPreconditions(String input) throws IncompleteAutomatonException {
         //check all pre-conditions
         //check for start state
+        if(input == null)
+            input = new String();
         dfa.setInput(input);
         if (dfa.getStartState() == null) {
             throw new IncompleteAutomatonException("Please define a start state first!");
