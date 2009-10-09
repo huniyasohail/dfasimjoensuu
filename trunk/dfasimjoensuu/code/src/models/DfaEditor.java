@@ -4,6 +4,7 @@ import controller.DFAPainter;
 import controller.Simulator;
 import gui.DFAMainWin;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 
@@ -611,7 +612,7 @@ public class DfaEditor{
                 double ddy = evt.getY()-offsetY-centery;
 
 
-                l = (6*(ddx*turnedx + ddy*turnedy)/vlength)/zoomfactor;
+                l = (6*(ddx*turnedx + ddy*turnedy)/vlength)/(zoomfactor*zoomfactor);
             }
             currentTransSelected.setCurveFactor(l);
             touchButton.setCurrentValue(l);
@@ -694,7 +695,6 @@ public class DfaEditor{
         }
         if (transHit != null)
         {
-            System.out.println("Trans hit!");
             if (stateHit != null)
             {
                 stateHit.getState_Properties().setSelected(false);
@@ -974,6 +974,151 @@ public class DfaEditor{
     public void setTransitionState(EditorTransitionStates transitionState) {
         this.transitionState = transitionState;
     }
+
+    public Dfa getExampleDFA(int no)
+    {
+        Dfa d = new Dfa();
+        if (no == 1)
+        {
+         State s1 = new State("even", 0);
+         State s2 = new State("odd", 1);
+
+         s1.getState_Properties().setXPos(100);
+         s1.getState_Properties().setYPos(100);
+         s1.setIsStartState(true);
+         s1.setIsFinalState(true);
+
+         s2.getState_Properties().setXPos(200);
+         s2.getState_Properties().setYPos(100);
+
+         d.addState(s1);
+         d.addState(s2);
+
+         ArrayList<String> l;
+
+         Transition t1 = d.addTransition(s1, s2);
+         l = new ArrayList<String>();
+         l.add("1");
+         t1.setInput(l);
+
+         Transition t2 = d.addTransition(s2, s1);
+         l = new ArrayList<String>();
+         l.add("1");
+         t2.setInput(l);
+
+         Transition t3 = d.addTransition(s1, s1);
+         l = new ArrayList<String>();
+         l.add("0");
+         t3.setInput(l);
+
+         Transition t4 = d.addTransition(s2, s2);
+         l = new ArrayList<String>();
+         l.add("0");
+         t4.setInput(l);
+
+         d.setStartState(s1);
+         d.setDescription("This DFA accepts inputs with an even number of ones. 11011 will be accepted, 001 will be rejected. The empty word will also be accepted.");
+        }
+        
+
+        if (no == 2)
+        {
+         State s1 = new State("start", 0);
+         State s2 = new State("a", 1);
+         State s3 = new State("ab", 1);
+         State s4 = new State("abc", 1);
+
+         s1.getState_Properties().setXPos(100);
+         s1.getState_Properties().setYPos(100);
+         s1.setIsStartState(true);
+
+         s2.getState_Properties().setXPos(200);
+         s2.getState_Properties().setYPos(100);
+
+         s3.getState_Properties().setXPos(300);
+         s3.getState_Properties().setYPos(100);
+
+         s4.getState_Properties().setXPos(400);
+         s4.getState_Properties().setYPos(100);
+         s4.setIsFinalState(true);
+
+         d.addState(s1);
+         d.addState(s2);
+         d.addState(s3);
+         d.addState(s4);
+
+         ArrayList<String> l;
+
+         Transition t1 = d.addTransition(s1, s2);
+         l = new ArrayList<String>();
+         l.add("a");
+         t1.setInput(l);
+
+         Transition t2 = d.addTransition(s2, s3);
+         l = new ArrayList<String>();
+         l.add("b");
+         t2.setInput(l);
+
+         Transition t3 = d.addTransition(s3, s4);
+         l = new ArrayList<String>();
+         l.add("c");
+         t3.setInput(l);
+         
+
+         Transition t4 = d.addTransition(s1, s1);
+         l = new ArrayList<String>();
+         l.add("b");
+         l.add("c");
+         t4.setInput(l);
+
+         Transition t8 = d.addTransition(s2, s2);
+         l = new ArrayList<String>();
+         l.add("a");
+         t8.setInput(l);
+
+         Transition t5 = d.addTransition(s2, s1);
+         l = new ArrayList<String>();
+         l.add("c");
+         t5.setInput(l);
+
+         Transition t6 = d.addTransition(s3, s1);
+         l = new ArrayList<String>();
+         l.add("b");
+         t6.setInput(l);
+         t6.setCurveFactor(1.8D);
+
+
+         Transition t9= d.addTransition(s3, s2);
+         l = new ArrayList<String>();
+         l.add("a");
+         t9.setInput(l);
+
+
+         Transition t7 = d.addTransition(s4, s1);
+         l = new ArrayList<String>();
+         l.add("b");
+         l.add("c");
+         t7.setInput(l);
+         t7.setCurveFactor(3);
+
+
+         Transition t10 = d.addTransition(s4, s2);
+         l = new ArrayList<String>();
+         l.add("a");
+         t10.setInput(l);
+         t10.setCurveFactor(2);
+
+         d.setStartState(s1);
+         d.setDescription("This DFA accepts inputs when it ends with 'abc'. The alphabet letters are a,b and c.");
+        }
+
+
+
+
+
+        return d;
+    }
+
 
 
 

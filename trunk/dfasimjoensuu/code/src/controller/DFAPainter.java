@@ -300,6 +300,7 @@ public class DFAPainter {
             Color backgroundColor = colorStateNormal;
             Color lineColor = colorStateLinesNotSelected;
             Color fontColor = colorStateFontNormal;
+            Color startLineColor;
             
             
             if (s.getState_Properties().getHighlightIndex() == HighlightTypes.MouseOver)
@@ -314,9 +315,14 @@ public class DFAPainter {
                  fontColor = colorStateFontSelected;
             }
 
+            startLineColor = lineColor;
+
             if(dfaSim.isSimulationModeActive() && dfaSim.getCurrentHighlightedState() == s) {
                 lineColor = colorStateLinesCurrent;
                 backgroundColor = colorStateCurrent;
+                if (s.getIsStartState() && dfa.getCurrentPosition() == 0)
+                    startLineColor = colorStateLinesCurrent;
+
             }
 
 
@@ -346,7 +352,7 @@ public class DFAPainter {
 
             if (s.getIsStartState())
             {
-                drawStartArrow((int)(centerX-radius-10*getDfaEditor().getZoomfactor()),centerY,lineColor,g);
+                drawStartArrow((int)(centerX-radius-10*getDfaEditor().getZoomfactor()),centerY,startLineColor,g);
             }
 
         g.setColor(fontColor);
@@ -384,9 +390,7 @@ public class DFAPainter {
                 {
                   paintTransition(s1,s2,t,getStringFromInputArray(t),Color.black, false);
                 
-                }
-
-                
+                }     
             }
         }
     }
@@ -454,7 +458,7 @@ public class DFAPainter {
             }
 
             //-- simulation purposes --
-            if (dfaSim.isIsRunning())
+            if (dfaSim.isSimulationModeActive())
             {
                 if (dfaSim.getLastTransitionTaken() != null && t == dfaSim.getLastTransitionTaken())
                 {

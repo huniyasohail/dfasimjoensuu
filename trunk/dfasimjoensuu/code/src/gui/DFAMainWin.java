@@ -57,7 +57,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         initComponents();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         centreWindow(this);
-      //  this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
 
@@ -96,6 +95,13 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         updateButtons();
     }
 
+
+    public void openLearningCenter()
+    {
+       DFAWelcomeWin dFAWelcomeWin = new DFAWelcomeWin();
+       dFAWelcomeWin.setdFAMainWin(this);
+       dFAWelcomeWin.setVisible(true);
+    }
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -162,6 +168,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuitemStartSim = new javax.swing.JMenuItem();
         menuItemStopSim = new javax.swing.JMenuItem();
         menuInfo = new javax.swing.JMenu();
+        menuitemLearn = new javax.swing.JMenuItem();
         menuitemInfo = new javax.swing.JMenuItem();
 
         menuitemEditpopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/spanner_blue.png"))); // NOI18N
@@ -174,7 +181,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         popupMenu.add(menuitemEditpopup);
 
         menuitemDeletepopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_remove.png"))); // NOI18N
-        menuitemDeletepopup.setText("Delete object");
+        menuitemDeletepopup.setLabel("Delete object");
         menuitemDeletepopup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemDeletepopupActionPerformed(evt);
@@ -649,6 +656,14 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
 
+        menuitemLearn.setText("Learning Center & examples");
+        menuitemLearn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuitemLearnActionPerformed(evt);
+            }
+        });
+        menuInfo.add(menuitemLearn);
+
         menuitemInfo.setText("About DFA Simulator");
         menuitemInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -753,6 +768,21 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 this.setTitle(winName+" - "+currentFilename);
         }
     }
+
+    public void openDFA(Dfa d)
+    {
+        stopSimulation();
+        currentFilename = "Demo";
+        fileChanged = false;
+        this.dfaSim.getDfaEditor().resetEditor();
+        dfaSim.setDfa(d);
+        
+        connectGUItoDFA();
+        panelDrawArea.repaint();
+        setWindowCaption();
+        dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan();
+    }
+
 
     private void toggleAddTransitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleAddTransitionActionPerformed
         getDfaSim().getDfaEditor().setToolState(EditorToolStates.addTransition);
@@ -867,6 +897,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
        connectGUItoDFA();
        repaint();
+       openLearningCenter();
     }//GEN-LAST:event_formWindowOpened
 
     private void panelDrawAreaAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panelDrawAreaAncestorResized
@@ -1135,6 +1166,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             zoomOUT(evt);
     }//GEN-LAST:event_panelDrawAreaMouseWheelMoved
 
+    private void menuitemLearnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemLearnActionPerformed
+        openLearningCenter();
+    }//GEN-LAST:event_menuitemLearnActionPerformed
+
 /**
  * zoom the view
  */
@@ -1354,6 +1389,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JMenuItem menuitemExit;
     private javax.swing.JMenuItem menuitemExportImage;
     private javax.swing.JMenuItem menuitemInfo;
+    private javax.swing.JMenuItem menuitemLearn;
     private javax.swing.JMenuItem menuitemNewDFA;
     private javax.swing.JMenuItem menuitemOpen;
     private javax.swing.JMenuItem menuitemProperties;
