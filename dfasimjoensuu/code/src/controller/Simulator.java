@@ -60,8 +60,6 @@ public class Simulator {
         return currentHighlightedState;
     }
 
-    
-
     public void setSimulationModeActive(boolean simulationModeActive) {
         this.simulationModeActive = simulationModeActive;
         if (!simulationModeActive)

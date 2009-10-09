@@ -44,11 +44,11 @@ public class DFAInfoWin extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DFA Simulator");
@@ -57,17 +57,17 @@ public class DFAInfoWin extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel2.setText("Deterministic Finite Automaton Simulator");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel2.setText("DFA Simulator");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(30, 70, 410, 17);
+        jLabel2.setBounds(30, 10, 410, 50);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel3.setText("GNU License");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(30, 210, 390, 17);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Kai Winnekens, Fabian Bürger");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(30, 110, 440, 20);
@@ -81,7 +81,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         getContentPane().add(jButton1);
         jButton1.setBounds(420, 250, 90, 40);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel6.setText("Menu icons from http://www.thewwwblog.com (freeware)  ");
         getContentPane().add(jLabel6);
         jLabel6.setBounds(30, 260, 390, 17);
@@ -90,10 +90,6 @@ public class DFAInfoWin extends javax.swing.JFrame {
         jLabel7.setText("University of Joensuu, Finland");
         getContentPane().add(jLabel7);
         jLabel7.setBounds(30, 90, 440, 17);
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/logo.png"))); // NOI18N
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(-20, 0, 621, 141);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel8.setText("Student project of the Object Orientated Programming Course.");
@@ -105,15 +101,20 @@ public class DFAInfoWin extends javax.swing.JFrame {
         getContentPane().add(jLabel9);
         jLabel9.setBounds(30, 160, 440, 17);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel10.setText("Version 0.9 beta, 2009");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(30, 230, 370, 17);
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel11.setText("This program comes with ABSOLUTELY NO WARRANTY!");
         getContentPane().add(jLabel11);
         jLabel11.setBounds(30, 180, 440, 17);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Deterministic Finite Automaton Simulator");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(30, 70, 410, 17);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
