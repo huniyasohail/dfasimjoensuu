@@ -123,6 +123,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         jSeparator2 = new javax.swing.JToolBar.Separator();
         buttonZoomOUT = new javax.swing.JButton();
         buttonZoomIN = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        buttonStartSim = new javax.swing.JButton();
+        buttonStopSim = new javax.swing.JButton();
         panelContainer = new javax.swing.JPanel();
         splitterInfobar = new javax.swing.JSplitPane();
         panelMainDrawArea = new javax.swing.JPanel();
@@ -286,6 +289,31 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
         jToolBar1.add(buttonZoomIN);
+        jToolBar1.add(jSeparator3);
+
+        buttonStartSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_startsim.png"))); // NOI18N
+        buttonStartSim.setToolTipText("Run simulation");
+        buttonStartSim.setFocusable(false);
+        buttonStartSim.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonStartSim.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonStartSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonStartSimActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonStartSim);
+
+        buttonStopSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_stopsim.png"))); // NOI18N
+        buttonStopSim.setToolTipText("Stop simulation");
+        buttonStopSim.setFocusable(false);
+        buttonStopSim.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonStopSim.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonStopSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonStopSimActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonStopSim);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
 
@@ -530,7 +558,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -626,6 +654,11 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         jMenuBar1.add(menuDFA);
 
         menuSimulation.setText("Simulation");
+        menuSimulation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSimulationActionPerformed(evt);
+            }
+        });
 
         menuitemStartSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/arrow_go.png"))); // NOI18N
         menuitemStartSim.setText("Start Simulation");
@@ -948,6 +981,8 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuitemAutocomplete.setEnabled(false);
         menuitemProperties.setEnabled(false);
         menuItemMinimizeDfa.setEnabled(false);
+        buttonStartSim.setEnabled(false);
+        buttonStopSim.setEnabled(true);
         dfaSim.getDfaEditor().setIsEditable(false);
         dfaSim.getDfaEditor().setToolState(EditorToolStates.noTool);
         dfaSim.setSimulationModeActive(true);
@@ -1014,6 +1049,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuitemAutocomplete.setEnabled(true);
         menuitemProperties.setEnabled(true);
         menuItemMinimizeDfa.setEnabled(true);
+        buttonStartSim.setEnabled(true);
+        buttonStopSim.setEnabled(false);
+
         dfaSim.getDfaEditor().setIsEditable(true);
         dfaSim.getDfaEditor().setToolState(EditorToolStates.handTool);
         dfaSim.setSimulationModeActive(false);
@@ -1039,8 +1077,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     {
         splitterInfobar.setDividerLocation(this.getWidth()-SPLIT_SIZE_INFO_BAR);
         splitterSimulationBar.setDividerLocation(this.getHeight()-SPLIT_SIZE_SIMULATION_BAR);
-
-
     }
 
 
@@ -1170,6 +1206,18 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         openLearningCenter();
     }//GEN-LAST:event_menuitemLearnActionPerformed
 
+    private void menuSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSimulationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuSimulationActionPerformed
+
+    private void buttonStartSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStartSimActionPerformed
+        startSimulation();
+    }//GEN-LAST:event_buttonStartSimActionPerformed
+
+    private void buttonStopSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopSimActionPerformed
+        stopSimulation();
+    }//GEN-LAST:event_buttonStopSimActionPerformed
+
 /**
  * zoom the view
  */
@@ -1190,7 +1238,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
              }
              getDfaSim().getDfaEditor().setOffsetX((int)newoffsetX);
              getDfaSim().getDfaEditor().setOffsetY((int)newoffsetY);
-        }
+             if (dfaSim.getDfaEditor().getZoomfactor() > 2.8)
+                 buttonZoomIN.setEnabled(false);
+             buttonZoomOUT.setEnabled(true);
+        } 
         repaint();
     }
 
@@ -1214,7 +1265,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
              }
              getDfaSim().getDfaEditor().setOffsetX((int)newoffsetX);
              getDfaSim().getDfaEditor().setOffsetY((int)newoffsetY);
-        }
+             if (dfaSim.getDfaEditor().getZoomfactor() < 0.5)
+                 buttonZoomOUT.setEnabled(false);
+             buttonZoomIN.setEnabled(true);
+        }           
         repaint();
     }
 
@@ -1275,7 +1329,7 @@ public void manageHelp()
     if (!getDfaSim().isSimulationModeActive())
     {
         if (getDfaSim().getDfaEditor().getToolState() == EditorToolStates.handTool)
-       currentSite = "handtool";
+        currentSite = "handtool";
         if (getDfaSim().getDfaEditor().getToolState() == EditorToolStates.addState)
         currentSite = "addstatetool";
         if (getDfaSim().getDfaEditor().getToolState() == EditorToolStates.addTransition)
@@ -1312,6 +1366,9 @@ public void updateToolButtons()
     togglePointer.setEnabled(e.isEditable());
     toggleAddState.setEnabled(e.isEditable());
     toggleAddTransition.setEnabled(e.isEditable());
+
+    buttonStopSim.setEnabled(getDfaSim().isSimulationModeActive());
+    buttonStartSim.setEnabled(getDfaSim().getDfa().getStartState() != null && !getDfaSim().isSimulationModeActive());
 }
 
 public void showStateEditWin(State s, boolean newState)
@@ -1360,6 +1417,8 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JButton buttonNextStep;
     private javax.swing.JButton buttonReset;
     private javax.swing.JButton buttonSimulateAll;
+    private javax.swing.JButton buttonStartSim;
+    private javax.swing.JButton buttonStopSim;
     private javax.swing.JButton buttonZoomIN;
     private javax.swing.JButton buttonZoomOUT;
     private javax.swing.JEditorPane editorHelp;
@@ -1375,6 +1434,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenu menuDFA;
@@ -1422,9 +1482,11 @@ public boolean askUserMessageBoxYesNo(String title, String message)
             if(dfa.getStartState() != null) {
                 this.menuitemStartSim.setEnabled(true);
                 this.menuItemMinimizeDfa.setEnabled(true);
+                this.buttonStartSim.setEnabled(true);
             } else {
                 this.menuitemStartSim.setEnabled(false);
                 this.menuItemMinimizeDfa.setEnabled(false);
+                  this.buttonStartSim.setEnabled(false);
             }
         }
     }
