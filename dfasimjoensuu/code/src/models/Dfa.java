@@ -90,6 +90,8 @@ public class Dfa extends Observable implements Serializable{
             removeTransition(t);
         // s != null
         this.states.remove(s);
+        if (s.getIsStartState())
+            startState = null;
 
     }
 

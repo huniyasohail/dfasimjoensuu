@@ -955,6 +955,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     private void panelDrawAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseReleased
         panelDrawArea.requestFocus();
         getDfaSim().getDfaEditor().handleMouseReleased(evt);
+        updateToolButtons();
         
     }//GEN-LAST:event_panelDrawAreaMouseReleased
 
@@ -1060,6 +1061,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
     private void panelDrawAreaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelDrawAreaKeyPressed
      getDfaSim().getDfaEditor().handleEditorKeyPressed(evt);
+     updateToolButtons();
         
     }//GEN-LAST:event_panelDrawAreaKeyPressed
 
@@ -1368,7 +1370,12 @@ public void updateToolButtons()
     toggleAddTransition.setEnabled(e.isEditable());
 
     buttonStopSim.setEnabled(getDfaSim().isSimulationModeActive());
-    buttonStartSim.setEnabled(getDfaSim().getDfa().getStartState() != null && !getDfaSim().isSimulationModeActive());
+    buttonStartSim.setEnabled( !getDfaSim().isSimulationModeActive());
+    
+    menuitemStartSim.setEnabled(buttonStartSim.isEnabled());
+    menuItemStopSim.setEnabled(buttonStopSim.isEnabled());
+
+
 }
 
 public void showStateEditWin(State s, boolean newState)
