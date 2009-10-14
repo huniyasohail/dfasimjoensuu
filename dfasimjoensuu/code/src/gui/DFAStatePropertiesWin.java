@@ -207,7 +207,7 @@ public class DFAStatePropertiesWin extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void textNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNameActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_textNameActionPerformed
 
     private void checkStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkStartActionPerformed

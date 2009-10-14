@@ -185,7 +185,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         popupMenu.add(menuitemEditpopup);
 
         menuitemDeletepopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_remove.png"))); // NOI18N
-        menuitemDeletepopup.setText("Delete object");
+        menuitemDeletepopup.setLabel("Delete object");
         menuitemDeletepopup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemDeletepopupActionPerformed(evt);
@@ -293,7 +293,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         jToolBar1.add(jSeparator3);
 
         buttonStartSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_startsim.png"))); // NOI18N
-        buttonStartSim.setToolTipText("Run simulation");
+        buttonStartSim.setToolTipText("Define a start state first in order to start the simulation");
         buttonStartSim.setEnabled(false);
         buttonStartSim.setFocusable(false);
         buttonStartSim.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -779,7 +779,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 String msg = "File not found!";
                 JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
             } catch (ClassNotFoundException ex) {
-                System.out.println(ex.getMessage());
+                System.err.println(ex.getMessage());
             }
             currentFilename = fc.getSelectedFile().getName();
         }
@@ -789,6 +789,8 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         fileChanged = false;
         this.dfaSim.getDfaEditor().resetEditor();
         dfaSim.setDfa(loaded_dfa);
+        loaded_dfa.addObserver(this);
+        this.update(loaded_dfa, null);
 
         connectGUItoDFA();
         panelDrawArea.repaint();
@@ -1055,8 +1057,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                         setWindowCaption();
                         out.close();
                     } catch (FileNotFoundException ex) {
-                        //TODO
-                        String msg = "File not found!";
+                        String msg = "Could not find the selected file!";
                         JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
@@ -1239,7 +1240,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_menuitemLearnActionPerformed
 
     private void menuSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSimulationActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_menuSimulationActionPerformed
 
     private void buttonStartSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStartSimActionPerformed
@@ -1513,14 +1514,19 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     public void update(Observable o, Object arg) {
         if(o instanceof Dfa) {
             Dfa dfa = (Dfa)o;
+            String tooltip;
             if(dfa.getStartState() != null) {
+                tooltip = "Run Simulation";
                 this.menuitemStartSim.setEnabled(true);
                 this.menuItemMinimizeDfa.setEnabled(true);
                 this.buttonStartSim.setEnabled(true);
+                this.buttonStartSim.setToolTipText(tooltip);
             } else {
+                tooltip = "Define a start state first in order to start the simulation";
                 this.menuitemStartSim.setEnabled(false);
                 this.menuItemMinimizeDfa.setEnabled(false);
                 this.buttonStartSim.setEnabled(false);
+                this.buttonStartSim.setToolTipText(tooltip);
             }
         }
     }

@@ -109,8 +109,7 @@ public class Dfa extends Observable implements Serializable{
         try {
             s1.addOutgoingTransition(t, true);
         } catch (Exception ex) {
-            //TODO:
-            System.out.println(ex.getMessage());
+            System.err.println(ex.getMessage());
         }
         //check for transition in opposite direction
         boolean found = false;

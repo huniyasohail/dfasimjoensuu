@@ -242,7 +242,7 @@ public class DFAAutoCompleteWin extends JFrame {
 
 
     private void textInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textInputActionPerformed
-        // TODO add your handling code here:
+        
 }//GEN-LAST:event_textInputActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
