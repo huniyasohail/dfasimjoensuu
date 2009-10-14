@@ -790,7 +790,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         this.dfaSim.getDfaEditor().resetEditor();
         dfaSim.setDfa(loaded_dfa);
         loaded_dfa.addObserver(this);
-        this.update(loaded_dfa, null);
 
         connectGUItoDFA();
         panelDrawArea.repaint();
@@ -1319,7 +1318,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             getDfaSim().getDfaEditor().setDfa(ndfa);
             this.getDfaSim().setDfa(ndfa);
             ndfa.addObserver(this);
-            this.update(ndfa, null);
             repaint();
         }
     }

@@ -3,6 +3,7 @@ package models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -371,7 +372,12 @@ public class Dfa extends Observable implements Serializable{
 
     }
 
-    
+    @Override
+    public synchronized void addObserver(Observer o) {
+        super.addObserver(o);
+        setChanged();
+        notifyObservers();
+    }
 
 }
 
