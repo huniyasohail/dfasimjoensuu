@@ -389,8 +389,11 @@ public class DFAPainter {
 
                 if (s1 != null && s2 != null)
                 {
-                  paintTransition(s1,s2,t,getStringFromInputArray(t),Color.black, false);
-                
+                    
+                    String caption = getStringFromInputArray(t);
+                    if (caption.length() > 16)
+                        caption = caption.substring(0, 15)+"...";
+                    paintTransition(s1,s2,t,caption,Color.black, false);
                 }     
             }
         }

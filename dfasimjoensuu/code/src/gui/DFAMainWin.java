@@ -32,7 +32,7 @@ import models.DfaEditor;
 import models.EditorToolStates;
 import models.State;
 import models.Transition;
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 /**
  *
@@ -185,7 +185,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         popupMenu.add(menuitemEditpopup);
 
         menuitemDeletepopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_remove.png"))); // NOI18N
-        menuitemDeletepopup.setLabel("Delete object");
+        menuitemDeletepopup.setText("Delete object");
         menuitemDeletepopup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemDeletepopupActionPerformed(evt);
@@ -429,7 +429,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel2.setText("Input word");
 
         textareaInputWord.setColumns(20);
@@ -569,7 +569,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -855,7 +855,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         dwin.setDfa(getDfaSim().getDfa());
         dwin.setdFAMainWin(this);
-        dwin.setAlwaysOnTop(true);
+        //dwin.setAlwaysOnTop(true);
         dwin.setVisible(true);
 
 
@@ -1005,7 +1005,11 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         dfaSim.setSimulationModeActive(true);
         dfaSim.getDfaEditor().removeAllSelections();
         resetSimulationBar();
-        labelAlphabet.setText(" Alphabet: "+getCommaStringFromArrayList(getDfaSim().getAlphabetFromTransitions()));
+        dfaSim.getDfa().setInput(textareaInputWord.getText());
+        String aCaption = getCommaStringFromArrayList(getDfaSim().getAlphabetFromTransitions());
+        if (aCaption.length() > 30)
+                       aCaption = aCaption.substring(0, 30)+"...";
+        labelAlphabet.setText(" Alphabet: "+aCaption);
         updateButtons();
         textareaInputWord.requestFocus();
     }
@@ -1209,7 +1213,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
     private void menuitemAutocompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemAutocompleteActionPerformed
         DFAAutoCompleteWin win = new DFAAutoCompleteWin();
-        win.setAlwaysOnTop(true);
+        //win.setAlwaysOnTop(true);
         win.setdFAMainWin(this);
         win.setSim(dfaSim);
         win.setVisible(true);
@@ -1409,7 +1413,7 @@ public void updateToolButtons()
 public void showStateEditWin(State s, boolean newState)
 {
         DFAStatePropertiesWin stprowin = new DFAStatePropertiesWin();
-        stprowin.setAlwaysOnTop(true);
+       // stprowin.setAlwaysOnTop(true);
         stprowin.setState(s);
         stprowin.setdFAMainWin(this);
         stprowin.setNewElement(newState);
@@ -1421,7 +1425,7 @@ public void showStateEditWin(State s, boolean newState)
 public void showTransEditWin(Transition t, boolean newTrans)
 {
         DFATransitionWin trwin = new DFATransitionWin();
-        trwin.setAlwaysOnTop(true);
+        //trwin.setAlwaysOnTop(true);
         trwin.setTransition(t);
         trwin.setdFAMainWin(this);
         trwin.setnewElement(newTrans);

@@ -58,7 +58,6 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Learning Center");
-        setAlwaysOnTop(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -76,27 +75,27 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(buttonOK);
         buttonOK.setBounds(450, 230, 90, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel2.setText("Knowledge");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(20, 220, 500, 30);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel3.setText("http://www.wikipedia.org/wiki/Deterministic_finite-state_machine");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(30, 270, 560, 15);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel5.setText("Welcome!");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(20, 10, 500, 30);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel6.setText("This program allows you to design Deterministic Finite Automata graphically and simulate them.");
         getContentPane().add(jLabel6);
         jLabel6.setBounds(30, 50, 560, 15);
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel7.setText("A string search DFA, which accepts when a word ends with 'abc'.");
         getContentPane().add(jLabel7);
         jLabel7.setBounds(140, 180, 490, 20);
@@ -110,17 +109,17 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jButton1);
         jButton1.setBounds(30, 170, 100, 30);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel4.setText("Examples");
         getContentPane().add(jLabel4);
         jLabel4.setBounds(20, 100, 500, 30);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel8.setText("It has a tool help bar on the right side, which explains the basic operations.");
         getContentPane().add(jLabel8);
         jLabel8.setBounds(30, 70, 560, 15);
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel9.setText("You can find more about the theory of DFA at");
         getContentPane().add(jLabel9);
         jLabel9.setBounds(30, 250, 560, 15);
@@ -134,7 +133,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jButton2);
         jButton2.setBounds(30, 140, 100, 30);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel10.setText("A 01-bitstream automaton, which accepts even numbers of ones.");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(140, 150, 490, 20);
