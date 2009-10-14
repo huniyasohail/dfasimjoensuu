@@ -26,7 +26,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/gui/img/sign_remove.png"/>
             </Property>
-            <Property name="label" type="java.lang.String" value="Delete object"/>
+            <Property name="text" type="java.lang.String" value="Delete object"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemDeletepopupActionPerformed"/>
@@ -93,7 +93,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuitemProperties">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Description and Alphabet..."/>
+                <Property name="text" type="java.lang.String" value="Description and alphabet..."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemPropertiesActionPerformed"/>
@@ -104,7 +104,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/gui/img/bulb_add.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Autocomplete DFA..."/>
+                <Property name="text" type="java.lang.String" value="Autocomplete transitions..."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemAutocompleteActionPerformed"/>
@@ -129,7 +129,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/gui/img/mime_png.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Image Export"/>
+                <Property name="text" type="java.lang.String" value="Image export"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemExportImageActionPerformed"/>
@@ -150,7 +150,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/gui/img/arrow_go.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Start Simulation"/>
+                <Property name="text" type="java.lang.String" value="Start simulation"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -162,7 +162,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/gui/img/sign_stop.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Stop Simulation"/>
+                <Property name="text" type="java.lang.String" value="Stop simulation"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -181,7 +181,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuitemLearn">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Learning Center &amp; examples"/>
+                <Property name="text" type="java.lang.String" value="Learning center &amp; examples"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemLearnActionPerformed"/>
@@ -189,7 +189,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuitemInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="About DFA Simulator"/>
+                <Property name="text" type="java.lang.String" value="About DFA simulator"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemInfoActionPerformed"/>
@@ -284,7 +284,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/gui/img/icon_addtransition.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Add Transition"/>
+            <Property name="toolTipText" type="java.lang.String" value="Add transition"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -487,7 +487,11 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="labelAlphabet" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                           <Component id="jScrollPane2" min="-2" pref="286" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="32767" attributes="0"/>
@@ -520,7 +524,10 @@
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="3" attributes="0">
+                                                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="labelAlphabet" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="jScrollPane2" pref="43" max="32767" attributes="0"/>
@@ -597,6 +604,14 @@
                               <Events>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonResetActionPerformed"/>
                               </Events>
+                            </Component>
+                            <Component class="javax.swing.JLabel" name="labelAlphabet">
+                              <Properties>
+                                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="40" green="40" id="darkGray" palette="1" red="40" type="palette"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="Alphabet:"/>
+                              </Properties>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -695,7 +710,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel6">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="DFA-Description"/>
+                            <Property name="text" type="java.lang.String" value="DFA description"/>
                           </Properties>
                         </Component>
                         <Container class="javax.swing.JScrollPane" name="jScrollPane4">
@@ -733,7 +748,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="203" max="32767" attributes="0"/>
+                                  <EmptySpace pref="204" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane3" alignment="0" pref="276" max="32767" attributes="0"/>
                           </Group>
@@ -752,7 +767,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel5">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="Context Help"/>
+                            <Property name="text" type="java.lang.String" value="Context help"/>
                           </Properties>
                         </Component>
                         <Container class="javax.swing.JScrollPane" name="jScrollPane3">

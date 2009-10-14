@@ -37,6 +37,8 @@ public class DFAPainter {
     private final Color colorStateHighlight = new Color(197,222,255);
     private final Color colorStateSelected = new Color(0,0,255);
     private final Color colorStateCurrent = new Color(255,253,100);
+    private final Color colorStateAccepted2 = new Color(29,124,0);
+    private final Color colorStateAccepted = new Color(68,255,11);
 
     private final Color colorStateNormal = Color.white;
     private final Color colorStateFontNormal = Color.black;
@@ -116,7 +118,7 @@ public class DFAPainter {
     /**
      * set the offset values to an optimal fit
      */
-    public void optimizeCropPan()
+    public void optimizeCropPan(int optoffset)
     {
         //-- get dimensions of image --
         int minX = 9999999;
@@ -162,8 +164,8 @@ public class DFAPainter {
             int imWidth = Math.max(0,maxX-minX)+3*safetyDistance;
             int imHeight = Math.max(0,maxY-minY)+2*safetyDistance;
 
-            dfaEditor.setOffsetX(-minX+(int)(1.5*safetyDistance));
-            dfaEditor.setOffsetY(-minY+safetyDistance);
+            dfaEditor.setOffsetX(-minX+(int)(1.5*safetyDistance)+optoffset);
+            dfaEditor.setOffsetY(-minY+safetyDistance+optoffset);
         }     
     }
 
@@ -322,9 +324,13 @@ public class DFAPainter {
                 backgroundColor = colorStateCurrent;
                 if (s.getIsStartState() && dfa.getCurrentPosition() == 0)
                     startLineColor = colorStateLinesCurrent;
-
+                if (dfaSim.isAccepting())
+                {
+                    backgroundColor = colorStateAccepted;
+                    lineColor = colorStateAccepted2;
+                }
+                    
             }
-
 
             int centerX = (int)(dfaEditor.getOffsetX() + dfaEditor.getZoomfactor()*x);
             int centerY = (int)(dfaEditor.getOffsetY() + dfaEditor.getZoomfactor()*y);

@@ -42,7 +42,6 @@ public class DFAInfoWin extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -57,7 +56,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36));
         jLabel2.setText("DFA Simulator");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(30, 10, 410, 50);
@@ -67,7 +66,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         getContentPane().add(jLabel3);
         jLabel3.setBounds(30, 210, 390, 17);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel5.setText("Kai Winnekens, Fabian Bürger");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(30, 110, 440, 20);
@@ -80,11 +79,6 @@ public class DFAInfoWin extends javax.swing.JFrame {
         });
         getContentPane().add(jButton1);
         jButton1.setBounds(420, 250, 90, 40);
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel6.setText("Menu icons from http://www.thewwwblog.com (freeware)  ");
-        getContentPane().add(jLabel6);
-        jLabel6.setBounds(30, 260, 390, 17);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel7.setText("University of Joensuu, Finland");
@@ -111,7 +105,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         getContentPane().add(jLabel11);
         jLabel11.setBounds(30, 180, 440, 17);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel4.setText("Deterministic Finite Automaton Simulator");
         getContentPane().add(jLabel4);
         jLabel4.setBounds(30, 70, 410, 17);
@@ -158,7 +152,6 @@ public static void centreWindow(JFrame frame) {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;

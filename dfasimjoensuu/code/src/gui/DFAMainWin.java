@@ -32,6 +32,7 @@ import models.DfaEditor;
 import models.EditorToolStates;
 import models.State;
 import models.Transition;
+import java.util.ArrayList;
 
 /**
  *
@@ -140,6 +141,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         jScrollPane2 = new javax.swing.JScrollPane();
         textareaInputWord = new javax.swing.JTextArea();
         buttonReset = new javax.swing.JButton();
+        labelAlphabet = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textareaOutput = new javax.swing.JTextArea();
@@ -253,7 +255,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         toggleAddState.getAccessibleContext().setAccessibleDescription("Add State");
 
         toggleAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_addtransition.png"))); // NOI18N
-        toggleAddTransition.setToolTipText("Add Transition");
+        toggleAddTransition.setToolTipText("Add transition");
         toggleAddTransition.setFocusable(false);
         toggleAddTransition.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toggleAddTransition.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -427,7 +429,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Input word");
 
         textareaInputWord.setColumns(20);
@@ -441,6 +443,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
 
+        labelAlphabet.setForeground(java.awt.Color.darkGray);
+        labelAlphabet.setText("Alphabet:");
+
         javax.swing.GroupLayout panelConsoleTopLayout = new javax.swing.GroupLayout(panelConsoleTop);
         panelConsoleTop.setLayout(panelConsoleTopLayout);
         panelConsoleTopLayout.setHorizontalGroup(
@@ -448,7 +453,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConsoleTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
+                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelAlphabet))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -473,7 +481,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                             .addComponent(buttonReset)))
                     .addGroup(panelConsoleTopLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel2)
+                        .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(labelAlphabet))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
@@ -507,7 +517,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         SplitterDescriptionHelp.setDividerLocation(150);
         SplitterDescriptionHelp.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        jLabel6.setText("DFA-Description");
+        jLabel6.setText("DFA description");
 
         textDescription.setBackground(new java.awt.Color(236, 233, 222));
         textDescription.setBorder(null);
@@ -537,7 +547,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         SplitterDescriptionHelp.setTopComponent(panelDFADesc);
 
-        jLabel5.setText("Context Help");
+        jLabel5.setText("Context help");
 
         editorHelp.setContentType("text/html");
         editorHelp.setEditable(false);
@@ -550,7 +560,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             .addGroup(panelHELPLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
         );
         panelHELPLayout.setVerticalGroup(
@@ -615,7 +625,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         menuDFA.setText("DFA");
 
-        menuitemProperties.setText("Description and Alphabet...");
+        menuitemProperties.setText("Description and alphabet...");
         menuitemProperties.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemPropertiesActionPerformed(evt);
@@ -624,7 +634,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuDFA.add(menuitemProperties);
 
         menuitemAutocomplete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/bulb_add.png"))); // NOI18N
-        menuitemAutocomplete.setText("Autocomplete DFA...");
+        menuitemAutocomplete.setText("Autocomplete transitions...");
         menuitemAutocomplete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemAutocompleteActionPerformed(evt);
@@ -644,7 +654,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuDFA.add(jSeparator1);
 
         menuitemExportImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/mime_png.png"))); // NOI18N
-        menuitemExportImage.setText("Image Export");
+        menuitemExportImage.setText("Image export");
         menuitemExportImage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemExportImageActionPerformed(evt);
@@ -662,7 +672,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
 
         menuitemStartSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/arrow_go.png"))); // NOI18N
-        menuitemStartSim.setText("Start Simulation");
+        menuitemStartSim.setText("Start simulation");
         menuitemStartSim.setEnabled(false);
         menuitemStartSim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -672,7 +682,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuSimulation.add(menuitemStartSim);
 
         menuItemStopSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_stop.png"))); // NOI18N
-        menuItemStopSim.setText("Stop Simulation");
+        menuItemStopSim.setText("Stop simulation");
         menuItemStopSim.setEnabled(false);
         menuItemStopSim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -690,7 +700,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             }
         });
 
-        menuitemLearn.setText("Learning Center & examples");
+        menuitemLearn.setText("Learning center & examples");
         menuitemLearn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemLearnActionPerformed(evt);
@@ -698,7 +708,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
         menuInfo.add(menuitemLearn);
 
-        menuitemInfo.setText("About DFA Simulator");
+        menuitemInfo.setText("About DFA simulator");
         menuitemInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemInfoActionPerformed(evt);
@@ -783,7 +793,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         connectGUItoDFA();
         panelDrawArea.repaint();
         setWindowCaption();
-        dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan();
+        dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan(20);
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
 /**
@@ -815,7 +825,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         connectGUItoDFA();
         panelDrawArea.repaint();
         setWindowCaption();
-        dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan();
+        dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan(-30);
     }
 
 
@@ -926,6 +936,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         buttonNextStep.setEnabled(true);
         buttonSimulateAll.setEnabled(true);
         dfaSim.resetDfa();
+        dfaSim.getDfa().setInput(textareaInputWord.getText());
         panelDrawArea.repaint();
     }//GEN-LAST:event_buttonResetActionPerformed
 
@@ -991,7 +1002,28 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         dfaSim.setSimulationModeActive(true);
         dfaSim.getDfaEditor().removeAllSelections();
         resetSimulationBar();
+        labelAlphabet.setText(" Alphabet: "+getCommaStringFromArrayList(getDfaSim().getAlphabetFromTransitions()));
         updateButtons();
+    }
+
+    private String getCommaStringFromArrayList(ArrayList<String> a)
+    {
+        if (a.size() == 0)
+        {
+            return "No transitions set yet.";
+        } else
+        {
+            String s = "";
+            for (int i=0;i<a.size();i++)
+            {
+                if (i != a.size()-1)
+                    s = s + a.get(i) + ",";
+                else
+                    s = s + a.get(i);
+            }
+            return s;
+        }
+
     }
 
     private void menuitemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemSaveActionPerformed
@@ -1125,7 +1157,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             int statesafter = dfaSim.getDfa().getStates().size();
             dfaSim.getDfa().autoArrangeDFA();
             repaint();
-            dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan();
+            dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan(40);
             panelDrawArea.repaint();
             JOptionPane.showMessageDialog(this, "The DFA is minimized now. States before: "+statesbefore+", now: "+statesafter+".\nThe number of states is minimized and it will still accept the same language.\nNote: The DFA does not have to be easier to understand now.", "DFA minimized", JOptionPane.INFORMATION_MESSAGE);
 
@@ -1186,10 +1218,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
      getDfaSim().getDfaEditor().handleDoubleClick(null);
     }//GEN-LAST:event_menuitemEditpopupActionPerformed
 
-    private void menuitemDeletepopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemDeletepopupActionPerformed
-       getDfaSim().getDfaEditor().handleDeleteObject(null);
-    }//GEN-LAST:event_menuitemDeletepopupActionPerformed
-
     private void buttonZoomINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonZoomINActionPerformed
         zoomIN(null);
     }//GEN-LAST:event_buttonZoomINActionPerformed
@@ -1221,6 +1249,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     private void buttonStopSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopSimActionPerformed
         stopSimulation();
     }//GEN-LAST:event_buttonStopSimActionPerformed
+
+    private void menuitemDeletepopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemDeletepopupActionPerformed
+         getDfaSim().getDfaEditor().handleDeleteObject(null);
+    }//GEN-LAST:event_menuitemDeletepopupActionPerformed
 
 /**
  * zoom the view
@@ -1438,6 +1470,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel labelAlphabet;
     private javax.swing.JMenu menuDFA;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuInfo;
