@@ -183,7 +183,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         popupMenu.add(menuitemEditpopup);
 
         menuitemDeletepopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_remove.png"))); // NOI18N
-        menuitemDeletepopup.setLabel("Delete object");
+        menuitemDeletepopup.setText("Delete object");
         menuitemDeletepopup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemDeletepopupActionPerformed(evt);
