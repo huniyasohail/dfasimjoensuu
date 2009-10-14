@@ -494,8 +494,7 @@ public class DFAPainter {
                 try {
                     isBidirectional = dfaEditor.getDfa().isBidirectionalTransition(s1, s2);
                 } catch (NoSuchTransitionException ex) {
-                    //TODO
-                    System.out.println(ex.getMessage());
+                    System.err.println(ex.getMessage());
                 }
             } else {
                 isBidirectional = true;

@@ -330,7 +330,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/gui/img/sign_startsim.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Run simulation"/>
+            <Property name="toolTipText" type="java.lang.String" value="Define a start state first in order to start the simulation"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
