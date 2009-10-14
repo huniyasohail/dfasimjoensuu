@@ -768,33 +768,32 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", "dfa"));
         int retVal = fc.showOpenDialog(this);
         Dfa loaded_dfa = null;
-        if(retVal == JFileChooser.APPROVE_OPTION) {
+        if (retVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
 
             try {
                 ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
                 loaded_dfa = (Dfa) in.readObject();
                 in.close();
+                currentFilename = fc.getSelectedFile().getName();
+                stopSimulation();
+
+                fileChanged = false;
+                this.dfaSim.getDfaEditor().resetEditor();
+                dfaSim.setDfa(loaded_dfa);
+                loaded_dfa.addObserver(this);
+
+                connectGUItoDFA();
+                panelDrawArea.repaint();
+                setWindowCaption();
+                dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan(20);
             } catch (IOException ex) {
                 String msg = "File not found!";
                 JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
             } catch (ClassNotFoundException ex) {
                 System.err.println(ex.getMessage());
             }
-            currentFilename = fc.getSelectedFile().getName();
         }
-
-        stopSimulation();
-
-        fileChanged = false;
-        this.dfaSim.getDfaEditor().resetEditor();
-        dfaSim.setDfa(loaded_dfa);
-        loaded_dfa.addObserver(this);
-
-        connectGUItoDFA();
-        panelDrawArea.repaint();
-        setWindowCaption();
-        dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan(20);
     }//GEN-LAST:event_menuitemOpenActionPerformed
 
 /**
@@ -895,6 +894,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                     dfaSim.startSimulation(inputWord);
                 } catch (IncompleteAutomatonException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Cannot start simulation", JOptionPane.WARNING_MESSAGE);
+                    textareaInputWord.setSelectionStart(0);
+                    textareaInputWord.setSelectionEnd(textareaInputWord.getText().length());
+                    textareaInputWord.requestFocus();
                     return;
                 }
             }
@@ -1005,6 +1007,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         resetSimulationBar();
         labelAlphabet.setText(" Alphabet: "+getCommaStringFromArrayList(getDfaSim().getAlphabetFromTransitions()));
         updateButtons();
+        textareaInputWord.requestFocus();
     }
 
     private String getCommaStringFromArrayList(ArrayList<String> a)
