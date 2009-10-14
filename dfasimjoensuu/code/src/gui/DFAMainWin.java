@@ -69,17 +69,16 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         dfaSim.getDfa().addObserver(this);
     }
 
-  private void panelDrawAreaMouseClicked(java.awt.event.MouseEvent evt) {                                           
-        if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1)
-        handleDoubleClick(evt);
+    private void panelDrawAreaMouseClicked(java.awt.event.MouseEvent evt) {
+        if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+            handleDoubleClick(evt);
+        }
 
-        if ( evt.getButton() == java.awt.event.MouseEvent.BUTTON3)
-        {
-            if (getDfaSim().getDfaEditor().isAnythingSelected())
-            {
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            if (getDfaSim().getDfaEditor().isAnythingSelected()) {
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
-            
+
         }
     }
 
@@ -293,6 +292,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         buttonStartSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_startsim.png"))); // NOI18N
         buttonStartSim.setToolTipText("Run simulation");
+        buttonStartSim.setEnabled(false);
         buttonStartSim.setFocusable(false);
         buttonStartSim.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonStartSim.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -305,6 +305,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         buttonStopSim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sign_stopsim.png"))); // NOI18N
         buttonStopSim.setToolTipText("Stop simulation");
+        buttonStopSim.setEnabled(false);
         buttonStopSim.setFocusable(false);
         buttonStopSim.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonStopSim.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -558,7 +559,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -809,6 +810,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         fileChanged = false;
         this.dfaSim.getDfaEditor().resetEditor();
         dfaSim.setDfa(d);
+        d.addObserver(this);
         
         connectGUItoDFA();
         panelDrawArea.repaint();
@@ -1125,7 +1127,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             repaint();
             dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan();
             panelDrawArea.repaint();
-            JOptionPane.showMessageDialog(this, "The DFA is minimized now. States before: "+statesbefore+" now: "+statesafter+"\nThe number of states is minimized and it will still accept the same language.\nNote: The DFA does not have to be easier to understand now.", "DFA minimized", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "The DFA is minimized now. States before: "+statesbefore+", now: "+statesafter+".\nThe number of states is minimized and it will still accept the same language.\nNote: The DFA does not have to be easier to understand now.", "DFA minimized", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1350,7 +1352,7 @@ public void showHelpFile(String pageName)
         try {
             editorHelp.setPage(helpFiles.getUrlByKey(pageName));
         } catch (IOException ex) {
-            
+            ex.printStackTrace();
         }
 }
 
@@ -1368,14 +1370,6 @@ public void updateToolButtons()
     togglePointer.setEnabled(e.isEditable());
     toggleAddState.setEnabled(e.isEditable());
     toggleAddTransition.setEnabled(e.isEditable());
-
-    buttonStopSim.setEnabled(getDfaSim().isSimulationModeActive());
-    buttonStartSim.setEnabled( !getDfaSim().isSimulationModeActive());
-    
-    menuitemStartSim.setEnabled(buttonStartSim.isEnabled());
-    menuItemStopSim.setEnabled(buttonStopSim.isEnabled());
-
-
 }
 
 public void showStateEditWin(State s, boolean newState)
@@ -1493,7 +1487,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
             } else {
                 this.menuitemStartSim.setEnabled(false);
                 this.menuItemMinimizeDfa.setEnabled(false);
-                  this.buttonStartSim.setEnabled(false);
+                this.buttonStartSim.setEnabled(false);
             }
         }
     }

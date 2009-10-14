@@ -331,6 +331,7 @@
               <Image iconType="3" name="/gui/img/sign_startsim.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Run simulation"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -345,6 +346,7 @@
               <Image iconType="3" name="/gui/img/sign_stopsim.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Stop simulation"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -742,7 +744,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jScrollPane3" pref="263" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane3" pref="259" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
