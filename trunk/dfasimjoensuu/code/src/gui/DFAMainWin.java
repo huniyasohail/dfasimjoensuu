@@ -625,7 +625,8 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         menuDFA.setText("DFA");
 
-        menuitemProperties.setText("Description and alphabet...");
+        menuitemProperties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/sum.png"))); // NOI18N
+        menuitemProperties.setText("Description and definition...");
         menuitemProperties.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemPropertiesActionPerformed(evt);

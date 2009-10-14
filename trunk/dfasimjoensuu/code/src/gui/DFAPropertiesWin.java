@@ -15,7 +15,12 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import models.Dfa;
+import models.DfaTransitionTableModel;
 
 /**
  *
@@ -42,6 +47,8 @@ public class DFAPropertiesWin extends JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableDelta = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textDescription = new javax.swing.JTextArea();
@@ -50,6 +57,15 @@ public class DFAPropertiesWin extends JDialog {
         textAlphabet = new javax.swing.JTextArea();
         buttonCancel = new javax.swing.JButton();
         buttonOK = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        textacceptingstates = new javax.swing.JTextArea();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        textstates = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        labelstartstate = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DFA Properties");
@@ -59,17 +75,37 @@ public class DFAPropertiesWin extends JDialog {
             }
         });
 
+        jScrollPane4.setAutoscrolls(true);
+
+        tableDelta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        tableDelta.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tableDelta.setEnabled(false);
+        jScrollPane4.setViewportView(tableDelta);
+
         jLabel1.setText("Description (will be shown in the sidebar)");
 
         textDescription.setColumns(20);
+        textDescription.setLineWrap(true);
         textDescription.setRows(5);
         jScrollPane1.setViewportView(textDescription);
 
-        jLabel3.setText("Alphabet (automatically derived)");
+        jLabel3.setText("Alphabet (Sigma)");
 
         textAlphabet.setBackground(new java.awt.Color(236, 233, 222));
         textAlphabet.setColumns(20);
         textAlphabet.setEditable(false);
+        textAlphabet.setFont(new java.awt.Font("Monospaced", 1, 13));
+        textAlphabet.setLineWrap(true);
         textAlphabet.setRows(5);
         jScrollPane2.setViewportView(textAlphabet);
 
@@ -87,6 +123,33 @@ public class DFAPropertiesWin extends JDialog {
             }
         });
 
+        jLabel4.setText("Transition function States x Alphabet (Delta)");
+
+        jLabel5.setText("States (Q)");
+
+        textacceptingstates.setBackground(new java.awt.Color(236, 233, 222));
+        textacceptingstates.setColumns(20);
+        textacceptingstates.setEditable(false);
+        textacceptingstates.setFont(new java.awt.Font("Monospaced", 1, 13));
+        textacceptingstates.setLineWrap(true);
+        textacceptingstates.setRows(5);
+        jScrollPane3.setViewportView(textacceptingstates);
+
+        jLabel6.setText("Accepting states (F)");
+
+        textstates.setBackground(new java.awt.Color(236, 233, 222));
+        textstates.setColumns(20);
+        textstates.setEditable(false);
+        textstates.setFont(new java.awt.Font("Monospaced", 1, 13));
+        textstates.setLineWrap(true);
+        textstates.setRows(5);
+        jScrollPane5.setViewportView(textstates);
+
+        jLabel2.setText("Start state:");
+
+        labelstartstate.setFont(new java.awt.Font("Monospaced", 1, 13));
+        labelstartstate.setText("q0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -94,35 +157,65 @@ public class DFAPropertiesWin extends JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE))
-                        .addContainerGap())
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(labelstartstate))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(buttonCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))))
+                        .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                    .addComponent(jLabel3)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                    .addComponent(jLabel4)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(160, 160, 160)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(labelstartstate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addGap(1, 1, 1)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -167,9 +260,62 @@ public class DFAPropertiesWin extends JDialog {
     private void loadData()
     {
         textDescription.setText(dfa.getDescription());
-        String s=getCommaStringFromArrayList(getdFAMainWin().getDfaSim().getAlphabetFromTransitions());
 
-        textAlphabet.setText(s);
+        ArrayList<String> alphabet = getdFAMainWin().getDfaSim().getAlphabetFromTransitions();
+        String s=getCommaStringFromArrayList(alphabet);
+        textAlphabet.setText("{"+s+"}");
+
+        String startState = "<html><i>none</i></html>";
+        if (dfa.getStartState() != null)
+            startState = dfa.getStartState().getState_Properties().getName();
+        labelstartstate.setText(startState);
+        
+        ArrayList<String> listStates = new ArrayList<String>();
+        for (int i=0;i<dfa.getStates().size();i++)
+        {
+            listStates.add(dfa.getStates().get(i).getState_Properties().getName());
+        }
+        textstates.setText("{"+getCommaStringFromArrayList(listStates)+"}");
+
+        listStates = new ArrayList<String>();
+        for (int i=0;i<dfa.getStates().size();i++)
+        {
+            if (dfa.getStates().get(i).getIsFinalState())
+             listStates.add(dfa.getStates().get(i).getState_Properties().getName());
+        }
+        textacceptingstates.setText("{"+getCommaStringFromArrayList(listStates)+"}");
+
+
+
+        //-- table --
+        String[] columnNames = new String[alphabet.size()+1];
+        columnNames[0] = "";
+        for (int i=0;i<alphabet.size();i++)
+        {
+            columnNames[i+1] = alphabet.get(i);
+        }
+
+
+        String[][] tableData = new String[dfa.getStates().size()][columnNames.length];
+        DfaTransitionTableModel tm = new DfaTransitionTableModel();
+        tm.setAlphabet(alphabet);
+        tm.setDfa(dfa);
+        tableDelta.setModel(tm);
+        JTableHeader th = tableDelta.getTableHeader();
+        TableColumnModel tcm = th.getColumnModel();
+        for (int i = 0; i<tcm.getColumnCount();i++)
+        {
+            TableColumn tc = tcm.getColumn(i);
+            if (i == 0)
+                tc.setHeaderValue( " " );
+                else
+                tc.setHeaderValue( alphabet.get(i-1));
+        }
+        
+        
+        th.repaint();
+
+        System.out.println(tableDelta.getRowCount());
     }
 
     private String getCommaStringFromArrayList(ArrayList<String> a)
@@ -224,11 +370,22 @@ public class DFAPropertiesWin extends JDialog {
     private javax.swing.JButton buttonCancel;
     private javax.swing.JButton buttonOK;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JLabel labelstartstate;
+    private javax.swing.JTable tableDelta;
     private javax.swing.JTextArea textAlphabet;
     private javax.swing.JTextArea textDescription;
+    private javax.swing.JTextArea textacceptingstates;
+    private javax.swing.JTextArea textstates;
     // End of variables declaration//GEN-END:variables
 
 

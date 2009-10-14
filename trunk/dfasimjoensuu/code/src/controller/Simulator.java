@@ -256,7 +256,7 @@ public class Simulator {
      * add missing transitions to all states
      * @return number of labels added
      */
-    public int autocompleteDFATransitions( ArrayList<String> alphabet)
+    public int autocompleteDFATransitions( ArrayList<String> alphabet, int selectedindex)
     {
         int counter = 0;
 
@@ -283,7 +283,13 @@ public class Simulator {
             if (transittionsToAdd.size() > 0)
             {
                 try {
-                    Transition newTrans = new Transition(s, s);
+                    Transition newTrans;
+                    if (selectedindex == 0)
+                        newTrans = new Transition(s, s);
+                    else
+                        newTrans = new Transition(s, dfa.getStates().get(selectedindex-1));
+
+
                     newTrans.setInput(transittionsToAdd);
                     s.addOutgoingTransition(newTrans, false);
                     counter++;
