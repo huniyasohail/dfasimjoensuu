@@ -14,13 +14,14 @@ package gui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import javax.swing.JDialog;
 import models.Dfa;
 
 /**
  *
  * @author Fabian
  */
-public class DFAPropertiesWin extends javax.swing.JFrame {
+public class DFAPropertiesWin extends JDialog {
 
     private Dfa dfa = null;
     private DFAMainWin dFAMainWin = null;
@@ -29,6 +30,7 @@ public class DFAPropertiesWin extends javax.swing.JFrame {
     public DFAPropertiesWin() {
         initComponents();
         centreWindow(this);
+        this.setModal(true);
     }
 
     /** This method is called from within the constructor to
@@ -210,7 +212,7 @@ public class DFAPropertiesWin extends javax.swing.JFrame {
     }
 
 
-   public static void centreWindow(javax.swing.JFrame frame) {
+   public static void centreWindow(JDialog frame) {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
     int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
