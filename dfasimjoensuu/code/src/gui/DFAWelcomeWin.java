@@ -158,19 +158,19 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Dfa d = dFAMainWin.getDfaSim().getDfaEditor().getExampleDFA(2);
-        dFAMainWin.openDFA(d);
-        setVisible(false);
-        dispose();
+        loadDfa(2);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Dfa d = dFAMainWin.getDfaSim().getDfaEditor().getExampleDFA(1);
+        loadDfa(1);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void loadDfa(int number) {
+        Dfa d = dFAMainWin.getDfaSim().getDfaEditor().getExampleDFA(number);
         dFAMainWin.openDFA(d);
         setVisible(false);
         dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }
 
 
     /**
