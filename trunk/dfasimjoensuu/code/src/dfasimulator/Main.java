@@ -17,7 +17,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-
         //-- get system look and feel --
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
