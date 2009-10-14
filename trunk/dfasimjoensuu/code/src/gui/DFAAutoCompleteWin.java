@@ -16,15 +16,14 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import models.Transition;
 
 /**
  *
  * @author Fabian
  */
-public class DFAAutoCompleteWin extends JFrame {
+public class DFAAutoCompleteWin extends JDialog {
 
     private Simulator sim = null;
     private DFAMainWin dFAMainWin = null;
@@ -34,6 +33,7 @@ public class DFAAutoCompleteWin extends JFrame {
     public DFAAutoCompleteWin() {
         initComponents();
         centreWindow(this);
+        this.setModal(true);
     }
 
    private void closeWin()
@@ -284,7 +284,7 @@ public class DFAAutoCompleteWin extends JFrame {
     }
 
 
-    public static void centreWindow(JFrame frame) {
+    public static void centreWindow(JDialog frame) {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
     int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);

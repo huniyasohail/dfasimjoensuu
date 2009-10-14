@@ -8,23 +8,23 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  *
  * @author Fabian
  */
-public class DFAInfoWin extends javax.swing.JFrame {
+public class DFAInfoWin extends javax.swing.JDialog {
+
+    private static final int WINDOW_WIDTH = 540;
+    private static final int WINDOW_HEIGHT = 360;
 
     /** Creates new form DFAMainWIn */
     public DFAInfoWin() {
         
         initComponents();
-        this.setSize(new Dimension(540, 360));
+        this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         centreWindow(this);
-
+        this.setModal(true);
     }
 
 
@@ -132,7 +132,7 @@ public class DFAInfoWin extends javax.swing.JFrame {
         });
     }
 
-public static void centreWindow(JFrame frame) {
+public static void centreWindow(javax.swing.JDialog frame) {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
     int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);

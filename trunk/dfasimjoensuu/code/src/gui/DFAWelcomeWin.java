@@ -19,16 +19,18 @@ import models.Dfa;
  *
  * @author Fabian
  */
-public class DFAWelcomeWin extends javax.swing.JFrame {
+public class DFAWelcomeWin extends javax.swing.JDialog {
 
     private DFAMainWin dFAMainWin = null;
+    private final static int WINDOW_WIDTH = 570;
+    private final static int WINDOW_HEIGHT = 335;
 
     /** Creates new form DFAPropertiesWin */
     public DFAWelcomeWin() {
         initComponents();
-        this.setSize(new Dimension(570, 335));
+        this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         centreWindow(this);
-        
+        this.setModal(true);
     }
 
     /** This method is called from within the constructor to
@@ -193,7 +195,7 @@ public class DFAWelcomeWin extends javax.swing.JFrame {
     }
 
 
-   public static void centreWindow(javax.swing.JFrame frame) {
+   public static void centreWindow(javax.swing.JDialog frame) {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
     int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);

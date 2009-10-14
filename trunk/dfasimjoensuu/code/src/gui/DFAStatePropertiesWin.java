@@ -14,15 +14,14 @@ package gui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.CloseAction;
+import javax.swing.JDialog;
 import models.State;
 
 /**
  *
  * @author Fabian
  */
-public class DFAStatePropertiesWin extends JFrame {
+public class DFAStatePropertiesWin extends JDialog {
 
     private State state = null;
     private DFAMainWin dFAMainWin = null;
@@ -33,6 +32,7 @@ public class DFAStatePropertiesWin extends JFrame {
     public DFAStatePropertiesWin() {
         initComponents();
         centreWindow(this);
+        this.setModal(true);
     }
 
     public boolean isNewElement() {
@@ -267,7 +267,7 @@ public class DFAStatePropertiesWin extends JFrame {
     }
 
 
-    public static void centreWindow(JFrame frame) {
+    public static void centreWindow(JDialog frame) {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
     int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
