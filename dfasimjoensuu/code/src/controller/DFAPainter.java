@@ -34,38 +34,33 @@ import models.Transition;
  */
 public class DFAPainter {
 
-    private final Color colorStateHighlight = new Color(197,222,255);
-    private final Color colorStateSelected = new Color(0,0,255);
-    private final Color colorStateCurrent = new Color(255,253,100);
-    private final Color colorStateAccepted2 = new Color(29,124,0);
-    private final Color colorStateAccepted = new Color(68,255,11);
-
-    private final Color colorStateNormal = Color.white;
-    private final Color colorStateFontNormal = Color.black;
-    private final Color colorStateFontSelected = Color.white;
-    private final Color colorStateLineSeleced = Color.white;
-
-    private final Color colorStateLinesNotSelected = Color.black;
-    private final Color colorStateLinesSelected = Color.blue;
-    private final Color colorStateLinesCurrent = Color.red;
-
-    private final Color colorTransitionLineNormal = Color.BLACK;
-    private final Color colorTransitionLineHighlighted = new Color(73,137,255);
-    private final Color colorTransitionLineSelected = Color.blue;
-    private final Color colorTransitionLineTaken= Color.RED;
-    private final Color colorTransitionLabelHighlighted = new Color(197,222,255);
-    private final Color colorTransitionLabelSelected = Color.blue;
-    private final Color colorTransitionLabelNormal = new Color(255,255,255,155);
-    private final Color colorTransitionFontNormal = Color.black;
-    private final Color colorTransitionFontSelected = Color.white;
-
-    private final Color colorAddNewElement = new Color(130,130,130);
-    private final Color colorAddNewElement2 = new Color(90,90,90);
-
-    private final int stateDrawSize = 50;
-    private final int textSize = 16;
-    private final double arcDistance = 25;
-    private final int virtualTransitionSite = 20;
+    private final Color COLORSTATEHIGHLIGHT = new Color(197, 222, 255);
+    private final Color COLORSTATESELECTED = new Color(0, 0, 255);
+    private final Color COLORSTATECURRENT = new Color(255, 253, 100);
+    private final Color COLORSTATEACCEPTED2 = new Color(29, 124, 0);
+    private final Color COLORSTATEACCEPTED = new Color(68, 255, 11);
+    private final Color COLORSTATENORMAL = Color.white;
+    private final Color COLORSTATEFONTNORMAL = Color.black;
+    private final Color COLORSTATEFONTSELECTED = Color.white;
+    private final Color COLORSTATELINESELECED = Color.white;
+    private final Color COLORSTATELINESNOTSELECTED = Color.black;
+    private final Color COLORSTATELINESSELECTED = Color.blue;
+    private final Color COLORSTATELINESCURRENT = Color.red;
+    private final Color COLORTRANSITIONLINENORMAL = Color.BLACK;
+    private final Color COLORTRANSITIONLINEHIGHLIGHTED = new Color(73, 137, 255);
+    private final Color COLORTRANSITIONLINESELECTED = Color.blue;
+    private final Color COLORTRANSITIONLINETAKEN = Color.RED;
+    private final Color COLORTRANSITIONLABELHIGHLIGHTED = new Color(197, 222, 255);
+    private final Color COLORTRANSITIONLABELSELECTED = Color.blue;
+    private final Color COLORTRANSITIONLABELNORMAL = new Color(255, 255, 255, 155);
+    private final Color COLORTRANSITIONFONTNORMAL = Color.black;
+    private final Color COLORTRANSITIONFONTSELECTED = Color.white;
+    private final Color COLORADDNEWELEMENT = new Color(130, 130, 130);
+    private final Color COLORADDNEWELEMENT2 = new Color(90, 90, 90);
+    private final int STATEDRAWSIZE = 50;
+    private final int TEXTSIZE = 16;
+    private final double ARCDISTANCE = 25;
+    private final int VIRTUALTRANSITIONSITE = 20;
 
     private boolean antialiasing = true;
 
@@ -104,7 +99,7 @@ public class DFAPainter {
     }
 
     public int getVirtualTransitionSite() {
-        return virtualTransitionSite;
+        return VIRTUALTRANSITIONSITE;
     }
 /**
  * request a complete repaint of the drawing area
@@ -290,7 +285,7 @@ public class DFAPainter {
         Dfa dfa = dfaEditor.getDfa();
 
         //-- set fonts --
-         Font nameFont = new Font("Arial",Font.PLAIN, (int)(textSize*dfaEditor.getZoomfactor()));
+         Font nameFont = new Font("Arial",Font.PLAIN, (int)(TEXTSIZE*dfaEditor.getZoomfactor()));
          g.setFont(nameFont);
 
         for (int i=0; i < dfa.getStates().size(); i++)
@@ -299,61 +294,61 @@ public class DFAPainter {
             int x = s.getState_Properties().getXPos();
             int y = s.getState_Properties().getYPos();
 
-            Color backgroundColor = colorStateNormal;
-            Color lineColor = colorStateLinesNotSelected;
-            Color fontColor = colorStateFontNormal;
+            Color backgroundColor = COLORSTATENORMAL;
+            Color lineColor = COLORSTATELINESNOTSELECTED;
+            Color fontColor = COLORSTATEFONTNORMAL;
             Color startLineColor;
             
             
             if (s.getState_Properties().getHighlightIndex() == HighlightTypes.MouseOver)
             {
-                 backgroundColor = colorStateHighlight;
+                 backgroundColor = COLORSTATEHIGHLIGHT ;
             }
 
             if (s.getState_Properties().isSelected())
             {
-                 backgroundColor = colorStateSelected;
-                 lineColor = colorStateLinesSelected;
-                 fontColor = colorStateFontSelected;
+                 backgroundColor = COLORSTATESELECTED;
+                 lineColor = COLORSTATELINESSELECTED;
+                 fontColor = COLORSTATEFONTSELECTED;
             }
 
             startLineColor = lineColor;
 
             if(dfaSim.isSimulationModeActive() && dfaSim.getCurrentHighlightedState() == s) {
-                lineColor = colorStateLinesCurrent;
-                backgroundColor = colorStateCurrent;
+                lineColor = COLORSTATELINESCURRENT;
+                backgroundColor = COLORSTATECURRENT;
                 if (s.getIsStartState() && dfa.getCurrentPosition() == 0)
-                    startLineColor = colorStateLinesCurrent;
+                    startLineColor = COLORSTATELINESCURRENT;
                 if (dfaSim.isAccepting())
                 {
-                    backgroundColor = colorStateAccepted;
-                    lineColor = colorStateAccepted2;
+                    backgroundColor = COLORSTATEACCEPTED;
+                    lineColor = COLORSTATEACCEPTED2;
                 }
                     
             }
 
             int centerX = (int)(dfaEditor.getOffsetX() + dfaEditor.getZoomfactor()*x);
             int centerY = (int)(dfaEditor.getOffsetY() + dfaEditor.getZoomfactor()*y);
-            int radius = (int)(dfaEditor.getZoomfactor()*stateDrawSize/2);
+            int radius = (int)(dfaEditor.getZoomfactor()*STATEDRAWSIZE/2);
 
 	   if (s.getIsFinalState())
            {
                 double z = dfaEditor.getZoomfactor();
                 int additionalradius = (int) (dfaEditor.getZoomfactor()*4);
                 g.setColor(backgroundColor);
-                g.fillOval((int)(centerX-radius), (int)(centerY-radius),(int)(z*stateDrawSize), (int)(z*stateDrawSize));
+                g.fillOval((int)(centerX-radius), (int)(centerY-radius),(int)(z*STATEDRAWSIZE), (int)(z*STATEDRAWSIZE));
                 g.setColor(lineColor);
-                g.drawOval((int)(centerX-radius),(int)( centerY-radius),(int)(z*stateDrawSize),(int)( z*stateDrawSize));
+                g.drawOval((int)(centerX-radius),(int)( centerY-radius),(int)(z*STATEDRAWSIZE),(int)( z*STATEDRAWSIZE));
                 if (s.getState_Properties().isSelected())
-                    g.setColor(colorStateLineSeleced);
-                g.drawOval((int)(centerX-(radius-additionalradius)),(int)(centerY-(radius-additionalradius)),(int)(z*stateDrawSize-2*additionalradius), (int)( z*stateDrawSize-2*additionalradius));
+                    g.setColor(COLORSTATELINESELECED);
+                g.drawOval((int)(centerX-(radius-additionalradius)),(int)(centerY-(radius-additionalradius)),(int)(z*STATEDRAWSIZE-2*additionalradius), (int)( z*STATEDRAWSIZE-2*additionalradius));
 
            } else
            {
                 g.setColor(backgroundColor);
-                g.fillOval((int)(centerX-radius),(int)(centerY-radius),(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
+                g.fillOval((int)(centerX-radius),(int)(centerY-radius),(int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()), (int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()));
                 g.setColor(lineColor);
-                g.drawOval((int)(centerX-radius),(int)(centerY-radius),(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
+                g.drawOval((int)(centerX-radius),(int)(centerY-radius),(int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()), (int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()));
            }
 
             if (s.getIsStartState())
@@ -380,7 +375,7 @@ public class DFAPainter {
         Dfa dfa = dfaEditor.getDfa();
 
         //-- set fonts --
-         transitionFont = new Font("Arial", Font.PLAIN, (int)(0.9*textSize*dfaEditor.getZoomfactor()));
+         transitionFont = new Font("Arial", Font.PLAIN, (int)(0.9*TEXTSIZE*dfaEditor.getZoomfactor()));
          g.setFont(transitionFont);
 
         for (int i=0; i < dfa.getStates().size(); i++)
@@ -442,23 +437,23 @@ public class DFAPainter {
         if (s1 != null && s2 != null) {
             int captionPositionX = 0;
             int captionPositionY = 0;
-            Color colorCaptionColor = colorTransitionLabelNormal;
-            Color colorLineColor = colorTransitionLineNormal;
-            Color colorFont = colorTransitionFontNormal;
+            Color colorCaptionColor = COLORTRANSITIONLABELNORMAL;
+            Color colorLineColor = COLORTRANSITIONLINENORMAL;
+            Color colorFont = COLORTRANSITIONFONTNORMAL;
 
             if (t.getHighlightStatus() == HighlightTypes.MouseOver) {
-                colorCaptionColor = colorTransitionLabelHighlighted;
-                colorLineColor = colorTransitionLineHighlighted;
+                colorCaptionColor = COLORTRANSITIONLABELHIGHLIGHTED;
+                colorLineColor = COLORTRANSITIONLINEHIGHLIGHTED;
             }
 
             if (t.isSelected()) {
-                colorCaptionColor = colorTransitionLabelSelected;
-                colorLineColor = colorTransitionLineSelected;
-                colorFont = colorTransitionFontSelected;
+                colorCaptionColor = COLORTRANSITIONLABELSELECTED;
+                colorLineColor = COLORTRANSITIONLINESELECTED;
+                colorFont = COLORTRANSITIONFONTSELECTED;
             }
 
             if (fakeTrans) {
-                colorCaptionColor = colorAddNewElement2;
+                colorCaptionColor = COLORADDNEWELEMENT2;
                 colorLineColor = color;
                 colorFont = Color.white;
             }
@@ -468,8 +463,8 @@ public class DFAPainter {
             {
                 if (dfaSim.getLastTransitionTaken() != null && t == dfaSim.getLastTransitionTaken())
                 {
-                    colorCaptionColor = colorTransitionLineTaken;
-                    colorLineColor = colorTransitionLineTaken;
+                    colorCaptionColor = COLORTRANSITIONLINETAKEN;
+                    colorLineColor = COLORTRANSITIONLINETAKEN;
                     colorFont = Color.white;    
                 }
             }
@@ -517,8 +512,8 @@ public class DFAPainter {
 
                     double additionalArcDistance = vlength / 100;
                     //-- turn vector 90 degrees --
-                    double turnedx = arcDistance * normy * additionalArcDistance * t.getCurveFactor();
-                    double turnedy = -arcDistance * normx * additionalArcDistance * t.getCurveFactor();
+                    double turnedx = ARCDISTANCE * normy * additionalArcDistance * t.getCurveFactor();
+                    double turnedy = -ARCDISTANCE * normx * additionalArcDistance * t.getCurveFactor();
 
                     int cpointx = (int) (centerx + turnedx);
                     int cpointy = (int) (centery + turnedy);
@@ -542,8 +537,8 @@ public class DFAPainter {
                     int textpointy = (int) (centery + turnedy / (2) - normx * textAdaption*z);
 
                     //-- tangential crossing with the circles (start and end of curve) --
-                    Vector<Double> p1 = getIntersectionPoint(s1x, s1y, cpointx, cpointy, z* 1.2 * stateDrawSize / 2);
-                    Vector<Double> p2 = getIntersectionPoint(s2x, s2y, cpointx, cpointy, z * 1.4 * stateDrawSize / 2);
+                    Vector<Double> p1 = getIntersectionPoint(s1x, s1y, cpointx, cpointy, z* 1.2 * STATEDRAWSIZE / 2);
+                    Vector<Double> p2 = getIntersectionPoint(s2x, s2y, cpointx, cpointy, z * 1.4 * STATEDRAWSIZE / 2);
 
                     int h1x = (int) Math.round(p1.get(0)) + dfaEditor.getOffsetX();
                     int h1y = (int) Math.round(p1.get(1)) + dfaEditor.getOffsetY();
@@ -553,7 +548,7 @@ public class DFAPainter {
 
                     g.setColor(colorLineColor);
                     //-- quadratic arc --
-                    if (vlength/z > stateDrawSize+15)
+                    if (vlength/z > STATEDRAWSIZE+15)
                     {
                          c.setCurve(h1x, h1y,
                             cpointx + dfaEditor.getOffsetX(), cpointy + dfaEditor.getOffsetY(),
@@ -571,7 +566,7 @@ public class DFAPainter {
                     double ay = h2y - cpointy - dfaEditor.getOffsetY();
 
                     double arrowAngle = Math.atan2(ay, ax);
-                    if (vlength <= stateDrawSize + 25)
+                    if (vlength <= STATEDRAWSIZE + 25)
                     arrowAngle = Math.atan2(dy, dx);
                     g.setColor(colorLineColor);
                     drawArrow(h2x, h2y, 4, arrowAngle, g);
@@ -590,8 +585,8 @@ public class DFAPainter {
 
             } else if (s1 != s2) {
                 //-- linear-case --
-                Vector<Double> p1 = getIntersectionPoint(s1x, s1y, s2x, s2y, 1.2 * stateDrawSize / 2);
-                Vector<Double> p2 = getIntersectionPoint(s2x, s2y, s1x, s1y, 1.4 * stateDrawSize / 2);
+                Vector<Double> p1 = getIntersectionPoint(s1x, s1y, s2x, s2y, 1.2 * STATEDRAWSIZE / 2);
+                Vector<Double> p2 = getIntersectionPoint(s2x, s2y, s1x, s1y, 1.4 * STATEDRAWSIZE / 2);
                 int h1x = (int) Math.round(p1.get(0)) + dfaEditor.getOffsetX();
                 int h1y = (int) Math.round(p1.get(1)) + dfaEditor.getOffsetY();
 
@@ -633,10 +628,10 @@ public class DFAPainter {
                 }
             } else {
                 //-- cirlce to state itself --
-                double boxX = s1x - stateDrawSize * 0.3*z;
-                double boxY = s1y - stateDrawSize * 0.95*z;
-                double w = stateDrawSize * 0.6*z;
-                double h = stateDrawSize * 0.6*z;
+                double boxX = s1x - STATEDRAWSIZE * 0.3*z;
+                double boxY = s1y - STATEDRAWSIZE * 0.95*z;
+                double w = STATEDRAWSIZE * 0.6*z;
+                double h = STATEDRAWSIZE * 0.6*z;
 
                 g.setColor(colorLineColor);
                 Arc2D arc = new Arc2D.Double(boxX + dfaEditor.getOffsetX(), boxY + dfaEditor.getOffsetY(), w, h, -20, 220, Arc2D.OPEN);
@@ -644,7 +639,7 @@ public class DFAPainter {
 
                 // -- text --
                 int textX = (int) s1x;
-                int textY = (int) (s1y - stateDrawSize * 1.2*z);
+                int textY = (int) (s1y - STATEDRAWSIZE * 1.2*z);
                 if (paintLabelBackground) {
                     Rectangle2D fbounds = getFontBounds(caption, textX + t.getCaptionOffsetX() + dfaEditor.getOffsetX(), textY + t.getCaptionOffsetY() + dfaEditor.getOffsetY(), transitionFont, g);
                     paintTransitionHighlightRectangle(fbounds, colorCaptionColor, (int) (4 * getDfaEditor().getZoomfactor()), g);
@@ -655,8 +650,8 @@ public class DFAPainter {
                 captionPositionY = textY;
 
                 //-- arrow --
-                double ax = s1x + 0.3 * stateDrawSize*z;
-                double ay = s1y - 0.6 * stateDrawSize*z;
+                double ax = s1x + 0.3 * STATEDRAWSIZE*z;
+                double ay = s1y - 0.6 * STATEDRAWSIZE*z;
                 double arrowAngle = 1.9D;
                 g.setColor(colorLineColor);
                 drawArrow((int) ax + dfaEditor.getOffsetX(), (int) ay + dfaEditor.getOffsetY(), 4, arrowAngle, g);
@@ -702,8 +697,8 @@ public class DFAPainter {
         double centery = (h2y + h1y)/2;
 
          //-- turn vector 90 degrees --
-        double turnedx = arcDistance*normy*additionalArcDistance*t.getCurveFactor();
-        double turnedy = -arcDistance*normx*additionalArcDistance*t.getCurveFactor();
+        double turnedx = ARCDISTANCE*normy*additionalArcDistance*t.getCurveFactor();
+        double turnedy = -ARCDISTANCE*normx*additionalArcDistance*t.getCurveFactor();
 
         int cpointx = (int) (centerx + turnedx);
         int cpointy = (int) (centery + turnedy);
@@ -726,7 +721,7 @@ public class DFAPainter {
         g.setColor(fcolor);
         g.fillOval(textpointx-tb.getSize(),
                 textpointy-tb.getSize(), 2*tb.getSize(), 2*tb.getSize());
-         g.setColor(colorTransitionLineSelected);
+         g.setColor(COLORTRANSITIONLINESELECTED);
         g.drawOval(textpointx-tb.getSize(),
                 textpointy-tb.getSize(), 2*tb.getSize(), 2*tb.getSize());
     }
@@ -928,7 +923,7 @@ private double curvePointAdaptionFactor(double input,double min)
     }
 
     public int getStateDrawSize() {
-        return stateDrawSize;
+        return STATEDRAWSIZE;
     }
 
 
@@ -951,17 +946,17 @@ private double curvePointAdaptionFactor(double input,double min)
     public void paintDummyState(State s){
         Graphics2D g = this.graphics;
 
-        int radius = (int)(dfaEditor.getZoomfactor()*stateDrawSize/2);
+        int radius = (int)(dfaEditor.getZoomfactor()*STATEDRAWSIZE/2);
         
         int px = s.getState_Properties().getXPos()-radius + dfaEditor.getOffsetX();
         int py = s.getState_Properties().getYPos()-radius + dfaEditor.getOffsetY();
 
-        g.setColor(colorAddNewElement);
-        g.fillOval(px,py,(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
-        g.setColor(colorAddNewElement2);
-        g.drawOval(px,py,(int)(stateDrawSize*dfaEditor.getZoomfactor()), (int)(stateDrawSize*dfaEditor.getZoomfactor()));
+        g.setColor(COLORADDNEWELEMENT);
+        g.fillOval(px,py,(int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()), (int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()));
+        g.setColor(COLORADDNEWELEMENT2);
+        g.drawOval(px,py,(int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()), (int)(STATEDRAWSIZE*dfaEditor.getZoomfactor()));
 
-        Font nameFont = new Font("Arial", Font.PLAIN, (int)(textSize*dfaEditor.getZoomfactor()));
+        Font nameFont = new Font("Arial", Font.PLAIN, (int)(TEXTSIZE*dfaEditor.getZoomfactor()));
         g.setColor(Color.white);
         drawCenteredText(s.getState_Properties().getName(),px+(int)(radius/1.2) ,py+(int)(radius/1.5),nameFont,g);
         g.setColor(Color.black);
@@ -976,7 +971,7 @@ private double curvePointAdaptionFactor(double input,double min)
         if (t.isVisible())
         {
             paintTransition(t.getFromState(), t.getToState(), t, "Add transition "+t.getFromState().getState_Properties().getName()+
-                    " > "+ t.getToState().getState_Properties().getName(), colorAddNewElement, true);
+                    " > "+ t.getToState().getState_Properties().getName(), COLORADDNEWELEMENT, true);
         }
 
     }
