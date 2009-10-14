@@ -93,7 +93,10 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuitemProperties">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Description and alphabet..."/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/gui/img/sum.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Description and definition..."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuitemPropertiesActionPerformed"/>
