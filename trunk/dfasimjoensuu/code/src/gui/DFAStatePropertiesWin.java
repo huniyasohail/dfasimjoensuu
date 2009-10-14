@@ -129,14 +129,14 @@ public class DFAStatePropertiesWin extends JFrame {
 
         jLabel2.setText("Type");
 
-        checkStart.setText("Start State");
+        checkStart.setText("Start state");
         checkStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkStartActionPerformed(evt);
             }
         });
 
-        checkAccept.setText("Accepting/Final State");
+        checkAccept.setText("Accepting/final state");
         checkAccept.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkAcceptActionPerformed(evt);
@@ -175,9 +175,9 @@ public class DFAStatePropertiesWin extends JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(checkAccept)
                             .addComponent(checkStart))))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(157, Short.MAX_VALUE)
+                .addContainerGap(159, Short.MAX_VALUE)
                 .addComponent(buttonCancel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)

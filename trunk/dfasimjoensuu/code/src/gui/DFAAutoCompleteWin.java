@@ -216,7 +216,10 @@ public class DFAAutoCompleteWin extends JFrame {
            int counter =  sim.autocompleteDFATransitions(alphabet);
            setVisible(false);
            dFAMainWin.repaint();
-           JOptionPane.showMessageDialog(this, "The DFA is complete now. "+ counter+ " transition label(s) were added.","Autocomplete",JOptionPane.INFORMATION_MESSAGE);
+           String k = "";
+           if (sim.getDfa().getStartState() == null)
+               k = "\nNOTE: You must define a start state in order to start the simulation!";
+           JOptionPane.showMessageDialog(this, "The transitions are complete now. "+ counter+ " transition label(s) were added."+k,"Autocomplete",JOptionPane.INFORMATION_MESSAGE);
            dispose();           
        } else
        {

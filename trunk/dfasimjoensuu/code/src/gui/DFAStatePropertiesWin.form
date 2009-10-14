@@ -49,7 +49,7 @@
               <EmptySpace pref="64" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="157" max="32767" attributes="0"/>
+              <EmptySpace pref="159" max="32767" attributes="0"/>
               <Component id="buttonCancel" min="-2" max="-2" attributes="1"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="buttonOK" min="-2" pref="143" max="-2" attributes="0"/>
@@ -104,7 +104,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="checkStart">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Start State"/>
+        <Property name="text" type="java.lang.String" value="Start state"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkStartActionPerformed"/>
@@ -112,7 +112,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="checkAccept">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Accepting/Final State"/>
+        <Property name="text" type="java.lang.String" value="Accepting/final state"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkAcceptActionPerformed"/>
