@@ -11,6 +11,7 @@
 
 package gui;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -95,7 +96,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jLabel2);
         jLabel2.setBounds(20, 220, 500, 30);
 
-        labelUri.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        labelUri.setFont(new java.awt.Font("Tahoma", 0, 12));
         labelUri.setForeground(new java.awt.Color(0, 51, 255));
         labelUri.setText(this.wikiUri);
         labelUri.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -154,11 +155,12 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jButton2);
         jButton2.setBounds(30, 140, 100, 30);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("A 01-bitstream automaton, which accepts even numbers of ones.");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(140, 150, 490, 20);
 
+        checkShowWelcome.setBackground(new Color(0,0,0,0));
         checkShowWelcome.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         checkShowWelcome.setSelected(true);
         checkShowWelcome.setText("Show always on startup");
