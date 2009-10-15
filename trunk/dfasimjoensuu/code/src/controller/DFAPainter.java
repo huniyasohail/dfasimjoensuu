@@ -39,22 +39,22 @@ public class DFAPainter {
     private final Color COLORSTATECURRENT = new Color(255, 253, 100);
     private final Color COLORSTATEACCEPTED2 = new Color(29, 124, 0);
     private final Color COLORSTATEACCEPTED = new Color(68, 255, 11);
-    private final Color COLORSTATENORMAL = Color.white;
-    private final Color COLORSTATEFONTNORMAL = Color.black;
-    private final Color COLORSTATEFONTSELECTED = Color.white;
-    private final Color COLORSTATELINESELECED = Color.white;
-    private final Color COLORSTATELINESNOTSELECTED = Color.black;
-    private final Color COLORSTATELINESSELECTED = Color.blue;
-    private final Color COLORSTATELINESCURRENT = Color.red;
+    private final Color COLORSTATENORMAL = Color.WHITE;
+    private final Color COLORSTATEFONTNORMAL = Color.BLACK;
+    private final Color COLORSTATEFONTSELECTED = Color.WHITE;
+    private final Color COLORSTATELINESELECED = Color.WHITE;
+    private final Color COLORSTATELINESNOTSELECTED = Color.BLACK;
+    private final Color COLORSTATELINESSELECTED = Color.BLUE;
+    private final Color COLORSTATELINESCURRENT = new Color(181,44,1);
     private final Color COLORTRANSITIONLINENORMAL = Color.BLACK;
     private final Color COLORTRANSITIONLINEHIGHLIGHTED = new Color(73, 137, 255);
-    private final Color COLORTRANSITIONLINESELECTED = Color.blue;
-    private final Color COLORTRANSITIONLINETAKEN = Color.RED;
+    private final Color COLORTRANSITIONLINESELECTED = Color.BLUE;
+    private final Color COLORTRANSITIONLINETAKEN = new Color(181,44,1);
     private final Color COLORTRANSITIONLABELHIGHLIGHTED = new Color(197, 222, 255);
-    private final Color COLORTRANSITIONLABELSELECTED = Color.blue;
+    private final Color COLORTRANSITIONLABELSELECTED = Color.BLUE;
     private final Color COLORTRANSITIONLABELNORMAL = new Color(255, 255, 255, 155);
-    private final Color COLORTRANSITIONFONTNORMAL = Color.black;
-    private final Color COLORTRANSITIONFONTSELECTED = Color.white;
+    private final Color COLORTRANSITIONFONTNORMAL = Color.BLACK;
+    private final Color COLORTRANSITIONFONTSELECTED = Color.WHITE;
     private final Color COLORADDNEWELEMENT = new Color(130, 130, 130);
     private final Color COLORADDNEWELEMENT2 = new Color(90, 90, 90);
     private final int STATEDRAWSIZE = 50;
@@ -319,7 +319,7 @@ public class DFAPainter {
                 backgroundColor = COLORSTATECURRENT;
                 if (s.getIsStartState() && dfa.getCurrentPosition() == 0)
                     startLineColor = COLORSTATELINESCURRENT;
-                if (dfaSim.isAccepting())
+                if (dfaSim.isHasFinallyAccepted())
                 {
                     backgroundColor = COLORSTATEACCEPTED;
                     lineColor = COLORSTATEACCEPTED2;

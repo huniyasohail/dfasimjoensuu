@@ -30,6 +30,7 @@ public class Simulator {
     /** Current highlighted state */
     private State currentHighlightedState = null;
 
+    private boolean hasFinallyAccepted = false;
     /**
      * Creates a new simulator.
      */
@@ -43,6 +44,16 @@ public class Simulator {
         isRunning = false;
 
     }
+
+    public boolean isHasFinallyAccepted() {
+        return hasFinallyAccepted;
+    }
+
+    public void setHasFinallyAccepted(boolean hasFinallyAccepted) {
+        this.hasFinallyAccepted = hasFinallyAccepted;
+    }
+
+    
 
     /**
      * Returns the DFA to simulate.
@@ -60,7 +71,6 @@ public class Simulator {
         if(dfa != null) {
             this.dfa = dfa;
             this.dfaEditor.setDfa(dfa);
-       
         }
     }
 
@@ -185,7 +195,10 @@ public class Simulator {
         if(currentSate == null)
             return false;
         else
-            return ((input.length() == 0 || currentPosition == input.length()-1) && currentSate.getIsFinalState());
+        {
+              return ((input.length() == 0 || currentPosition == input.length()-1) && currentSate.getIsFinalState());
+        }
+          
     }
 
 /**
@@ -441,7 +454,7 @@ public class Simulator {
         dfa.setInput(new String());
         lastTransitionTaken = null;
         currentHighlightedState = dfa.getStartState();
-        
+        hasFinallyAccepted = false;
     }
 
     /**

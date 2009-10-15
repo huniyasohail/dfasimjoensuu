@@ -197,7 +197,7 @@ public class DFATransitionWin extends JDialog {
 
     void saveFormToTransition()
     {
-        if (textInput.getText().length() == 0)
+        if (textInput.getText().length() == 0 || textInput.getText().trim().equals(","))
         {
             JOptionPane.showMessageDialog(this, "You must enter at least one transition letter!", "Error", JOptionPane.OK_OPTION);
             textInput.requestFocus();
