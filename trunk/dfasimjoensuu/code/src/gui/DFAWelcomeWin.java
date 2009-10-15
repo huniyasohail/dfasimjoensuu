@@ -11,8 +11,15 @@
 
 package gui;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Dfa;
 
 /**
@@ -24,6 +31,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
     private DFAMainWin dFAMainWin = null;
     private final static int WINDOW_WIDTH = 570;
     private final static int WINDOW_HEIGHT = 335;
+    private final static String wikiUri = "http://www.wikipedia.org/wiki/Deterministic_finite-state_machine";
 
     /** Creates new form DFAPropertiesWin */
     public DFAWelcomeWin() {
@@ -31,6 +39,12 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         centreWindow(this);
         this.setModal(true);
+        labelUri.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    public DFAWelcomeWin(boolean checkShowAlways) {
+        this();
+        this.checkShowWelcome.setSelected(checkShowAlways);
     }
 
     /** This method is called from within the constructor to
@@ -44,7 +58,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
 
         buttonOK = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        labelUri = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -54,6 +68,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
+        checkShowWelcome = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -73,19 +88,24 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
             }
         });
         getContentPane().add(buttonOK);
-        buttonOK.setBounds(450, 230, 90, 50);
+        buttonOK.setBounds(450, 240, 90, 50);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel2.setText("Knowledge");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(20, 220, 500, 30);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
-        jLabel3.setText("http://www.wikipedia.org/wiki/Deterministic_finite-state_machine");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(30, 270, 560, 15);
+        labelUri.setFont(new java.awt.Font("Tahoma", 0, 12));
+        labelUri.setText(this.wikiUri);
+        labelUri.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelUriMouseClicked(evt);
+            }
+        });
+        getContentPane().add(labelUri);
+        labelUri.setBounds(30, 270, 560, 15);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18));
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Welcome!");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(20, 10, 500, 30);
@@ -133,15 +153,27 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jButton2);
         jButton2.setBounds(30, 140, 100, 30);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("A 01-bitstream automaton, which accepts even numbers of ones.");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(140, 150, 490, 20);
 
+        checkShowWelcome.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        checkShowWelcome.setSelected(true);
+        checkShowWelcome.setText("Show always on startup");
+        checkShowWelcome.setToolTipText("Click here if you don't want this window to come up with every start of the program");
+        checkShowWelcome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkShowWelcomeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(checkShowWelcome);
+        checkShowWelcome.setBounds(390, 10, 160, 23);
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/art.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(-70, 0, 650, 300);
+        jLabel1.setBounds(-50, -10, 650, 320);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -164,6 +196,45 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         loadDfa(1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void labelUriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelUriMouseClicked
+        URI uri;
+        try {
+            uri = new URI(wikiUri);
+            if (java.awt.Desktop.isDesktopSupported()) {
+                try {
+                    java.awt.Desktop.getDesktop().browse(uri);
+                } catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                }
+            }
+        } catch (URISyntaxException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_labelUriMouseClicked
+
+    private void checkShowWelcomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkShowWelcomeActionPerformed
+        File config = DFAMainWin.getConfigFile();
+        if(checkShowWelcome.isSelected()) {
+            if(config.exists()) {
+                //delete
+                if(!config.delete()) {
+                    System.err.println("Could not delete config file properly.");
+                } else {
+                    dFAMainWin.setShowWelcomeWindow(true);
+                }
+            }
+        } else {
+            if(!config.exists()) {
+                try {
+                    config.createNewFile();
+                    dFAMainWin.setShowWelcomeWindow(false);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }//GEN-LAST:event_checkShowWelcomeActionPerformed
+
     private void loadDfa(int number) {
         Dfa d = dFAMainWin.getDfaSim().getDfaEditor().getExampleDFA(number);
         dFAMainWin.openDFA(d);
@@ -177,10 +248,9 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new DFAWelcomeWin().setVisible(true);
-
-                
             }
         });
     }
@@ -204,18 +274,19 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonOK;
+    private javax.swing.JCheckBox checkShowWelcome;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel labelUri;
     // End of variables declaration//GEN-END:variables
 
 

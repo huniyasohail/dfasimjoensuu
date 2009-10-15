@@ -33,6 +33,7 @@ import models.EditorToolStates;
 import models.State;
 import models.Transition;
 import java.util.ArrayList; 
+import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -40,15 +41,16 @@ import java.util.ArrayList;
  */
 public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
-    Simulator dfaSim = null;
-    boolean simBarVisible = false;
-    boolean fileChanged = false;
+    private Simulator dfaSim = null;
+    private boolean simBarVisible = false;
+    private boolean fileChanged = false;
+    private boolean showWelcomeWindow = true;
     private final int SPLIT_SIZE_INFO_BAR = 230;
     private final int SPLIT_SIZE_SIMULATION_BAR = 260;
     private final int WINDOW_WIDTH = 720;
     private final int WINDOW_HEIGHT = 500;
     private String currentFilename = null;
-    HelpFileLoader helpFiles = new HelpFileLoader();
+    private HelpFileLoader helpFiles = new HelpFileLoader();
 
 
 
@@ -83,6 +85,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         }
     }
 
+    void setShowWelcomeWindow(boolean val) {
+        this.showWelcomeWindow = val;
+    }
+
 /**
  * connect GUI to DFA controller
  */
@@ -98,7 +104,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
     public void openLearningCenter()
     {
-       DFAWelcomeWin dFAWelcomeWin = new DFAWelcomeWin();
+       DFAWelcomeWin dFAWelcomeWin = new DFAWelcomeWin(this.showWelcomeWindow);
        dFAWelcomeWin.setdFAMainWin(this);
        dFAWelcomeWin.setVisible(true);
     }
@@ -410,7 +416,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         panelConsoleTop.setMinimumSize(new java.awt.Dimension(10, 20));
         panelConsoleTop.setPreferredSize(new java.awt.Dimension(573, 90));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Simulation");
 
         buttonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_play.png"))); // NOI18N
@@ -459,38 +465,33 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                         .addComponent(labelAlphabet))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonNextStep)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
-                        .addComponent(buttonNextStep)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonSimulateAll))
-                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonReset)))
+                    .addComponent(buttonReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonSimulateAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(176, 176, 176))
         );
         panelConsoleTopLayout.setVerticalGroup(
             panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConsoleTopLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(labelAlphabet))
+                    .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buttonReset)
+                        .addComponent(jLabel1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(buttonReset)))
-                    .addGroup(panelConsoleTopLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(labelAlphabet))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                            .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(buttonNextStep)
-                                .addComponent(buttonSimulateAll)))))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buttonNextStep)
+                        .addComponent(buttonSimulateAll)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelConsole.add(panelConsoleTop, java.awt.BorderLayout.PAGE_START);
@@ -569,7 +570,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -944,10 +945,30 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         panelDrawArea.repaint();
     }//GEN-LAST:event_buttonResetActionPerformed
 
+    static File getConfigFile() {
+        File homedir = new File(System.getProperty("user.home"));
+        File config = null;
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("windows")) {
+            //handle windows systems
+            config = new File(homedir, "\\dfasimulator.cfg");
+        } else if (os.contains("linux") || os.contains("mac") || os.contains("solaris")) {
+            //handle unix systems
+            config = new File(homedir, "/.dfasimulator");
+        }
+        return config;
+    }
+
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+       File config = getConfigFile();
        connectGUItoDFA();
        repaint();
-       openLearningCenter();
+       if(!config.exists()) {
+           openLearningCenter();
+           this.showWelcomeWindow = true;
+       } else {
+           this.showWelcomeWindow = false;
+       }
     }//GEN-LAST:event_formWindowOpened
 
     private void panelDrawAreaAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panelDrawAreaAncestorResized
@@ -1010,7 +1031,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         String aCaption = getCommaStringFromArrayList(getDfaSim().getAlphabetFromTransitions());
         if (aCaption.length() > 30)
                        aCaption = aCaption.substring(0, 30)+"...";
-        labelAlphabet.setText(" Alphabet: "+aCaption);
+        labelAlphabet.setText(" Alphabet: {"+aCaption+"}");
         updateButtons();
         textareaInputWord.requestFocus();
     }

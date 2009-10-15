@@ -15,7 +15,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JDialog;
-import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -288,15 +287,6 @@ public class DFAPropertiesWin extends JDialog {
 
 
         //-- table --
-        String[] columnNames = new String[alphabet.size()+1];
-        columnNames[0] = "";
-        for (int i=0;i<alphabet.size();i++)
-        {
-            columnNames[i+1] = alphabet.get(i);
-        }
-
-
-        String[][] tableData = new String[dfa.getStates().size()][columnNames.length];
         DfaTransitionTableModel tm = new DfaTransitionTableModel();
         tm.setAlphabet(alphabet);
         tm.setDfa(dfa);
@@ -307,15 +297,11 @@ public class DFAPropertiesWin extends JDialog {
         {
             TableColumn tc = tcm.getColumn(i);
             if (i == 0)
-                tc.setHeaderValue( " " );
+                tc.setHeaderValue( "\u03B4" );
                 else
                 tc.setHeaderValue( alphabet.get(i-1));
         }
-        
-        
         th.repaint();
-
-        System.out.println(tableDelta.getRowCount());
     }
 
     private String getCommaStringFromArrayList(ArrayList<String> a)
@@ -350,6 +336,7 @@ public class DFAPropertiesWin extends JDialog {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new DFAPropertiesWin().setVisible(true);
                 
