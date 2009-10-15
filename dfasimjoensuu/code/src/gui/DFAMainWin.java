@@ -1682,7 +1682,7 @@ public boolean askUserMessageBoxYesNo(String title, String message)
             } else {
                 isSimultionAllowed = false;
                 if (dfa.getStates().size() > 0)
-                    simulationMessage = "Define a start state first in order to start the simulation.\nDoubleclick on the wished state and tick the 'start state' box.";
+                    simulationMessage = "Define a start state first in order to start the simulation.\nDoubleclick on the desired state and tick the 'start state' box.";
                 else
                     simulationMessage = "Can't start simulation without states. Add at least one state with the 'add state' tool.";
                 tooltip = "Define a start state first in order to start the simulation";
