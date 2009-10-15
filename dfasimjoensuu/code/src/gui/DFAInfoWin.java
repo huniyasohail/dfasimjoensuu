@@ -61,8 +61,8 @@ public class DFAInfoWin extends javax.swing.JDialog {
         getContentPane().add(jLabel2);
         jLabel2.setBounds(30, 10, 410, 50);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel3.setText("GNU License");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("GNU Gernal Public License v2/v3");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(30, 210, 390, 17);
 
@@ -95,8 +95,8 @@ public class DFAInfoWin extends javax.swing.JDialog {
         getContentPane().add(jLabel9);
         jLabel9.setBounds(30, 160, 440, 17);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14));
-        jLabel10.setText("Version 0.9 beta, 2009");
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Version 1.0, October 2009");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(30, 230, 370, 17);
 
