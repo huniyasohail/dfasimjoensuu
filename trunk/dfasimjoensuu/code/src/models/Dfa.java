@@ -64,6 +64,8 @@ public class Dfa extends Observable implements Serializable{
         State s = new State("s" + states_added, states_added);
         this.states.add(s);
         states_added++;
+        setChanged();
+        notifyObservers();
         return s;
     }
 
@@ -76,6 +78,8 @@ public class Dfa extends Observable implements Serializable{
         if(s != null) {
             this.states.add(s);
             states_added++;
+            setChanged();
+            notifyObservers();
             return s;
         }
         return null;
@@ -99,7 +103,8 @@ public class Dfa extends Observable implements Serializable{
         this.states.remove(s);
         if (s.getIsStartState())
             startState = null;
-
+        setChanged();
+        notifyObservers();
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -131,6 +136,8 @@ public class Dfa extends Observable implements Serializable{
             }
             i++;
         }
+        setChanged();
+        notifyObservers();
         return t;
     }
 
@@ -143,6 +150,8 @@ public class Dfa extends Observable implements Serializable{
      */
     public void removeTransition (Transition t) {
         t.getFromState().removeOutgoingTransition(t);
+        setChanged();
+        notifyObservers();
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
