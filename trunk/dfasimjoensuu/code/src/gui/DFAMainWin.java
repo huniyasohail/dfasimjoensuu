@@ -33,7 +33,6 @@ import models.EditorToolStates;
 import models.State;
 import models.Transition;
 import java.util.ArrayList; 
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
