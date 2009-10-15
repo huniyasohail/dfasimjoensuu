@@ -95,7 +95,8 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jLabel2);
         jLabel2.setBounds(20, 220, 500, 30);
 
-        labelUri.setFont(new java.awt.Font("Tahoma", 0, 12));
+        labelUri.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        labelUri.setForeground(new java.awt.Color(0, 51, 255));
         labelUri.setText(this.wikiUri);
         labelUri.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -153,7 +154,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jButton2);
         jButton2.setBounds(30, 140, 100, 30);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel10.setText("A 01-bitstream automaton, which accepts even numbers of ones.");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(140, 150, 490, 20);

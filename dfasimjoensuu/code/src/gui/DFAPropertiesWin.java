@@ -308,7 +308,7 @@ public class DFAPropertiesWin extends JDialog {
     {
         if (a.size() == 0)
         {
-            return "No transitions set yet.";
+            return "";
         } else
         {
             String s = "";

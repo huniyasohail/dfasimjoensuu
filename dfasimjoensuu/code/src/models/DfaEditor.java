@@ -812,13 +812,17 @@ public class DfaEditor{
         {
             State s = getStateAtMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
             Transition transHit = getTransitionatMouse(evt.getX(), evt.getY(), true, HighlightTypes.MouseOver, false);
-
             handleTouchUpHighlight(evt);
             updateGraphicsAll();
         }
         if (toolState == EditorToolStates.addTransition)
         {
             State s = getStateAtMouse(evt.getX(), evt.getY(),true,HighlightTypes.MouseOver,false);
+            
+        }
+        if (toolState == EditorToolStates.addState)
+        {
+            
         }
     }
 

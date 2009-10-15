@@ -10,6 +10,8 @@ package gui;
 import controller.IncompleteAutomatonException;
 import controller.Simulator;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -34,6 +36,7 @@ import models.EditorToolStates;
 import models.State;
 import models.Transition;
 import java.util.ArrayList; 
+import javax.swing.ImageIcon;
 
 public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
@@ -58,6 +61,12 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     /** HelpFileLoader that is connected to this window */
     private HelpFileLoader helpFiles = new HelpFileLoader();
 
+    /** icons for play button */
+    private ImageIcon iconStartButtonWarning;
+    private ImageIcon iconStartButtonOK;
+
+    private boolean isSimultionAllowed = true;
+    private String simulationMessage = "";
 
 
     /** Creates new form DFAMainWIn */
@@ -66,6 +75,12 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         initComponents();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         centreWindow(this);
+        
+        iconStartButtonWarning = new ImageIcon(getClass().getResource("/gui/img/sign_start_warning.png"));
+        iconStartButtonOK = new ImageIcon(getClass().getResource("/gui/img/sign_startsim.png"));
+
+
+
     }
 
     /**
@@ -1046,6 +1061,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
     }//GEN-LAST:event_panelDrawAreaMouseMoved
 
+
     private void panelDrawAreaMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseDragged
         getDfaSim().getDfaEditor().handleMouseDragged(evt);
     }//GEN-LAST:event_panelDrawAreaMouseDragged
@@ -1059,28 +1075,38 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
      */
     private void startSimulation()
     {
-        this.simBarVisible = true;
-        panelConsole.setVisible(true);
-        splitterSimulationBar.setDividerLocation(0.65);
-        menuItemStopSim.setEnabled(true);
-        menuitemStartSim.setEnabled(false);
-        menuitemAutocomplete.setEnabled(false);
-        menuitemProperties.setEnabled(false);
-        menuItemMinimizeDfa.setEnabled(false);
-        buttonStartSim.setEnabled(false);
-        buttonStopSim.setEnabled(true);
-        dfaSim.getDfaEditor().setIsEditable(false);
-        dfaSim.getDfaEditor().setToolState(EditorToolStates.noTool);
-        dfaSim.setSimulationModeActive(true);
-        dfaSim.getDfaEditor().removeAllSelections();
-        resetSimulationBar();
-        dfaSim.getDfa().setInput(textareaInputWord.getText());
-        String aCaption = getCommaStringFromArrayList(getDfaSim().getAlphabetFromTransitions());
-        if (aCaption.length() > 30)
-                       aCaption = aCaption.substring(0, 30)+"...";
-        labelAlphabet.setText(" Alphabet: {"+aCaption+"}");
-        updateButtons();
-        textareaInputWord.requestFocus();
+        if (isSimultionAllowed)
+        {
+            this.simBarVisible = true;
+            panelConsole.setVisible(true);
+            splitterSimulationBar.setDividerLocation(0.65);
+            menuItemStopSim.setEnabled(true);
+            menuitemStartSim.setEnabled(false);
+            menuitemAutocomplete.setEnabled(false);
+            menuitemProperties.setEnabled(false);
+            menuItemMinimizeDfa.setEnabled(false);
+            buttonStartSim.setEnabled(false);
+            buttonStopSim.setEnabled(true);
+            dfaSim.getDfaEditor().setIsEditable(false);
+            dfaSim.getDfaEditor().setToolState(EditorToolStates.noTool);
+            dfaSim.setSimulationModeActive(true);
+            dfaSim.getDfaEditor().removeAllSelections();
+            resetSimulationBar();
+            dfaSim.getDfa().setInput(textareaInputWord.getText());
+            String aCaption = getCommaStringFromArrayList(getDfaSim().getAlphabetFromTransitions());
+            if (aCaption.length() > 30)
+                           aCaption = aCaption.substring(0, 30)+"...";
+            labelAlphabet.setText(" Alphabet: {"+aCaption+"}");
+            updateButtons();
+            textareaInputWord.requestFocus();
+        } else
+        {
+            JOptionPane.showMessageDialog(this, simulationMessage, "Simulation", JOptionPane.WARNING_MESSAGE);
+
+        }
+
+
+ 
     }
 
     /**
@@ -1641,19 +1667,36 @@ public boolean askUserMessageBoxYesNo(String title, String message)
             Dfa dfa = (Dfa)o;
             String tooltip;
             if(dfa.getStartState() != null) {
+                isSimultionAllowed = true;
+                simulationMessage = "";
                 tooltip = "Run Simulation";
                 this.menuitemStartSim.setEnabled(true);
+
                 this.menuItemMinimizeDfa.setEnabled(true);
                 this.buttonStartSim.setEnabled(true);
+                if (iconStartButtonOK != null)
+                    this.buttonStartSim.setIcon(iconStartButtonOK);
                 this.buttonStartSim.setToolTipText(tooltip);
             } else {
+                isSimultionAllowed = false;
+                if (dfa.getStates().size() > 0)
+                    simulationMessage = "Define a start state first in order to start the simulation.\nDoubleclick on the wished state and tick the 'start state' box.";
+                else
+                    simulationMessage = "Can't start simulation without states. Add at least one state with the 'add state' tool.";
                 tooltip = "Define a start state first in order to start the simulation";
-                this.menuitemStartSim.setEnabled(false);
+                this.menuitemStartSim.setEnabled(true);
                 this.menuItemMinimizeDfa.setEnabled(false);
-                this.buttonStartSim.setEnabled(false);
+                this.buttonStartSim.setEnabled(true);
+                if (iconStartButtonWarning != null)
+                    this.buttonStartSim.setIcon(iconStartButtonWarning);
                 this.buttonStartSim.setToolTipText(tooltip);
             }
+            System.out.println("change");
         }
+
+
+
+
     }
 
 }
