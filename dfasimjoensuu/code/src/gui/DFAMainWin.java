@@ -957,8 +957,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             buttonSimulateAll.setEnabled(false);
             String acceptMsg = "The DFA ";
             if(dfaSim.isAccepting()) {
+                dfaSim.setHasFinallyAccepted(true);
                 acceptMsg += "ACCEPTS the input word!";
             } else {
+                dfaSim.setHasFinallyAccepted(false);
                 acceptMsg += "does NOT accept the input word!";
             }
             textareaOutput.setText(textareaOutput.getText()+acceptMsg);
@@ -1691,7 +1693,6 @@ public boolean askUserMessageBoxYesNo(String title, String message)
                     this.buttonStartSim.setIcon(iconStartButtonWarning);
                 this.buttonStartSim.setToolTipText(tooltip);
             }
-            System.out.println("change");
         }
 
 
