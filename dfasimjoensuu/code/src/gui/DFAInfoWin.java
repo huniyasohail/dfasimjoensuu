@@ -3,7 +3,6 @@
  *
  * Created on 17.09.2009, 20:01:41
  */
-
 package gui;
 
 import java.awt.Dimension;
@@ -15,20 +14,24 @@ import java.awt.Toolkit;
  */
 public class DFAInfoWin extends javax.swing.JDialog {
 
+    /**
+     * Width of the window
+     */
     private static final int WINDOW_WIDTH = 540;
+    /**
+     * Height of the window
+     */
     private static final int WINDOW_HEIGHT = 360;
 
     /** Creates new form DFAMainWIn */
     public DFAInfoWin() {
-        
+
         initComponents();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         centreWindow(this);
         this.setModal(true);
     }
 
-
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -114,36 +117,33 @@ public class DFAInfoWin extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       this.setVisible(false);
-       dispose();
+        this.setVisible(false);
+        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-
-
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new DFAInfoWin().setVisible(true);
-                
+
             }
         });
     }
 
-public static void centreWindow(javax.swing.JDialog frame) {
-    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-    frame.setLocation(x, y);
-}
-
-
-
-
-
-
+    /**
+     * Places the window in the middle of the screen.
+     * @param frame The window to place.
+     */
+    public static void centreWindow(javax.swing.JDialog frame) {
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation(x, y);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
@@ -156,5 +156,4 @@ public static void centreWindow(javax.swing.JDialog frame) {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
-
 }

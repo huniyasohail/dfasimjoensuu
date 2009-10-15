@@ -3,12 +3,13 @@
 package models;
 
 /**
- * Adds functionality to states which is needed for square automaton calculation
+ * Adds functionality to states which is needed for square automaton computation
  * @author Kai
  */
 public class SquareState extends State{
-
+    /** State 1 */
     private State state1;
+    /** State 1 */
     private State state2;
 
     public State getState1() {

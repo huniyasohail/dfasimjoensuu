@@ -18,16 +18,21 @@ import java.util.ArrayList;
 public class Transition implements Serializable {
     private static final long serialVersionUID = -5590268576506217927L;
 
+    /** Label */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.FFDC584F-92A7-C21D-8870-4B084854C2DA]
     // </editor-fold> 
     private ArrayList<String> input;
+    /** source state */
     private State s1;
+    /** target state */
     private State s2;
 
-
+    /** Is transition selected? */
     private boolean selected = false;
+    /** Is transition visible? */
     private boolean visible = true;
+    /** Determines the transition's color */
     private HighlightTypes highlightStatus = HighlightTypes.NoHighlight;
 
     private int captionOffsetX = 0;
@@ -41,6 +46,7 @@ public class Transition implements Serializable {
 
 
     //-- drawing issue --
+    /** Is there a transition in the opposite direction? */
     private boolean hasBackTransition = true;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 

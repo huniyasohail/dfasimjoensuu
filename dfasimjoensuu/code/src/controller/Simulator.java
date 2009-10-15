@@ -17,13 +17,22 @@ import models.Transition;
 // </editor-fold> 
 public class Simulator {
 
+    /** The DFA to simulate */
     private Dfa dfa;
+    /** The DFA-Editor */
     private DfaEditor dfaEditor;
+    /** Is simulation running? */
     private boolean isRunning;
+    /** Is the program in simulation mode? */
     private boolean simulationModeActive = false;
+    /** Last transition taken */
     private Transition lastTransitionTaken = null;
+    /** Current highlighted state */
     private State currentHighlightedState = null;
 
+    /**
+     * Creates a new simulator.
+     */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.265879AE-72DD-068D-26F6-2EA61AD07845]
     // </editor-fold> 
@@ -35,10 +44,18 @@ public class Simulator {
 
     }
 
+    /**
+     * Returns the DFA to simulate.
+     * @return DFA.
+     */
     public Dfa getDfa() {
         return dfa;
     }
 
+    /**
+     * Sets the DFA to simulate.
+     * @param dfa DFA to simulate.
+     */
     public void setDfa(Dfa dfa) {
         if(dfa != null) {
             this.dfa = dfa;
@@ -47,19 +64,34 @@ public class Simulator {
         }
     }
 
+    /**
+     * Returns the last transition taken.
+     * @return Transition.
+     */
     public Transition getLastTransitionTaken() {
         return lastTransitionTaken;
     }
 
-    
+    /**
+     * Tells whether program is in simulation mode.
+     * @return
+     */
     public boolean isSimulationModeActive() {
         return simulationModeActive;
     }
 
+    /**
+     * Returns the current highlighted state.
+     * @return Current highlighted state.
+     */
     public State getCurrentHighlightedState() {
         return currentHighlightedState;
     }
 
+    /**
+     * Switch simulation mode on/off.
+     * @param simulationModeActive
+     */
     public void setSimulationModeActive(boolean simulationModeActive) {
         this.simulationModeActive = simulationModeActive;
         if (!simulationModeActive)
@@ -68,23 +100,36 @@ public class Simulator {
             resetDfa();
     }
 
+    /**
+     * Returns the DFA-Editor.
+     * @return
+     */
     public DfaEditor getDfaEditor() {
         return dfaEditor;
     }
 
+    /**
+     * Sets the DFA-Editor.
+     * @param dfaEditor
+     */
     public void setDfaEditor(DfaEditor dfaEditor) {
         this.dfaEditor = dfaEditor;
     }
 
-    public boolean isIsRunning() {
-        return isRunning;
-    }
-
+    /**
+     * Sets whether simulation is running.
+     * @param isRunning
+     */
     public void setIsRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
 
 
+    /**
+     * Sets the simulator to simulation mode.
+     * @param input Input String.
+     * @throws IncompleteAutomatonException
+     */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.8BEDC026-8469-BB20-3338-A1F54C9D9D44]
     // </editor-fold> 
@@ -368,7 +413,10 @@ public class Simulator {
         }
     }
 
-
+    /**
+     * Tells whether simulation is running.
+     * @return
+     */
     public boolean getIsRunning() {
         return isRunning;
     }
