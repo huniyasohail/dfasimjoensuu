@@ -9,25 +9,29 @@ import java.io.Serializable;
 public class State_Properties implements Serializable{
     private static final long serialVersionUID = -5590868576506617927L;
 
+    /** x-position in Paint-Panel */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.20CCD347-10B1-6597-1FCB-7359E09DBC7E]
     // </editor-fold> 
     private int xPos = 0;
 
+    /** y-position in Paint-Panel */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.AC2F7C63-187B-B7F8-65CC-6904E9124D8B]
     // </editor-fold> 
     private int yPos = 0;
 
+    /** State's name */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.64AB935F-9911-49BB-8A4F-F2C5F29CB21B]
     // </editor-fold> 
     private String name;
 
+    /** Is state selected? */
     private boolean selected = false;
-
+    /** Is state visible? */
     private boolean visible = true;
-
+    /** Determines the state's color */
     private HighlightTypes HighlightIndex = HighlightTypes.NoHighlight;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -50,10 +54,18 @@ public class State_Properties implements Serializable{
         return name;
     }
 
+    /**
+     * Is the state visible?
+     * @return
+     */
     public boolean isVisible() {
         return visible;
     }
 
+    /**
+     * Sets whether the state is visible.
+     * @param visible
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }

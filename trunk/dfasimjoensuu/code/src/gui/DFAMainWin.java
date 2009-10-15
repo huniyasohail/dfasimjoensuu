@@ -2,6 +2,7 @@
  * DFAMainWIn.java
  *
  * Created on 17.09.2009, 20:01:41
+ * @author Fabian Bürger, Kai Winnekens
  */
 
 package gui;
@@ -34,21 +35,27 @@ import models.State;
 import models.Transition;
 import java.util.ArrayList; 
 
-/**
- *
- * @author Fabian
- */
 public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
+    /** Simulator connected to this window */
     private Simulator dfaSim = null;
+    /** Is simulation bar visible? */
     private boolean simBarVisible = false;
+    /** Has the current file been changed? */
     private boolean fileChanged = false;
+    /** Show welcome window on startup? */
     private boolean showWelcomeWindow = true;
+    /** Split size of info bar */
     private final int SPLIT_SIZE_INFO_BAR = 230;
+    /** Split size of simulation bar */
     private final int SPLIT_SIZE_SIMULATION_BAR = 260;
+    /** Width of the window */
     private final int WINDOW_WIDTH = 720;
+    /** Height of the window */
     private final int WINDOW_HEIGHT = 500;
+    /** Current file name */
     private String currentFilename = null;
+    /** HelpFileLoader that is connected to this window */
     private HelpFileLoader helpFiles = new HelpFileLoader();
 
 
@@ -61,11 +68,18 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         centreWindow(this);
     }
 
-
+    /**
+     * Returns the simulator that is connected to this window.
+     * @return Simulator
+     */
     public Simulator getDfaSim() {
         return dfaSim;
     }
 
+    /**
+     * Sets the simulator connected to this window.
+     * @param dfaSim Simulator
+     */
     public void setDfaSim(Simulator dfaSim) {
         this.dfaSim = dfaSim;
         dfaSim.getDfa().addObserver(this);
@@ -84,6 +98,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         }
     }
 
+    /**
+     * Sets if welcome window should be shown on startup. Can be called directly by welcome window.
+     * @param val
+     */
     void setShowWelcomeWindow(boolean val) {
         this.showWelcomeWindow = val;
     }
@@ -101,6 +119,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     }
 
 
+    /**
+     * Shown welcome window / learning center.
+     */
     public void openLearningCenter()
     {
        DFAWelcomeWin dFAWelcomeWin = new DFAWelcomeWin(this.showWelcomeWindow);
@@ -814,6 +835,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         }
     }
 
+    /**
+     * Opens one of the demo DFAs.
+     * @param d DFA to open.
+     */
     public void openDFA(Dfa d)
     {
         stopSimulation();
@@ -874,6 +899,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
        panelDrawArea.repaint();
     }//GEN-LAST:event_buttonNextStepActionPerformed
 
+    /**
+     * Removes selection from input area.
+     */
     private void resetSimulationBar()
     {
         textareaInputWord.setSelectionStart(0);
@@ -921,6 +949,13 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             textareaOutput.setText(textareaOutput.getText()+acceptMsg);
         }
     }
+
+    /**
+     * Output information during simulation.
+     * @param fromState Source state.
+     * @param toState Target state.
+     * @param pos Current reading position in input string.
+     */
     private void outputInfo(State fromState, State toState, int pos) {
         String input = textareaInputWord.getText().substring(pos, pos+1);
         String msg = "Reading input '"+input+"' and taking Transition from State ";
@@ -928,12 +963,18 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         msg += toState.getState_Properties().getName()+".\n";
         textareaOutput.setText(textareaOutput.getText()+msg);
     }
+
+    /**
+     * Highlights the current readning position in input string.
+     * @param pos Current readning position.
+     */
     private void highlightCurrentPosition(int pos) {
         textareaInputWord.requestFocus();
         textareaInputWord.setSelectionColor(Color.red);
         textareaInputWord.setSelectionStart(pos);
         textareaInputWord.setSelectionEnd(pos+1);
     }
+
     private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
         textareaInputWord.setEditable(true);
         textareaOutput.setText("");
@@ -944,6 +985,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         panelDrawArea.repaint();
     }//GEN-LAST:event_buttonResetActionPerformed
 
+    /**
+     * Returns the program's config file. Note: This file does not need to be existing!
+     * @return Config file.
+     */
     static File getConfigFile() {
         File homedir = new File(System.getProperty("user.home"));
         File config = null;
@@ -1009,6 +1054,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         startSimulation();
     }//GEN-LAST:event_menuitemStartSimActionPerformed
 
+    /**
+     * Starts a new simulation.
+     */
     private void startSimulation()
     {
         this.simBarVisible = true;
@@ -1035,6 +1083,11 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         textareaInputWord.requestFocus();
     }
 
+    /**
+     * Computes a comma seperated string representation of the input array.
+     * @param a Input array, usually alphabet.
+     * @return String representation.
+     */
     private String getCommaStringFromArrayList(ArrayList<String> a)
     {
         if (a.size() == 0)
@@ -1103,6 +1156,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         stopSimulation();
     }//GEN-LAST:event_menuItemStopSimActionPerformed
 
+    /**
+     * Stops the simulation mode and returns to 'normal' mode.
+     */
     private void stopSimulation()
     {
         this.simBarVisible = false;
@@ -1137,6 +1193,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         createNewDFA();
     }//GEN-LAST:event_menuitemNewDFAActionPerformed
 
+    /**
+     * Set split pane sizes.
+     */
     private void controlSplitPaneSizes()
     {
         splitterInfobar.setDividerLocation(this.getWidth()-SPLIT_SIZE_INFO_BAR);
@@ -1336,6 +1395,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         repaint();
     }
 
+    /**
+     * Creates a new DFA.
+     */
     private void createNewDFA()
     {
         if (askUserMessageBoxYesNo("new DFA", "Do you want to create an empty DFA?"))
@@ -1351,7 +1413,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     }
 
 
-
+    /**
+     * Handles a double click.
+     * @param evt
+     */
     private void handleDoubleClick(java.awt.event.MouseEvent evt)
     {
         getDfaSim().getDfaEditor().handleDoubleClick(evt);
@@ -1370,6 +1435,10 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
     }
 
+    /**
+     * Places the window in the center of the screen.
+     * @param frame Window to place.
+     */
 public static void centreWindow(JFrame frame) {
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
@@ -1377,7 +1446,9 @@ public static void centreWindow(JFrame frame) {
     frame.setLocation(x, y);
 }
 
-
+/**
+ * Updates all buttons.
+ */
 public void updateButtons()
 {
     panelConsole.setVisible(simBarVisible);
@@ -1386,6 +1457,9 @@ public void updateButtons()
     manageHelp();
 }
 
+/**
+ * Sets the help view according to what is done with the program.
+ */
 public void manageHelp()
 {
     String currentSite = "";
@@ -1406,6 +1480,10 @@ public void manageHelp()
 
 }
 
+/**
+ * Shows a specific help page.
+ * @param pageName Key for the page to display.
+ */
 public void showHelpFile(String pageName)
 {
         try {
@@ -1431,6 +1509,11 @@ public void updateToolButtons()
     toggleAddTransition.setEnabled(e.isEditable());
 }
 
+/**
+ * Shows the state properties window.
+ * @param s State.
+ * @param newState <code>true</code> if <code>s</code> is a new state.
+ */
 public void showStateEditWin(State s, boolean newState)
 {
         DFAStatePropertiesWin stprowin = new DFAStatePropertiesWin();
@@ -1443,6 +1526,11 @@ public void showStateEditWin(State s, boolean newState)
         this.dfaSim.getDfaEditor().setWaitForEditWindow(true);
 }
 
+/**
+ * Shows the transition properties window.
+ * @param t Transition.
+ * @param newTrans <code>true</code> if <code>t</code> is a new transition.
+ */
 public void showTransEditWin(Transition t, boolean newTrans)
 {
         DFATransitionWin trwin = new DFATransitionWin();
@@ -1460,6 +1548,12 @@ public void handleCloseEditWindow()
     this.dfaSim.getDfaEditor().setWaitForEditWindow(false);
 }
 
+/**
+ * Shows a message box with yes/no buttons.
+ * @param title Title.
+ * @param message Message.
+ * @return <code>true</code>, if 'yes' has been clicked.
+ */
 public boolean askUserMessageBoxYesNo(String title, String message)
 {
     int n = JOptionPane.showConfirmDialog(
@@ -1536,6 +1630,11 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JToggleButton togglePointer;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Gets called when the DFA changes.
+     * @param o Changed DFA.
+     * @param arg Some Argument, can be <code>null</code>.
+     */
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof Dfa) {

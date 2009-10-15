@@ -12,24 +12,30 @@ import java.util.Observer;
 public class Dfa extends Observable implements Serializable{
     private static final long serialVersionUID = -5590868576506217927L;
 
+    /** Input string to read */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.71083E97-6397-D2D6-853D-97DBD63CFF6A]
     // </editor-fold> 
     protected String input;
 
+    /** Current reading position in input string */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.B5A933E2-233B-A1A4-EDA6-51D88CB7AD62]
     // </editor-fold> 
     protected int currentPosition;
-
+    /** Description for DFA */
     protected String description = "";
 
+    /** DFA's current state during simulation */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.605BE7FE-5F6E-ADC8-1805-4DB235B9D755]
     // </editor-fold> 
     protected State currentState;
+    /** Start state */
     protected State startState;
+    /** List of all states */
     protected ArrayList<State> states;
+    /** Total number of states */
     protected int states_added;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -372,6 +378,10 @@ public class Dfa extends Observable implements Serializable{
 
     }
 
+    /**
+     * Adds an observer (usually DfaMainWin)
+     * @param o Observer
+     */
     @Override
     public synchronized void addObserver(Observer o) {
         super.addObserver(o);

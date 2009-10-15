@@ -3,6 +3,11 @@ package models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * A state for the DFA.
+ * @author Kai
+ */
+
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.9670F4B5-80DA-DDDC-EF00-A0A4D206ADAD]
@@ -10,25 +15,40 @@ import java.util.ArrayList;
 public class State implements Serializable{
     private static final long serialVersionUID = -5590868376506217927L;
 
+    /** Is it final/accepting? */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.4B631DDD-D7DD-EBBD-0264-5BC4D4D8A198]
     // </editor-fold> 
     private boolean isFinalState;
 
+    /** Is it start state? */
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.C0EE8059-23DE-B596-6A75-675F1615D3A7]
     // </editor-fold> 
     private boolean isStartState;
+    /** List of outgoing transitions */
     private ArrayList<Transition> outgoingTransitions;
+    /** List of incoming transitions */
     private ArrayList<Transition> incomingTransitions;
+    /** State properties */
     private State_Properties prop;
+    /** Number in DFS Run */
     private int dfsNum;
+    /** Numerical ID */
     private int id;
 
+    /**
+     * Returns the number in DFS run
+     * @return
+     */
     public int getDfsNum() {
         return dfsNum;
     }
 
+    /**
+     * Sets the DFS Number (called by DFS algorithm)
+     * @param dfsNum
+     */
     public void setDfsNum(int dfsNum) {
         this.dfsNum = dfsNum;
     }
@@ -64,6 +84,10 @@ public class State implements Serializable{
         return isFinalState;
     }
 
+    /**
+     * Returns the state's numerical ID.
+     * @return
+     */
     public int getId() {
         return id;
     }
@@ -267,6 +291,10 @@ public class State implements Serializable{
         outgoingTransitions = new ArrayList<Transition>();
     }
 
+    /**
+     * Removes t as an incoming transition for this state.
+     * @param t Incoming transition to remove.
+     */
     public void removeIncomingTransition(Transition t) {
         if(t != null && incomingTransitions.contains(t)) {
             incomingTransitions.remove(t);
@@ -318,13 +346,17 @@ public class State implements Serializable{
     }
 
     /**
-     * Returns the set of Transitions
+     * Returns the set of outgoing transitions
      * @return Set of transitions as ArrayList
      */
     public ArrayList<Transition> getOutgoingTransitions() {
         return outgoingTransitions;
     }
 
+    /**
+     * Returns the set of incoming transitions
+     * @return Set of transitions as ArrayList
+     */
     public ArrayList<Transition> getIncomingTransitions() {
         return incomingTransitions;
     }

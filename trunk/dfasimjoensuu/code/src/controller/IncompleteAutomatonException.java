@@ -1,8 +1,7 @@
 package controller;
 
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * IncompleteAutomatonExceptio
  */
 
 public class IncompleteAutomatonException extends Exception {
