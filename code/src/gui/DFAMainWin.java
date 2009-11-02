@@ -15,15 +15,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JFileChooser;
@@ -51,7 +42,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     /** Split size of info bar */
     private final int SPLIT_SIZE_INFO_BAR = 230;
     /** Split size of simulation bar */
-    private final int SPLIT_SIZE_SIMULATION_BAR = 260;
+    private final int SPLIT_SIZE_SIMULATION_BAR = 280;
     /** Width of the window */
     private final int WINDOW_WIDTH = 720;
     /** Height of the window */
@@ -98,19 +89,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     public void setDfaSim(Simulator dfaSim) {
         this.dfaSim = dfaSim;
         dfaSim.getDfa().addObserver(this);
-    }
-
-    private void panelDrawAreaMouseClicked(java.awt.event.MouseEvent evt) {
-        if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            handleDoubleClick(evt);
-        }
-
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
-            if (getDfaSim().getDfaEditor().isAnythingSelected()) {
-                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
-            }
-
-        }
     }
 
     /**
@@ -199,8 +177,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuitemNewDFA = new javax.swing.JMenuItem();
-        menuitemOpen = new javax.swing.JMenuItem();
-        menuitemSave = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JSeparator();
         menuitemExit = new javax.swing.JMenuItem();
         menuDFA = new javax.swing.JMenu();
@@ -214,7 +191,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuItemStopSim = new javax.swing.JMenuItem();
         menuInfo = new javax.swing.JMenu();
         menuitemLearn = new javax.swing.JMenuItem();
-        menuitemInfo = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         menuitemEditpopup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/spanner_blue.png"))); // NOI18N
         menuitemEditpopup.setText("Edit object");
@@ -235,7 +212,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         popupMenu.add(menuitemDeletepopup);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("DFA Simulator");
+        setTitle("DFA Simulator Web Edition");
         setBounds(new java.awt.Rectangle(0, 0, 600, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -398,16 +375,14 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelDrawAreaMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                panelDrawAreaMouseEntered(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 panelDrawAreaMousePressed(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 panelDrawAreaMouseReleased(evt);
-            }
-        });
-        panelDrawArea.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                panelDrawAreaComponentShown(evt);
             }
         });
         panelDrawArea.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -418,16 +393,12 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 panelDrawAreaMouseMoved(evt);
             }
         });
-        panelDrawArea.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
-            public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
-            }
-            public void ancestorResized(java.awt.event.HierarchyEvent evt) {
-                panelDrawAreaAncestorResized(evt);
-            }
-        });
         panelDrawArea.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 panelDrawAreaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                panelDrawAreaKeyReleased(evt);
             }
         });
 
@@ -451,7 +422,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         panelConsoleTop.setMinimumSize(new java.awt.Dimension(10, 20));
         panelConsoleTop.setPreferredSize(new java.awt.Dimension(573, 90));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel1.setText("Simulation");
 
         buttonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/icon_play.png"))); // NOI18N
@@ -474,6 +445,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         jLabel2.setText("Input word");
 
         textareaInputWord.setColumns(20);
+        textareaInputWord.setFont(new java.awt.Font("Monospaced", 0, 16));
         textareaInputWord.setRows(5);
         jScrollPane2.setViewportView(textareaInputWord);
 
@@ -522,7 +494,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                         .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                     .addGroup(panelConsoleTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNextStep)
                         .addComponent(buttonSimulateAll)))
@@ -535,6 +507,8 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         textareaOutput.setColumns(20);
         textareaOutput.setEditable(false);
+        textareaOutput.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
+        textareaOutput.setLineWrap(true);
         textareaOutput.setRows(5);
         jScrollPane1.setViewportView(textareaOutput);
 
@@ -605,7 +579,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
         );
 
         SplitterDescriptionHelp.setRightComponent(panelHELP);
@@ -630,23 +604,9 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
         menuFile.add(menuitemNewDFA);
 
-        menuitemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/iconopenfile.png"))); // NOI18N
-        menuitemOpen.setText("Open File...");
-        menuitemOpen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuitemOpenActionPerformed(evt);
-            }
-        });
-        menuFile.add(menuitemOpen);
-
-        menuitemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/iconsavefile.png"))); // NOI18N
-        menuitemSave.setText("Save File...");
-        menuitemSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuitemSaveActionPerformed(evt);
-            }
-        });
-        menuFile.add(menuitemSave);
+        jMenuItem1.setText("Load and Save in jar version...");
+        jMenuItem1.setEnabled(false);
+        menuFile.add(jMenuItem1);
         menuFile.add(jSeparator4);
 
         menuitemExit.setText("Exit");
@@ -691,7 +651,8 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         menuDFA.add(jSeparator1);
 
         menuitemExportImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/mime_png.png"))); // NOI18N
-        menuitemExportImage.setText("Image export");
+        menuitemExportImage.setText("Image export in jar version...");
+        menuitemExportImage.setEnabled(false);
         menuitemExportImage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuitemExportImageActionPerformed(evt);
@@ -745,13 +706,13 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         });
         menuInfo.add(menuitemLearn);
 
-        menuitemInfo.setText("About DFA simulator");
-        menuitemInfo.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem2.setText("About");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuitemInfoActionPerformed(evt);
+                jMenuItem2ActionPerformed(evt);
             }
         });
-        menuInfo.add(menuitemInfo);
+        menuInfo.add(jMenuItem2);
 
         jMenuBar1.add(menuInfo);
 
@@ -759,16 +720,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void menuInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuInfoActionPerformed
-
-    }//GEN-LAST:event_menuInfoActionPerformed
-
-    private void menuitemInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemInfoActionPerformed
-        //-- create and show new Info window --
-        DFAInfoWin infowin = new DFAInfoWin();
-        infowin.setVisible(true);
-    }//GEN-LAST:event_menuitemInfoActionPerformed
 
     private void menuitemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemExitActionPerformed
        setVisible(false);
@@ -800,45 +751,12 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     
 
 
-    private void menuitemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemOpenActionPerformed
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", "dfa"));
-        int retVal = fc.showOpenDialog(this);
-        Dfa loaded_dfa = null;
-        if (retVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-
-            try {
-                ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
-                loaded_dfa = (Dfa) in.readObject();
-                in.close();
-                currentFilename = fc.getSelectedFile().getName();
-                stopSimulation();
-
-                fileChanged = false;
-                this.dfaSim.getDfaEditor().resetEditor();
-                dfaSim.setDfa(loaded_dfa);
-                loaded_dfa.addObserver(this);
-
-                connectGUItoDFA();
-                panelDrawArea.repaint();
-                setWindowCaption();
-                dfaSim.getDfaEditor().getdFAPainter().optimizeCropPan(20);
-            } catch (IOException ex) {
-                String msg = "File not found!";
-                JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
-            } catch (ClassNotFoundException ex) {
-                System.err.println(ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_menuitemOpenActionPerformed
-
 /**
  * set the window caption when a file is chosen
  */
     private void setWindowCaption()
     {
-        String winName = "DFA Simulator";
+        String winName = "DFA Simulator Web Edition";
         if (currentFilename == null)
         {
             this.setTitle(winName);
@@ -1002,34 +920,14 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
         panelDrawArea.repaint();
     }//GEN-LAST:event_buttonResetActionPerformed
 
-    /**
-     * Returns the program's config file. Note: This file does not need to be existing!
-     * @return Config file.
-     */
-    static File getConfigFile() {
-        File homedir = new File(System.getProperty("user.home"));
-        File config = null;
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("windows")) {
-            //handle windows systems
-            config = new File(homedir, "\\dfasimulator.cfg");
-        } else if (os.contains("linux") || os.contains("mac") || os.contains("solaris")) {
-            //handle unix systems
-            config = new File(homedir, "/.dfasimulator");
-        }
-        return config;
-    }
+
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       File config = getConfigFile();
-       connectGUItoDFA();
-       repaint();
-       if(!config.exists()) {
-           openLearningCenter();
-           this.showWelcomeWindow = true;
-       } else {
-           this.showWelcomeWindow = false;
-       }
+        connectGUItoDFA();
+        repaint();
+        openLearningCenter();
+        this.showWelcomeWindow = true;
+
     }//GEN-LAST:event_formWindowOpened
 
     private void panelDrawAreaAncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_panelDrawAreaAncestorResized
@@ -1136,50 +1034,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
 
     }
 
-    private void menuitemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemSaveActionPerformed
-        JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new FileNameExtensionFilter("DFA Simulator Files", "dfa"));
-        int retVal = fc.showSaveDialog(this);
-        if (retVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String fpath = file.getPath();
-
-            if (!fpath.toLowerCase().endsWith(".dfa")) {
-                String newName = fpath + ".dfa";
-                file = new File(newName);
-            }
-            if (file.exists()) {
-                String msg = "The file you have chosen already exists! Do you want to overwrite this file?";
-                retVal = JOptionPane.showConfirmDialog(this, msg, "Overwrite?", JOptionPane.YES_NO_CANCEL_OPTION);
-            } else {
-                retVal = JOptionPane.YES_OPTION;
-            }
-            switch (retVal) {
-                case JOptionPane.YES_OPTION:
-                    try {
-                        ObjectOutputStream out = null;
-                        out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
-                        out.writeObject(this.dfaSim.getDfa());
-                        fileChanged = false;
-                         currentFilename = file.getName();
-                        setWindowCaption();
-                        out.close();
-                    } catch (FileNotFoundException ex) {
-                        String msg = "Could not find the selected file!";
-                        JOptionPane.showMessageDialog(this, msg, "Error: File not found", JOptionPane.WARNING_MESSAGE);
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
-                    }
-                    break;
-                case JOptionPane.NO_OPTION:
-                    menuitemSaveActionPerformed(evt);
-                    break;
-                default:
-                    //do nothing
-            }
-        }
-    }//GEN-LAST:event_menuitemSaveActionPerformed
-
     private void menuItemStopSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemStopSimActionPerformed
         stopSimulation();
     }//GEN-LAST:event_menuItemStopSimActionPerformed
@@ -1234,7 +1088,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (fileChanged)
         {
-            if (askUserMessageBoxYesNo("Exit", "Exit program without saving?"))
+            if (true)
             {
                 System.exit(0);
             }
@@ -1285,38 +1139,7 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_menuItemMinimizeDfaActionPerformed
 
     private void menuitemExportImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemExportImageActionPerformed
-  JFileChooser fc = new JFileChooser();
-        fc.setFileFilter(new FileNameExtensionFilter("PNG Image Files (lossless)", "png"));
-        int retVal = fc.showSaveDialog(this);
-        if (retVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String fpath = file.getPath();
-
-            if (!fpath.toLowerCase().endsWith(".png")) {
-                String newName = fpath + ".png";
-                file = new File(newName);
-            }
-            
-
-            if (file.exists()) {
-                String msg = "The file you have chosen already exists! Do you want to overwrite this file?";
-                retVal = JOptionPane.showConfirmDialog(this, msg, "Overwrite?", JOptionPane.YES_NO_CANCEL_OPTION);
-            } else {
-                retVal = JOptionPane.YES_OPTION;
-            }
-            switch (retVal) {
-                case JOptionPane.YES_OPTION:
-
-                    if (getDfaSim().getDfaEditor().getdFAPainter().exportPNGFile(file))
-                        repaint();
-                   break;
-                case JOptionPane.NO_OPTION:
-                    menuitemExportImageActionPerformed(evt);
-                    break;
-                default:
-                    //do nothing
-            }
-        }
+ 
     }//GEN-LAST:event_menuitemExportImageActionPerformed
 
     private void menuitemAutocompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemAutocompleteActionPerformed
@@ -1349,10 +1172,6 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
             zoomOUT(evt);
     }//GEN-LAST:event_panelDrawAreaMouseWheelMoved
 
-    private void menuitemLearnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemLearnActionPerformed
-        openLearningCenter();
-    }//GEN-LAST:event_menuitemLearnActionPerformed
-
     private void menuSimulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSimulationActionPerformed
         
     }//GEN-LAST:event_menuSimulationActionPerformed
@@ -1368,6 +1187,42 @@ public class DFAMainWin extends javax.swing.JFrame implements Observer {
     private void menuitemDeletepopupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemDeletepopupActionPerformed
          getDfaSim().getDfaEditor().handleDeleteObject(null);
     }//GEN-LAST:event_menuitemDeletepopupActionPerformed
+
+    private void panelDrawAreaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_panelDrawAreaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panelDrawAreaKeyReleased
+
+    private void panelDrawAreaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panelDrawAreaMouseEntered
+
+    private void panelDrawAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelDrawAreaMouseClicked
+    if (evt.getClickCount() == 2 && evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+            handleDoubleClick(evt);
+        }
+
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            if (getDfaSim().getDfaEditor().isAnythingSelected()) {
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+
+        }
+    }//GEN-LAST:event_panelDrawAreaMouseClicked
+
+    private void menuInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuInfoActionPerformed
+
+}//GEN-LAST:event_menuInfoActionPerformed
+
+    private void menuitemLearnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuitemLearnActionPerformed
+        openLearningCenter();
+}//GEN-LAST:event_menuitemLearnActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        //DFAInfoWin infowin = new DFAInfoWin();
+        //infowin.setVisible(true);
+        DFAInfoWin win = new DFAInfoWin();
+        win.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
 /**
  * zoom the view
@@ -1516,7 +1371,7 @@ public void showHelpFile(String pageName)
 {
         try {
             editorHelp.setPage(helpFiles.getUrlByKey(pageName));
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 }
@@ -1609,6 +1464,8 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1631,12 +1488,9 @@ public boolean askUserMessageBoxYesNo(String title, String message)
     private javax.swing.JMenuItem menuitemEditpopup;
     private javax.swing.JMenuItem menuitemExit;
     private javax.swing.JMenuItem menuitemExportImage;
-    private javax.swing.JMenuItem menuitemInfo;
     private javax.swing.JMenuItem menuitemLearn;
     private javax.swing.JMenuItem menuitemNewDFA;
-    private javax.swing.JMenuItem menuitemOpen;
     private javax.swing.JMenuItem menuitemProperties;
-    private javax.swing.JMenuItem menuitemSave;
     private javax.swing.JMenuItem menuitemStartSim;
     private javax.swing.JPanel panelConsole;
     private javax.swing.JPanel panelConsoleTop;

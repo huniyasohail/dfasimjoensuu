@@ -13,10 +13,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import models.Dfa;
 import models.DfaEditor;
@@ -165,86 +162,7 @@ public class DFAPainter {
     }
 
 
-    /**
-     * Export the current DFA as a cropped picture
-     * @param f Destination file
-     * @return true if all OK
-     */
-    public boolean exportPNGFile(File f)
-    {
-        //-- get dimensions of image --
-        int minX = 9999999;
-        int minY = 9999999;
-        int maxX = -9999999;
-        int maxY = -9999999;
-
-        Dfa d = getDfaEditor().getDfa();
-        for (int i=0;i<d.getStates().size();i++)
-        {
-            State s = d.getStates().get(i);
-            if (s.getState_Properties().getXPos() < minX)
-            {
-                 minX = s.getState_Properties().getXPos();
-                 if (s.getIsStartState())
-                     minX = minX-30;
-            }
-
-            if (s.getState_Properties().getYPos() < minY)
-                minY = s.getState_Properties().getYPos();
-            if (s.getState_Properties().getXPos() > maxX)
-                maxX = s.getState_Properties().getXPos();
-            if (s.getState_Properties().getYPos() > maxY)
-                maxY = s.getState_Properties().getYPos();
-
-            for (int j=0;j<s.getOutgoingTransitions().size();j++)
-            {
-                Transition t = s.getOutgoingTransitions().get(j);
-
-                if (t.getClickPositionX() < minX)
-                    minX = (int)t.getClickPositionX();
-                if (t.getClickPositionY() < minY)
-                    minY = (int)t.getClickPositionY();
-                if (t.getClickPositionX() > maxX)
-                    maxX = (int)t.getClickPositionX();
-                if (t.getClickPositionY() > maxY)
-                    maxY = (int)t.getClickPositionY();
-            }
-        }
-            if (d.getStates().size()>0)
-            {
-                int safetyDistance = 35;
-                int imWidth = (int)(Math.max(0,maxX-minX)*getDfaEditor().getZoomfactor()+3*safetyDistance*getDfaEditor().getZoomfactor());
-                int imHeight = (int)(Math.max(0,maxY-minY)*getDfaEditor().getZoomfactor()+2*safetyDistance*getDfaEditor().getZoomfactor());
-
-                dfaEditor.setOffsetX((int)((-minX+1.5*safetyDistance)*getDfaEditor().getZoomfactor()));
-                dfaEditor.setOffsetY((int)((-minY+ safetyDistance)*getDfaEditor().getZoomfactor()));
-
-
-                BufferedImage bi = new BufferedImage(imWidth, imHeight, BufferedImage.TYPE_INT_RGB);
-                Graphics2D gimg = (Graphics2D) bi.getGraphics();
-                gimg.setColor(Color.WHITE);
-                gimg.fillRect(0, 0, imWidth, imHeight);
-                updateGraphics(gimg);
-
-            try {
-                ImageIO.write(bi, "png", f);
-                JOptionPane.showMessageDialog(null, "File saved successfully!","Image export",JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException ex) {
-              JOptionPane.showMessageDialog(null, "Error while saving file!","Image export",JOptionPane.ERROR_MESSAGE);
-            }
-
-                return true;
-            } else
-            {
-                JOptionPane.showMessageDialog(null, "No elements to export!","Image export",JOptionPane.ERROR_MESSAGE);
-
-                return false;
-            }
-
-
-
-    }
-
+ 
 
 /**
  * Paints DFA main procedure
