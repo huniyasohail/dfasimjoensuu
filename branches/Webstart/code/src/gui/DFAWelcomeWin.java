@@ -15,8 +15,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
@@ -45,7 +43,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
 
     public DFAWelcomeWin(boolean checkShowAlways) {
         this();
-        this.checkShowWelcome.setSelected(checkShowAlways);
+       // this.checkShowWelcome.setSelected(checkShowAlways);
     }
 
     /** This method is called from within the constructor to
@@ -69,7 +67,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         jLabel9 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        checkShowWelcome = new javax.swing.JCheckBox();
+        jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -108,14 +106,14 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         labelUri.setBounds(30, 270, 560, 15);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("Welcome!");
+        jLabel5.setText("Welcome to the Web Edition of DFA Simulator!");
         getContentPane().add(jLabel5);
         jLabel5.setBounds(20, 10, 500, 30);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setText("This program allows you to design Deterministic Finite Automata graphically and simulate them.");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(30, 50, 560, 15);
+        jLabel6.setBounds(30, 40, 560, 15);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel7.setText("A string search DFA, which accepts when a word ends with 'abc'.");
@@ -131,15 +129,15 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jButton1);
         jButton1.setBounds(30, 170, 100, 30);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Examples");
         getContentPane().add(jLabel4);
         jLabel4.setBounds(20, 100, 500, 30);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12));
-        jLabel8.setText("It has a tool help bar on the right side, which explains the basic operations.");
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel8.setText("functions are available in the jar/desktop version.");
         getContentPane().add(jLabel8);
-        jLabel8.setBounds(30, 70, 560, 15);
+        jLabel8.setBounds(30, 80, 560, 15);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel9.setText("You can find more about the theory of DFA at");
@@ -155,23 +153,15 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
         getContentPane().add(jButton2);
         jButton2.setBounds(30, 140, 100, 30);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel10.setText("A 01-bitstream automaton, which accepts even numbers of ones.");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(140, 150, 490, 20);
 
-        checkShowWelcome.setBackground(new Color(0,0,0,0));
-        checkShowWelcome.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        checkShowWelcome.setSelected(true);
-        checkShowWelcome.setText("Show always on startup");
-        checkShowWelcome.setToolTipText("Click here if you don't want this window to come up with every start of the program");
-        checkShowWelcome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkShowWelcomeActionPerformed(evt);
-            }
-        });
-        getContentPane().add(checkShowWelcome);
-        checkShowWelcome.setBounds(390, 10, 160, 23);
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel11.setText("It has a tool help bar on the right side, which explains the basic operations. Save and export");
+        getContentPane().add(jLabel11);
+        jLabel11.setBounds(30, 60, 560, 15);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/art.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -206,7 +196,7 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
             if (java.awt.Desktop.isDesktopSupported()) {
                 try {
                     java.awt.Desktop.getDesktop().browse(uri);
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     System.err.println(ex.getMessage());
                 }
             }
@@ -214,29 +204,6 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_labelUriMouseClicked
-
-    private void checkShowWelcomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkShowWelcomeActionPerformed
-        File config = DFAMainWin.getConfigFile();
-        if(checkShowWelcome.isSelected()) {
-            if(config.exists()) {
-                //delete
-                if(!config.delete()) {
-                    System.err.println("Could not delete config file properly.");
-                } else {
-                    dFAMainWin.setShowWelcomeWindow(true);
-                }
-            }
-        } else {
-            if(!config.exists()) {
-                try {
-                    config.createNewFile();
-                    dFAMainWin.setShowWelcomeWindow(false);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }//GEN-LAST:event_checkShowWelcomeActionPerformed
 
     private void loadDfa(int number) {
         Dfa d = dFAMainWin.getDfaSim().getDfaEditor().getExampleDFA(number);
@@ -277,11 +244,11 @@ public class DFAWelcomeWin extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonOK;
-    private javax.swing.JCheckBox checkShowWelcome;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
