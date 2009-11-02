@@ -161,7 +161,7 @@ public class DFAPainter {
 
             dfaEditor.setOffsetX(-minX+(int)(1.5*safetyDistance)+optoffset);
             dfaEditor.setOffsetY(-minY+safetyDistance+optoffset);
-        }     
+        }
     }
 
 
@@ -188,7 +188,7 @@ public class DFAPainter {
                  if (s.getIsStartState())
                      minX = minX-30;
             }
-               
+
             if (s.getState_Properties().getYPos() < minY)
                 minY = s.getState_Properties().getYPos();
             if (s.getState_Properties().getXPos() > maxX)
@@ -242,7 +242,7 @@ public class DFAPainter {
             }
 
 
-        
+
     }
 
 
@@ -272,8 +272,8 @@ public class DFAPainter {
             paintStates();
             paintTransitions();
             paintUserActions();
-                   
-        }     
+
+        }
     }
 
     /**
@@ -298,8 +298,8 @@ public class DFAPainter {
             Color lineColor = COLORSTATELINESNOTSELECTED;
             Color fontColor = COLORSTATEFONTNORMAL;
             Color startLineColor;
-            
-            
+
+
             if (s.getState_Properties().getHighlightIndex() == HighlightTypes.MouseOver)
             {
                  backgroundColor = COLORSTATEHIGHLIGHT ;
@@ -324,7 +324,7 @@ public class DFAPainter {
                     backgroundColor = COLORSTATEACCEPTED;
                     lineColor = COLORSTATEACCEPTED2;
                 }
-                    
+
             }
 
             int centerX = (int)(dfaEditor.getOffsetX() + dfaEditor.getZoomfactor()*x);
@@ -362,7 +362,7 @@ public class DFAPainter {
         }
          g.setColor(Color.black);
 
-       
+
     }
 
 
@@ -389,12 +389,12 @@ public class DFAPainter {
 
                 if (s1 != null && s2 != null)
                 {
-                    
+
                     String caption = getStringFromInputArray(t);
                     if (caption.length() > 16)
                         caption = caption.substring(0, 15)+"...";
                     paintTransition(s1,s2,t,caption,Color.black, false);
-                }     
+                }
             }
         }
     }
@@ -468,10 +468,10 @@ public class DFAPainter {
                 {
                     colorCaptionColor = COLORTRANSITIONLINETAKEN;
                     colorLineColor = COLORTRANSITIONLINETAKEN;
-                    colorFont = Color.white;    
+                    colorFont = Color.white;
                 }
             }
-            
+
             boolean showTouchButton = (getDfaEditor().getToolState() == EditorToolStates.handTool) && t.isSelected();
 
             double z = dfaEditor.getZoomfactor();
@@ -569,7 +569,7 @@ public class DFAPainter {
                     double ay = h2y - cpointy - dfaEditor.getOffsetY();
 
                     double arrowAngle = Math.atan2(ay, ax);
-                    if (vlength <= STATEDRAWSIZE + 25)
+                    if (vlength <= (STATEDRAWSIZE + 25)*z)
                     arrowAngle = Math.atan2(dy, dx);
                     g.setColor(colorLineColor);
                     drawArrow(h2x, h2y, 4, arrowAngle, g);
@@ -766,7 +766,7 @@ private double curvePointAdaptionFactor(double input,double min)
     {
         double s1x = px-20*getDfaEditor().getZoomfactor();
         double s1y = py;
-        
+
         g.setColor(c);
 
         g.drawLine(px, py, (int)s1x, (int)s1y);
@@ -950,7 +950,7 @@ private double curvePointAdaptionFactor(double input,double min)
         Graphics2D g = this.graphics;
 
         int radius = (int)(dfaEditor.getZoomfactor()*STATEDRAWSIZE/2);
-        
+
         int px = s.getState_Properties().getXPos()-radius + dfaEditor.getOffsetX();
         int py = s.getState_Properties().getYPos()-radius + dfaEditor.getOffsetY();
 
