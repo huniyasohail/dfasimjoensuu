@@ -30,7 +30,7 @@ import models.Transition;
 
 /**
  *
- * @author Fabian
+ * @author Fabian B.
  */
 public class DFAPainter {
 
