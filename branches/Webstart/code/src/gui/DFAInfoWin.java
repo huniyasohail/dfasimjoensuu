@@ -60,8 +60,8 @@ public class DFAInfoWin extends javax.swing.JDialog {
         setResizable(false);
         getContentPane().setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36));
-        jLabel2.setText("DFA Simulator Web Edition");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel2.setText("DFA Simulator Web Edition ");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(30, 10, 490, 50);
 
